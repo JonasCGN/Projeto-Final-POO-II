@@ -12,7 +12,8 @@
 #  ○ Caso o cliente mande 3 mensagens indevidas no período de 1 minuto, ele deve ser banido e as
 # mensagens dele não serão mais transmitidas.
 import socket
-import datetime
+import threading
+import json
 
 BUFFER = 1024
 HOST = "192.168.1.15"
@@ -54,34 +55,41 @@ class Servidor:
             self.clientes[user_name] = Cliente(cliente_socket, cliente_addrs,user_name)
         return is_add
 
-    def connect_user(self):
-        client_socket, client_addr = self.server_socket.accept()
-        name = client_socket.recv(BUFFER).decode()
+    def thread_connect_user(self):
+        while True:
+            client_socket, client_addr = self.server_socket.accept()
+            name = client_socket.recv(BUFFER).decode()
 
-        if not self.is_suport_connect():
-            client_socket.send("disconnected: Servidor cheio!".encode())
-            client_socket.close()
-
-        else:
-            if not (self.__add_clientes(client_addr, client_socket, name)):
-                client_socket.send("disconnected: Nome em uso!".encode())
+            if not self.is_suport_connect():
+                client_socket.send("disconnected: Servidor cheio!".encode())
                 client_socket.close()
+
             else:
-                print(f"Cliente {name} conectado.")
-                client_socket.send("connected: conectado!".encode())
+                if not (self.__add_clientes(client_addr, client_socket, name)):
+                    client_socket.send("disconnected: Nome em uso!".encode())
+                    client_socket.close()
+                else:
+                    print(f"Cliente {name} conectado.")
+                    client_socket.send("connected: conectado!".encode())
+                    threading.Thread(target=self.handle_client, args=(self.clientes[name], name)).start()
+
+    def handle_client(self, cliente_send: Cliente, name_send):
+        try:
+            msg_recebida: str = cliente_send.cliente_socket.recv(BUFFER).decode()
+            msg_recebida = json.loads(msg_recebida)
+            
+            msg_recebida = msg_recebida["produto"]
+            
+            print(msg_recebida)
+            
+        except socket.timeout:
+            print(f"Tempo limite excedido para o cliente {cliente_send.cliente_addrs}.")
+
+        except (ConnectionResetError, ConnectionAbortedError):
+            print(f"Cliente {cliente_send.cliente_addrs} desconectado.")
+            self.clientes.pop(name_send)
 
 if __name__ == "__main__":
     servidor = Servidor()
     servidor.init()
-
-    while True:
-        if servidor.is_suport_connect():
-            print("Adicione um cliente para continuar")
-            servidor.connect_user()
-            continue
-
-        try:
-            for name, cliente in servidor.clientes.items():
-                servidor.handle_client(cliente, name)
-        except RuntimeError:
-            print("Alerta: Um cliente foi desconectado.")
+    threading.Thread(target=servidor.thread_connect_user).start()

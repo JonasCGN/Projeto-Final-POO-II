@@ -1,24 +1,13 @@
-#  Implementação de um chat básico:
-#  ○ Deve ter no mínimo 3 clientes;
-#  ○ Deverá ter dois códigos diferentes, o do servidor e do cliente;
-#  ○ O Cliente terá um menu onde ele irá escolher o que ele deseja fazer:
-# ■ Escutar até receber uma mensagem, depois ele volta para o menu;
-#  ■ Apenas escutar mensagens e mostrar na tela;
-#  ■ Sair.
-#  ■ Mandar mensagem para 1 cliente informando a qual cliente que ele deseja mandar a
-# mensagem;
-#  ■ Enviar mensagem e escutar a resposta e depois voltar ao menu;
-#  ○ O servidor deverá censurar mensagens indevidas (as palavras são definidas pelo grupo).
-#  ○ Caso o cliente mande 3 mensagens indevidas no período de 1 minuto, ele deve ser banido e as
-# mensagens dele não serão mais transmitidas.
 import socket
 import threading
 import json
+from produto import Produto, produtos
 
 BUFFER = 1024
-HOST = "192.168.1.15"
+HOST = "127.0.0.1"
 PORT = 9000
 NMR_CLIENTES = 1000
+
 class Cliente:
     def __init__(self, cliente_socket, cliente_addrs,user_name) -> None:
         self.cliente_socket: socket.socket = cliente_socket
@@ -74,22 +63,39 @@ class Servidor:
                     threading.Thread(target=self.handle_client, args=(self.clientes[name], name)).start()
 
     def handle_client(self, cliente_send: Cliente, name_send):
-        try:
-            msg_recebida: str = cliente_send.cliente_socket.recv(BUFFER).decode()
-            msg_recebida = json.loads(msg_recebida)
+        while True:
+            try:
+                msg_recebida: str = cliente_send.cliente_socket.recv(BUFFER).decode()
+                if msg_recebida == 'LISTAR':
+                    str_produtos = ""
+                    for id, produto in produtos.items():
+                        str_produtos += f"{id} - {produto}\n"
+                    cliente_send.cliente_socket.send(str_produtos.encode())
+                    print(f"Enviado a lista de produtos para o cliente {cliente_send.cliente_addrs}.")
+                elif msg_recebida == "QTD_PRODUTOS":
+                    cliente_send.cliente_socket.send(str(len(produtos)).encode())
+                    print(f"Enviado a quantidade de produtos para o cliente {cliente_send.cliente_addrs}.")
+                else:
+                    msg_recebida = json.loads(msg_recebida)
+                    total = 0
+                    for id in msg_recebida["id"]:
+                        produto = produtos[int(id)]
+                        total += produto.preco
+                        print(f"Produto: {produto.nome} - R${produto.preco:.2f}")
+                    print(f"Total: R${total:.2f}")
             
-            msg_recebida = msg_recebida["produto"]
-            
-            print(msg_recebida)
-            
-        except socket.timeout:
-            print(f"Tempo limite excedido para o cliente {cliente_send.cliente_addrs}.")
+            except socket.timeout:
+                print(f"Tempo limite excedido para o cliente {cliente_send.cliente_addrs}.")
 
-        except (ConnectionResetError, ConnectionAbortedError):
-            print(f"Cliente {cliente_send.cliente_addrs} desconectado.")
-            self.clientes.pop(name_send)
+            except (ConnectionResetError, ConnectionAbortedError):
+                print(f"Cliente {cliente_send.cliente_addrs} desconectado.")
+                self.clientes.pop(name_send)
+        
+            except json.JSONDecodeError:
+                print(f"Erro ao decodificar a mensagem do cliente {cliente_send.cliente_addrs}.")
 
 if __name__ == "__main__":
+    
     servidor = Servidor()
     servidor.init()
     threading.Thread(target=servidor.thread_connect_user).start()

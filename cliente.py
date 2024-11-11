@@ -28,7 +28,7 @@ class Cliente:
             self.menu()
 
         except ConnectionError as error:
-            print("Conexão encerrada\nErro:", error)
+            print("Conexão Encerrada\nErro:", error)
             sys.exit()
 
     def enviar_pedido(self, address):

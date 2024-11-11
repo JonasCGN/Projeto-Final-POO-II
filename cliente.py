@@ -47,7 +47,7 @@ class Cliente:
             pass
         
         while True:
-            mensagem = input(f"(0 - Finalizar Pedido)Produto {count}: ")
+            mensagem = input(f"(0 - Para Finalizar Pedido)Produto {count}: ")
             
             if mensagem != "":
                 if mensagem == "0":

@@ -1,7 +1,7 @@
 import socket
 from threading import Thread
 import json
-from src.produto import Produto, produtos
+from src.produto import produtos
 
 BUFFER = 1024
 HOST = "127.0.0.1"
@@ -71,37 +71,29 @@ class Servidor:
             cliente_send.cliente_socket.send(str(len(produtos)).encode())
             print(f"Enviado a quantidade de produtos para o cliente {cliente_send.cliente_addrs}.")
         else:
-            try:
-                msg_recebida = json.loads(msg_recebida)
-                total = 0
-                for id in msg_recebida["id"]:
-                    produto = produtos[int(id)]
-                    total += produto.preco
-                    print(f"Produto: {produto.nome} - R${produto.preco:.2f}")
-                print(f"Total: R${total:.2f}")
-            except json.JSONDecodeError:
-                print(f"Erro ao decodificar a mensagem do cliente {cliente_send.cliente_addrs}.")
-        
+            msg_recebida = json.loads(msg_recebida)
+            total = 0
+            for id in msg_recebida["id"]:
+                produto = produtos[int(id)]
+                total += produto.preco
+                print(f"Produto: {produto.nome} - R${produto.preco:.2f}")
+            print(f"Total: R${total:.2f}")
+                
 
     def handle_client(self, cliente_send: User, name_send):
         while True:
             try:
                 msg_recebida: str = cliente_send.cliente_socket.recv(BUFFER).decode()
+                if msg_recebida == f"{name_send}, exit":
+                    raise ConnectionResetError
+                
                 self.handle_process(cliente_send, msg_recebida)
-
-            except socket.timeout:
-                print(f"Tempo limite excedido para o cliente {cliente_send.cliente_addrs}.")
 
             except (ConnectionResetError, ConnectionAbortedError):
                 print(f"Cliente {cliente_send.cliente_addrs} desconectado.")
                 self.clientes.pop(name_send)
-        
+                break
+            
             except json.JSONDecodeError:
                 print(f"Erro ao decodificar a mensagem do cliente {cliente_send.cliente_addrs}.")
-
-if __name__ == "__main__":
-    
-    servidor = Servidor()
-    servidor.init()
-    while True:
-        servidor.connect_user()
+                break

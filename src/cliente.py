@@ -8,7 +8,7 @@ ADDRESS = "127.0.0.1"
 
 class Cliente:
 
-    def __init__(self, name, tcp_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)):
+    def __init__(self, name = '', tcp_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)):
         self.tcp_connection = tcp_connection
         self.name = name
         
@@ -23,7 +23,7 @@ class Cliente:
                     break
 
             self.tcp_connection.send(bytes(self.name, "utf-8"))
-            self.escutar_resposta(self.tcp_connection)
+            self.escutar_resposta()
             self.menu()
 
         except ConnectionError as error:
@@ -114,5 +114,3 @@ class Cliente:
             else:
                 print("Opção inválida")
 
-if __name__ == "__main__":
-    Cliente()()

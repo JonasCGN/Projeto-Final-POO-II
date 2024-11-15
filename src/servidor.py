@@ -1,14 +1,14 @@
 import socket
-import threading
+from threading import Thread
 import json
-from produto import Produto, produtos
+from src.produto import Produto, produtos
 
 BUFFER = 1024
 HOST = "127.0.0.1"
 PORT = 9000
 NMR_CLIENTES = 1000
 
-class Cliente:
+class User:
     def __init__(self, cliente_socket, cliente_addrs,user_name) -> None:
         self.cliente_socket: socket.socket = cliente_socket
         self.cliente_addrs = cliente_addrs
@@ -19,7 +19,7 @@ class Servidor:
     def __init__(self):
         self.addr = (HOST, PORT)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._clientes: dict[str, Cliente] = {}
+        self._clientes: dict[str, User] = {}
 
     def init(self):
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -36,54 +36,59 @@ class Servidor:
             is_ok = False
         return is_ok
 
-    def __add_clientes(self, cliente_addrs, cliente_socket, user_name) -> bool:
+    def add_clientes(self, cliente_addrs, cliente_socket, user_name) -> bool:
         is_add = True
         if user_name in self.clientes:
             is_add = False
         else:
-            self.clientes[user_name] = Cliente(cliente_socket, cliente_addrs,user_name)
+            self.clientes[user_name] = User(cliente_socket, cliente_addrs,user_name)
         return is_add
 
-    def thread_connect_user(self):
-        while True:
-            client_socket, client_addr = self.server_socket.accept()
-            name = client_socket.recv(BUFFER).decode()
-
-            if not self.is_suport_connect():
-                client_socket.send("disconnected: Servidor cheio!".encode())
+    def connect_user(self):
+        client_socket, client_addr = self.server_socket.accept()
+        name = client_socket.recv(BUFFER).decode()
+        
+        if not self.is_suport_connect():
+            client_socket.send("disconnected: Servidor cheio!".encode())
+            client_socket.close()
+        else:
+            if not (self.add_clientes(client_addr, client_socket, name)):
+                client_socket.send("disconnected: Nome em uso!".encode())
                 client_socket.close()
-
             else:
-                if not (self.__add_clientes(client_addr, client_socket, name)):
-                    client_socket.send("disconnected: Nome em uso!".encode())
-                    client_socket.close()
-                else:
-                    print(f"Cliente {name} conectado.")
-                    client_socket.send("connected: conectado!".encode())
-                    threading.Thread(target=self.handle_client, args=(self.clientes[name], name)).start()
+                print(f"Cliente {name} conectado.")
+                client_socket.send("connected: conectado!".encode())
+                Thread(target=self.handle_client, args=(self.clientes[name], name)).start()
+    
+    def handle_process(self, cliente_send: User, msg_recebida: str):
+        if msg_recebida == 'LISTAR':
+            str_produtos = ""
+            for id, produto in produtos.items():
+                str_produtos += f"{id} - {produto}\n"
+            cliente_send.cliente_socket.send(str_produtos.encode())
+            print(f"Enviado a lista de produtos para o cliente {cliente_send.cliente_addrs}.")
+        elif msg_recebida == "QTD_PRODUTOS":
+            cliente_send.cliente_socket.send(str(len(produtos)).encode())
+            print(f"Enviado a quantidade de produtos para o cliente {cliente_send.cliente_addrs}.")
+        else:
+            try:
+                msg_recebida = json.loads(msg_recebida)
+                total = 0
+                for id in msg_recebida["id"]:
+                    produto = produtos[int(id)]
+                    total += produto.preco
+                    print(f"Produto: {produto.nome} - R${produto.preco:.2f}")
+                print(f"Total: R${total:.2f}")
+            except json.JSONDecodeError:
+                print(f"Erro ao decodificar a mensagem do cliente {cliente_send.cliente_addrs}.")
+        
 
-    def handle_client(self, cliente_send: Cliente, name_send):
+    def handle_client(self, cliente_send: User, name_send):
         while True:
             try:
                 msg_recebida: str = cliente_send.cliente_socket.recv(BUFFER).decode()
-                if msg_recebida == 'LISTAR':
-                    str_produtos = ""
-                    for id, produto in produtos.items():
-                        str_produtos += f"{id} - {produto}\n"
-                    cliente_send.cliente_socket.send(str_produtos.encode())
-                    print(f"Enviado a lista de produtos para o cliente {cliente_send.cliente_addrs}.")
-                elif msg_recebida == "QTD_PRODUTOS":
-                    cliente_send.cliente_socket.send(str(len(produtos)).encode())
-                    print(f"Enviado a quantidade de produtos para o cliente {cliente_send.cliente_addrs}.")
-                else:
-                    msg_recebida = json.loads(msg_recebida)
-                    total = 0
-                    for id in msg_recebida["id"]:
-                        produto = produtos[int(id)]
-                        total += produto.preco
-                        print(f"Produto: {produto.nome} - R${produto.preco:.2f}")
-                    print(f"Total: R${total:.2f}")
-            
+                self.handle_process(cliente_send, msg_recebida)
+
             except socket.timeout:
                 print(f"Tempo limite excedido para o cliente {cliente_send.cliente_addrs}.")
 
@@ -98,4 +103,5 @@ if __name__ == "__main__":
     
     servidor = Servidor()
     servidor.init()
-    threading.Thread(target=servidor.thread_connect_user).start()
+    while True:
+        servidor.connect_user()

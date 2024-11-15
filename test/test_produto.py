@@ -1,28 +1,39 @@
-import unittest
+import pytest
 from src.produto import Produto
 
-class TestProduto(unittest.TestCase):
+class TestProduto():
+    
+    @pytest.mark.parametrize("nome, preco", [("Coca-Cola", 5.00), ("Guaraná", 3.00)])
+    def test_produto_initialization(self, nome, preco):
+        produto = Produto(nome, preco)
+        assert produto.nome == nome
+        assert produto.preco == preco
 
-    def test_produto_initialization(self):
-        produto = Produto("Coca-Cola", 5.00)
-        self.assertEqual(produto.nome, "Coca-Cola")
-        self.assertEqual(produto.preco, 5.00)
+    @pytest.mark.parametrize("nome, preco, expected_output", [
+        ("Coca-Cola", 5.00, "Coca-Cola - R$5.00"),
+        ("Guaraná", 3.00, "Guaraná - R$3.00")
+    ])
+    def test_produto_dump(self, nome, preco, expected_output):
+        produto = Produto(nome, preco)
+        assert str(produto) == expected_output
 
-    def test_produto_dump(self):
-        produto = Produto("Coca-Cola", 5.00)
-        expected_output = '{"nome": "Coca-Cola", "preco": 5.0}'
-        self.assertEqual(produto.dump(), expected_output)
-
-    def test_produto_load(self):
+    @pytest.mark.parametrize("data, expected_output", [
+        ({"nome": "Coca-Cola", "preco": 5.00}, "Coca-Cola - R$5.00"),
+        ({"nome": "Guaraná", "preco": 3.00}, "Guaraná - R$3.00")
+    ])
+    def test_produto_load(self, data, expected_output):
         produto = Produto()
-        data = {"nome": "Pepsi", "preco": 4.00}
         produto.load(data)
-        self.assertEqual(produto.nome, "Pepsi")
-        self.assertEqual(produto.preco, 4.00)
+        
+        assert produto.nome == data["nome"]
+        assert produto.preco == data["preco"]
+        
+        assert str(produto) == expected_output
 
-    def test_produto_str(self):
-        produto = Produto("Guaraná", 3.00)
-        self.assertEqual(str(produto), "Guaraná - R$3.00")
-
-if __name__ == '__main__':
-    unittest.main()
+    @pytest.mark.parametrize("nome, preco, expected_output", [
+        ("Coca-Cola", 5.00, "Coca-Cola - R$5.00"),
+        ("Guaraná", 3.00, "Guaraná - R$3.00")
+    ])
+    def test_produto_str(self, nome, preco, expected_output):
+        produto = Produto(nome, preco)
+        assert str(produto) == expected_output

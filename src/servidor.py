@@ -78,13 +78,14 @@ class Servidor:
                 total += produto.preco
                 print(f"Produto: {produto.nome} - R${produto.preco:.2f}")
             print(f"Total: R${total:.2f}")
-                
+            
 
     def handle_client(self, cliente_send: User, name_send):
         while True:
             try:
                 msg_recebida: str = cliente_send.cliente_socket.recv(BUFFER).decode()
-                if msg_recebida == f"{name_send}, exit":
+                
+                if msg_recebida == f"{name_send}, exit" or msg_recebida == "":
                     raise ConnectionResetError
                 
                 self.handle_process(cliente_send, msg_recebida)

@@ -55,6 +55,10 @@ class Cliente:
             if mensagem == "":
                 print("Insira o nome do produto que deseja comprar.")
             elif mensagem == "0":
+                    if count == 1:
+                        print("Comanda inválido, reiniciando pedido.")
+                        break
+                    
                     pedido = {
                         "id": id_produtos
                     }

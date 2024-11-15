@@ -8,9 +8,9 @@ ADDRESS = "127.0.0.1"
 
 class Cliente:
 
-    def __init__(self):
+    def __init__(self,name):
         self.tcp_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.name = ""
+        self.name = name
         
     def __call__(self):
         try:
@@ -30,7 +30,22 @@ class Cliente:
             print("Conexão encerrada\nErro:", error)
             sys.exit()
 
-    def enviar_pedido(self, address):
+    def conectar(self, address,server_post):
+        self.tcp_connection.connect((address,server_post))
+        self.tcp_connection.send(bytes(self.name, "utf-8"))
+        return self.escutar_resposta()
+        
+    def enviar_pedido(self, nome):
+        pedido = {
+            "id": nome
+        }
+        if len(pedido) != 0:
+            pedido = json.dumps(pedido)
+            self.tcp_connection.send(bytes(str(pedido), "utf-8"))
+
+        return pedido
+    
+    def menu_enviar_pedido(self):
         count = 1
         id_produtos = []
 
@@ -45,14 +60,13 @@ class Cliente:
                     }
                     pedido = json.dumps(pedido)
                     print(pedido)
-                    address.send(bytes(str(pedido), "utf-8"))
+                    self.tcp_connection.send(bytes(str(pedido), "utf-8"))
                     break
             elif not mensagem.isdigit():
                     print("Insira um id válido.")
             else:
-                
-                address.send(bytes("QTD_PRODUTOS", "utf-8"))
-                resp = int(address.recv(BUFFER).decode())
+                self.tcp_connection.send(bytes("QTD_PRODUTOS", "utf-8"))
+                resp = int(self.tcp_connection.recv(BUFFER).decode())
                 
                 if int(mensagem) > resp or int(mensagem) < 1:
                     print("Insira um id válido.")
@@ -60,19 +74,21 @@ class Cliente:
                     count += 1
                     id_produtos.append(mensagem)
     
-    def escutar_resposta(self, address):
+    def escutar_resposta(self):
         try:
-            address.settimeout(2)
-            msg_recebida: str = address.recv(BUFFER).decode()
+            self.tcp_connection.settimeout(2)
+            msg_recebida: str = self.tcp_connection.recv(BUFFER).decode()
 
             if msg_recebida != "":
                 print(msg_recebida)
         except (socket.timeout, OSError):
             pass
+        
+        return msg_recebida
     
-    def close_connection(self, address):
-        address.send(bytes(f"{self.name}, exit", "utf-8"))
-        address.close()
+    def close_connection(self):
+        self.tcp_connection.send(bytes(f"{self.name}, exit", "utf-8"))
+        self.tcp_connection.close()
 
     def menu(self):
         while True:
@@ -82,13 +98,13 @@ class Cliente:
             option = input("Opção: ")
 
             if option == "0":
-                self.close_connection(self.tcp_connection)
+                self.close_connection()
                 break
             elif option == "1":
-                self.enviar_pedido(self.tcp_connection)
+                self.enviar_pedido()
             elif option == "2":
                 self.tcp_connection.send(bytes("LISTAR", "utf-8"))
-                self.escutar_resposta(self.tcp_connection)
+                self.escutar_resposta()
             else:
                 print("Opção inválida")
 

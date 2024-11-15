@@ -25,7 +25,6 @@ class TestServidor:
         servidor.add_clientes(("127.0.0.1", 12345), Mock(), "test_user")
         assert "test_user" in servidor._clientes
         
-
     def test_connect_user_full_server(self, servidor: Servidor):
         servidor._clientes = {str(i): Mock() for i in range(NMR_CLIENTES)}
         mock_socket = MagicMock()

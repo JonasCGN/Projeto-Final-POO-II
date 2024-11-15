@@ -1,5 +1,5 @@
 import pytest
-from src.produto import Produto
+from src.produto import Produto, GerenciarProdutos
 
 class TestProduto():
     
@@ -13,6 +13,7 @@ class TestProduto():
         ("Coca-Cola", 5.00, "Coca-Cola - R$5.00"),
         ("Guaraná", 3.00, "Guaraná - R$3.00")
     ])
+    
     def test_produto_dump(self, nome, preco, expected_output):
         produto = Produto(nome, preco)
         assert str(produto) == expected_output
@@ -37,3 +38,4 @@ class TestProduto():
     def test_produto_str(self, nome, preco, expected_output):
         produto = Produto(nome, preco)
         assert str(produto) == expected_output
+

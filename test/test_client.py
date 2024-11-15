@@ -15,9 +15,13 @@ class TestCliente:
     cliente.escutar_resposta()
     cliente.tcp_connection.recv.assert_called_once_with(BUFFER)
 
-  def test_enviar_pedido(self, cliente):
-    cliente.enviar_pedido(["1", "2"])
-    cliente.tcp_connection.send.assert_called_with(b'{"id": ["1", "2"]}')
+  @pytest.mark.parametrize("data, expected_output", [
+      (["1", "1"], b'{"id": ["1", "1"]}'),
+      (["2", "2"], b'{"id": ["2", "2"]}')
+  ])
+  def test_enviar_pedido(self, data, expected_output, cliente):
+    cliente.enviar_pedido(data)
+    cliente.tcp_connection.send.assert_called_with(expected_output)
   
   def test_menu_enviar_pedido(self, cliente):
     with patch("builtins.input", side_effect=["1", "0"]):

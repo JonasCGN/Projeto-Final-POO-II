@@ -36,14 +36,14 @@ class TestServidor:
             mock_socket.send.assert_called_with(b'disconnected: Servidor cheio!')
             mock_socket.close.assert_called_once()
 
-    @patch('src.servidor.socket.socket.accept')
+    @patch('socket.socket.accept')
     def test_connect_user_name_in_use(self, accept, servidor: Servidor):
-        accept.return_value = (mock_socket, ('127.0.0.1', 12345))
         servidor._clientes = {"test_user": Mock()}
         
         mock_socket = MagicMock()
         mock_socket.recv.return_value = b'test_user'
         
+        accept.return_value = (mock_socket, ('127.0.0.1', 12345))
         
         servidor.connect_user()
         mock_socket.send.assert_called_with(b'disconnected: Nome em uso!')

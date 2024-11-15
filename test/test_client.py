@@ -7,51 +7,38 @@ BUFFER = 1024
 class TestCliente:
   @pytest.fixture
   def cliente(self):
-    return Cliente()
+    cliente = Cliente("test_user", Mock())
+    return cliente
 
   def test_escutar_resposta(self, cliente):
-    mock_socket = Mock()
-    mock_socket.recv.return_value = b"Mensagem do servidor" # Simula resposta do servidor
-    
-    with patch("socket.socket", return_value=mock_socket):
-      cliente.escutar_resposta(mock_socket)
-      mock_socket.recv.assert_called_once_with(BUFFER)
+    cliente.tcp_connection.recv.return_value = b"Teste"
+    cliente.escutar_resposta()
+    cliente.tcp_connection.recv.assert_called_once_with(BUFFER)
 
   def test_enviar_pedido(self, cliente):
-    mock_socket = Mock()
-    mock_socket.recv.return_value = b"3"  # Suponha que existem 3 produtos disponíveis
-
-    with patch("socket.socket", return_value=mock_socket):
-      with patch("builtins.input", side_effect=["1", "2", "0"]):  # Simula entrada do usuário
-        cliente.enviar_pedido(mock_socket)
-        mock_socket.send.assert_called_with(b'{"id": ["1", "2"]}')
+    cliente.enviar_pedido(["1", "2"])
+    cliente.tcp_connection.send.assert_called_with(b'{"id": ["1", "2"]}')
+  
+  def test_menu_enviar_pedido(self, cliente):
+    with patch("builtins.input", side_effect=["1", "0"]):
+      cliente.tcp_connection.recv.return_value = b"2"
+      with patch("builtins.print") as mock_print:
+        cliente.menu_enviar_pedido()
+        mock_print.assert_has_calls([call('{"id": ["1"]}')])
         
-  def test_enviar_pedido_sem_produtos(self, cliente):
-    mock_socket = Mock()
-    mock_socket.recv.return_value = b"3"  # Suponha que existem 3 produtos disponíveis
-
-    with patch("socket.socket", return_value=mock_socket):
-      with patch("builtins.input", side_effect=["0"]):  # Simula entrada do usuário
-        cliente.enviar_pedido(mock_socket)
-        mock_socket.send.assert_not_called()
+  def test_menu_enviar_pedido_sem_produtos(self, cliente):
+    with patch("builtins.input", side_effect=["0"]):
+      with patch("builtins.print") as mock_print:
+        cliente.menu_enviar_pedido()
+        mock_print.assert_has_calls([call('Comanda inválido, reiniciando pedido.')])
     
   def test_id_invalido(self, cliente):
-    mock_socket = Mock()
-    mock_socket.recv.return_value = b"3"  # Suponha que existem 3 produtos disponíveis
-
-    with patch("socket.socket", return_value=mock_socket):
-      with patch("builtins.input", side_effect=["4", "0"]):  # Simula entrada do usuário
-        with patch("builtins.print") as mock_print:
-          cliente.enviar_pedido(mock_socket)
-          mock_print.assert_has_calls([
-            call("Insira um id válido."),
-            call("Comanda inválido, reiniciando pedido."),
-          ])
+    with patch("builtins.input", side_effect=["a", "0"]):
+      with patch("builtins.print") as mock_print:
+        cliente.menu_enviar_pedido()
+        mock_print.assert_has_calls([call("Insira um id válido.")])
   
   def test_menu(self, cliente):
-    mock_socket = Mock()
-    
-    with patch("socket.socket", return_value=mock_socket):
       with patch("builtins.input", side_effect=["0"]):  # Simula entrada do usuário
         with patch.object(cliente, "close_connection"):
           with patch("builtins.print") as mock_print:
@@ -63,11 +50,7 @@ class TestCliente:
             ])
           
     
-  def test_close_connection(self, cliente):
-    # Mock do socket
-    mock_socket = Mock()
-    cliente.name = "test_user"
-
-    cliente.close_connection(mock_socket)
-    mock_socket.send.assert_called_once_with(b"test_user, exit")
-    mock_socket.close.assert_called_once()
+  def test_close_connection(self, cliente: Cliente):
+    cliente.close_connection()
+    cliente.tcp_connection.send.assert_called_once_with(b"test_user, exit")
+    cliente.tcp_connection.close.assert_called_once()

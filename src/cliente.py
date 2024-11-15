@@ -8,8 +8,8 @@ ADDRESS = "127.0.0.1"
 
 class Cliente:
 
-    def __init__(self,name):
-        self.tcp_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def __init__(self, name, tcp_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)):
+        self.tcp_connection = tcp_connection
         self.name = name
         
     def __call__(self):
@@ -35,10 +35,11 @@ class Cliente:
         self.tcp_connection.send(bytes(self.name, "utf-8"))
         return self.escutar_resposta()
         
-    def enviar_pedido(self, nome):
+    def enviar_pedido(self, produtos):
         pedido = {
-            "id": nome
+            "id": produtos
         }
+        
         if len(pedido) != 0:
             pedido = json.dumps(pedido)
             self.tcp_connection.send(bytes(str(pedido), "utf-8"))
@@ -53,7 +54,7 @@ class Cliente:
             mensagem = input(f"(0 - Finalizar Pedido), id do Produto {count}: ")
             
             if mensagem == "":
-                print("Insira o nome do produto que deseja comprar.")
+                print("Insira o id do produto que deseja comprar.")
             elif mensagem == "0":
                     if count == 1:
                         print("Comanda inválido, reiniciando pedido.")
@@ -62,6 +63,7 @@ class Cliente:
                     pedido = {
                         "id": id_produtos
                     }
+                    
                     pedido = json.dumps(pedido)
                     print(pedido)
                     self.tcp_connection.send(bytes(str(pedido), "utf-8"))

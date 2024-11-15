@@ -62,8 +62,6 @@ class TestCliente:
               call("2 - Listar produtos"),
             ])
           
-        
-
     
   def test_close_connection(self, cliente):
     # Mock do socket

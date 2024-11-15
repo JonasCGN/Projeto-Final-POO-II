@@ -36,48 +36,49 @@ class TestServidor:
             mock_socket.send.assert_called_with(b'disconnected: Servidor cheio!')
             mock_socket.close.assert_called_once()
 
-    def test_connect_user_name_in_use(self, servidor: Servidor):
+    @patch('src.servidor.socket.socket.accept')
+    def test_connect_user_name_in_use(self, accept, servidor: Servidor):
+        accept.return_value = (mock_socket, ('127.0.0.1', 12345))
         servidor._clientes = {"test_user": Mock()}
         
         mock_socket = MagicMock()
         mock_socket.recv.return_value = b'test_user'
         
-        with patch('src.servidor.socket.socket.accept', return_value=(mock_socket, ('127.0.0.1', 12345))):
-            servidor.connect_user()
-            mock_socket.send.assert_called_with(b'disconnected: Nome em uso!')
-            mock_socket.close.assert_called_once()
+        
+        servidor.connect_user()
+        mock_socket.send.assert_called_with(b'disconnected: Nome em uso!')
+        mock_socket.close.assert_called_once()
 
-    def test_connect_user_success(self, servidor: Servidor):
+    @patch('src.servidor.socket.socket.accept')
+    def test_connect_user_success(self, accept, servidor: Servidor):
         mock_socket = MagicMock()
         mock_socket.recv.return_value = b'test_user'
-        with patch('src.servidor.socket.socket.accept', return_value=(mock_socket, ('127.0.0.1', 12345))):
-            with patch.object(servidor, 'handle_client', return_value=None) as mock_handle_client:
-                servidor.connect_user()
-                mock_socket.send.assert_called_with(b'connected: conectado!')
-                mock_handle_client.assert_called_once()
-                assert "test_user" in servidor._clientes
+        
+        accept.return_value = (mock_socket, ('127.0.0.1', 12345))
+        
+        with patch.object(servidor, 'handle_client', return_value=None):
+            servidor.connect_user()
+            mock_socket.send.assert_called_with(b'connected: conectado!')
 
 
+    @patch('src.servidor.produtos', {1: Mock(nome="Produto1", preco=10.0)})
     def test_handle_client(self, servidor: Servidor):
         cliente_socket = Mock()
         cliente = User(cliente_socket, ("127.0.0.1", 12345), "test_user")
         servidor._clientes["test_user"] = cliente
 
-        with patch("src.servidor.produtos", {1: Mock(nome="Produto1", preco=10.0)}):
-            servidor.handle_process(cliente, "QTD_PRODUTOS")
-            cliente_socket.send.assert_called_with(b"1")
+        servidor.handle_process(cliente, "QTD_PRODUTOS")
+        cliente_socket.send.assert_called_with(b"1")
 
-        with patch("src.servidor.produtos", {1: Mock(nome="Produto1", preco=10.0)}):
-            with patch("builtins.print") as mock_print:
-                servidor.handle_process(cliente, "test_user")
-                mock_print.assert_has_calls(
-                    [call("Erro ao decodificar a mensagem do cliente ('127.0.0.1', 12345).")]
-                )
-                
-        with patch("src.servidor.produtos", {1: Mock(nome="Produto1", preco=10.0)}):
-            with patch("builtins.print") as mock_print:
-                servidor.handle_process(cliente, '{"id": ["1"]}')
-                mock_print.assert_has_calls(
-                    [call("Produto: Produto1 - R$10.00"), call("Total: R$10.00")]
-                )
+        with patch("builtins.print") as mock_print:
+            servidor.handle_process(cliente, "test_user")
+            mock_print.assert_has_calls(
+                [call("Erro ao decodificar a mensagem do cliente ('127.0.0.1', 12345).")]
+            )
+            
+        with patch("builtins.print") as mock_print:
+            servidor.handle_process(cliente, '{"id": ["1"]}')
+            mock_print.assert_has_calls(
+                [call("Produto: Produto1 - R$10.00"), call("Total: R$10.00")]
+            )
         

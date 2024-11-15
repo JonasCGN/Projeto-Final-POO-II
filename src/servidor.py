@@ -71,14 +71,16 @@ class Servidor:
             cliente_send.cliente_socket.send(str(len(produtos)).encode())
             print(f"Enviado a quantidade de produtos para o cliente {cliente_send.cliente_addrs}.")
         else:
-            msg_recebida = json.loads(msg_recebida)
-            total = 0
-            for id in msg_recebida["id"]:
-                produto = produtos[int(id)]
-                total += produto.preco
-                print(f"Produto: {produto.nome} - R${produto.preco:.2f}")
-            print(f"Total: R${total:.2f}")
-            
+            try:
+                msg_recebida = json.loads(msg_recebida)
+                total = 0
+                for id in msg_recebida["id"]:
+                    produto = produtos[int(id)]
+                    total += produto.preco
+                    print(f"Produto: {produto.nome} - R${produto.preco:.2f}")
+                print(f"Total: R${total:.2f}")
+            except json.JSONDecodeError:
+                print(f"Erro ao decodificar a mensagem do cliente {cliente_send.cliente_addrs}.")
 
     def handle_client(self, cliente_send: User, name_send):
         while True:

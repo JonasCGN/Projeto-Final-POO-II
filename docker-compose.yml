@@ -1,7 +1,6 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: postgres_container
     restart: always
     environment:
       POSTGRES_USER: root
@@ -12,10 +11,9 @@ services:
 
   redis:
     image: redis:latest
-    container_name: redis_container
     restart: always
     ports:
-      - "6380:6380"
+      - "6379:6379"
     volumes:
       - redis_data:/data
 
@@ -23,7 +21,6 @@ services:
     build:
       context: ./worker
       dockerfile: Dockerfile
-    container_name: worker_container
     depends_on:
       - postgres
       - redis
@@ -37,7 +34,6 @@ services:
     
   script_redis:
     build: ./script_redis
-    container_name: script_redis_container
     depends_on:
       - redis
     environment:

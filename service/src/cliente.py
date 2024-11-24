@@ -40,8 +40,8 @@ class Cliente:
     def enviar_pedido(self, produtos):
         pedido = {
             "id": produtos,
-            "data": time.strftime(),
-            "hora": time.strftime()
+            "data": time.strftime("%Y-%m-%d"),
+            "hora": time.strftime("%H:%M:%S")
         }
         
         if len(pedido) != 0:

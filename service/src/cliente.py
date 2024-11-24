@@ -69,9 +69,7 @@ class Cliente:
                         "id": id_produtos,
                     }
                     
-                    pedido = json.dumps(pedido)
-                    print(pedido)
-                    self.tcp_connection.send(bytes(str(pedido), "utf-8"))
+                    self.enviar_pedido(pedido)
                     break
             elif not mensagem.isdigit():
                     print("Insira um id válido.")
@@ -112,7 +110,7 @@ class Cliente:
                 self.close_connection()
                 break
             elif option == "1":
-                self.enviar_pedido()
+                self.menu_enviar_pedido()
             elif option == "2":
                 self.tcp_connection.send(bytes("LISTAR", "utf-8"))
                 self.escutar_resposta()

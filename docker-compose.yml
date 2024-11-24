@@ -8,14 +8,14 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: database-postgres
     ports:
-      - "5410:5432"
+      - "5432:5432"
 
   redis:
     image: redis:latest
     container_name: redis_container
     restart: always
     ports:
-      - "6380:6379"
+      - "6380:6380"
     volumes:
       - redis_data:/data
 

@@ -1,11 +1,13 @@
 import redis
+import os
 
 
 class DB_Redis:
 
     def __init__(self):
+        redis_host = os.getenv('REDIS_HOST', 'localhost')
         self.redis_client = redis.Redis(
-            host='redis', port=6379, decode_responses=True)
+            host=redis_host, port=6379, decode_responses=True)
         self.set_initial_values()
 
     def set_initial_values(self):

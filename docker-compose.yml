@@ -24,7 +24,11 @@ services:
     depends_on:
       - postgres
       - redis
-
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2GB"
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
@@ -36,6 +40,11 @@ services:
     build: ./script_redis
     depends_on:
       - redis
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2GB"
     environment:
       REDIS_HOST: redis
 

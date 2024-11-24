@@ -39,14 +39,13 @@ services:
   script_redis:
     build: ./script_redis
     depends_on:
+      - postgres
       - redis
     deploy:
       resources:
         limits:
           cpus: "2"
           memory: "2GB"
-    environment:
-      REDIS_HOST: redis
 
 volumes:
   postgres_data:

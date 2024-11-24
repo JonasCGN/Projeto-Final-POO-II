@@ -1,5 +1,6 @@
 import random
 import time
+import json
 from src.produtos_mock import produtos
 
 
@@ -22,4 +23,5 @@ class DicRequest:
         }
 
     def string_pedido(self, pedido):
-        return f"Pedido: {pedido['pedidos']} - Data: {pedido['data']} - Hora: {pedido['hora']}"
+        pedido_json = json.dumps(pedido)
+        return pedido_json

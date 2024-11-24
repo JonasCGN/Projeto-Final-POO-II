@@ -1,6 +1,7 @@
 import socket
 import sys
 import json
+import time
 
 SERVER_POST = 9000
 BUFFER = 1024
@@ -11,6 +12,7 @@ class Cliente:
     def __init__(self, name = '', tcp_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)):
         self.tcp_connection = tcp_connection
         self.name = name
+      
         
     def __call__(self):
         try:
@@ -37,7 +39,9 @@ class Cliente:
         
     def enviar_pedido(self, produtos):
         pedido = {
-            "id": produtos
+            "id": produtos,
+            "data": time.strftime(),
+            "hora": time.strftime()
         }
         
         if len(pedido) != 0:
@@ -53,6 +57,7 @@ class Cliente:
         while True:
             mensagem = input(f"(0 - Finalizar Pedido), id do Produto {count}: ")
             
+            
             if mensagem == "":
                 print("Insira o id do produto que deseja comprar.")
             elif mensagem == "0":
@@ -61,7 +66,7 @@ class Cliente:
                         break
                     
                     pedido = {
-                        "id": id_produtos
+                        "id": id_produtos,
                     }
                     
                     pedido = json.dumps(pedido)

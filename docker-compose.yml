@@ -18,6 +18,8 @@ services:
       - "6380:6379"
     volumes:
       - redis_data:/data
+    
+    
 
   worker:
     build:
@@ -36,12 +38,13 @@ services:
       REDIS_HOST: redis
     
   script_redis:
-    build: ./script_redis
-    container_name: script_redis_container
+    build:
+      context: ./script_redis
     depends_on:
       - redis
-    environment:
-      REDIS_HOST: redis
+    volumes:
+      - ./script_redis:/app
+    command: python app.py
 
 volumes:
   postgres_data:

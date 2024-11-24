@@ -1,21 +1,17 @@
-# Base image com Python
-FROM python:3.10
+# Use a imagem base do Python
+FROM python:3.9-slim
 
-# Instala o htop
-RUN apt-get update && apt-get install -y htop && apt-get clean
-
-# Configura o diretório de trabalho
+# Define o diretório de trabalho no contêiner
 WORKDIR /app
 
-# Copia o arquivo requirements.txt para o contêiner
-# COPY requirements.txt .
+# Copia o arquivo de dependências para o contêiner
+COPY requirements.txt /app/requirements.txt
 
-# Instala as dependências
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# Instala as dependências do Python
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
-# Copia o código do worker para o contêiner
-# COPY worker.py .
+# Copia o restante dos arquivos
+COPY . .
 
-# Comando padrão para executar o worker
-# CMD ["python", "worker.py"]
+# Define o comando padrão para execução
+CMD ["python", "app.py"]

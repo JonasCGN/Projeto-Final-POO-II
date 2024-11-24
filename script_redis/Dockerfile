@@ -12,7 +12,7 @@ WORKDIR /app
 
 # Instala as dependências
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia o código do worker para o contêiner
 # COPY worker.py .

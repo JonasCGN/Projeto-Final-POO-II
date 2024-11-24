@@ -38,7 +38,6 @@ class GerenciarProdutos:
 
     def comprar_produto(self, nome: str, qtd: int) -> float:
         produto = self.produtos[nome]
-        quantidade = self.produtos[quantidade]
         return produto.preco * qtd
 
     def dump(self):

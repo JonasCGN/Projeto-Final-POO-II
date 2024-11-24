@@ -5,6 +5,7 @@ from src.cliente import Cliente
 BUFFER = 1024
 
 class TestCliente:
+  
   @pytest.fixture
   def cliente(self):
     cliente = Cliente("test_user", Mock())

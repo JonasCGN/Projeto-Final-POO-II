@@ -20,7 +20,9 @@ services:
       - redis_data:/data
 
   worker:
-    build: ./service
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
     container_name: worker_container
     depends_on:
       - postgres

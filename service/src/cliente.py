@@ -38,16 +38,22 @@ class Cliente:
         return self.escutar_resposta()
         
     def enviar_pedido(self, produtos):
+        if not produtos:
+            print("não chegou o pedido aqui")
+            return None
         pedido = {
             "id": produtos,
-            "data": time.strftime(),
-            "hora": time.strftime()
+            "data": time.strftime("%Y-%m-%d"),
+            "hora": time.strftime("%H:%M:%S")
         }
         
-        if len(pedido) != 0:
-            pedido = json.dumps(pedido)
-            self.tcp_connection.send(bytes(str(pedido), "utf-8"))
-
+        try: 
+            pedido_json = json.dumps(pedido)
+            self.tcp_connection.send(pedido_json.encode("utf-8"))
+            print("Pedido enviado com sucesso")
+        except Exception as e: 
+            print("Erro ao enviar pedido")
+            return None
         return pedido
     
     def menu_enviar_pedido(self):
@@ -57,33 +63,45 @@ class Cliente:
         while True:
             mensagem = input(f"(0 - Finalizar Pedido), id do Produto {count}: ")
             
-            
-            if mensagem == "":
-                print("Insira o id do produto que deseja comprar.")
-            elif mensagem == "0":
-                    if count == 1:
-                        print("Comanda inválido, reiniciando pedido.")
-                        break
-                    
-                    pedido = {
-                        "id": id_produtos,
-                    }
-                    
-                    pedido = json.dumps(pedido)
-                    print(pedido)
-                    self.tcp_connection.send(bytes(str(pedido), "utf-8"))
+            #validar entrada 
+            if not mensagem: 
+               print("insira o id do produto que deseja comprar")
+               continue
+            if mensagem =="0": 
+                if count ==1:
+                    print("Pedido invalido. Nenhum produto add")
+                    return None
+                else: 
+                    print("finalizando pedido hehhe")
                     break
-            elif not mensagem.isdigit():
-                    print("Insira um id válido.")
-            else:
-                self.tcp_connection.send(bytes("QTD_PRODUTOS", "utf-8"))
-                resp = int(self.tcp_connection.recv(BUFFER).decode())
+            if not mensagem.isdigit(): 
+                print("insira um id valido(numero)")
+                continue
+            # ver o numero de produtos que tem 
+            try:
+                self.tcp_connection.send(b"QTD_PRODUTOS")
+                resposta = self.tcp_connection.recv(self.buffer_size).decode("utf-8")
                 
-                if int(mensagem) > resp or int(mensagem) < 1:
-                    print("Insira um id válido.")
-                else:
-                    count += 1
-                    id_produtos.append(mensagem)
+                if not resposta.isdigit(): 
+                    print("erro ao obter a quant de produtos")
+                    continue
+                
+                qtd_produtos = int(resposta)
+                produto_id = int(mensagem)
+                
+                if produto_id < 1 or produto_id > qtd_produtos:
+                        print(f"Insira um ID válido (1 a {qtd_produtos}).")
+                        continue
+                #add produto ao pedido 
+                id_produtos.append(produto_id)
+                print(f"Produto {produto_id} adicionado ao pedido")
+                count += 1 
+            except Exception as e: 
+                print(f"erro na comunicação com o server: {e}")
+                return None
+        return self.enviar_pedido(id_produtos)
+            
+            
     
     def escutar_resposta(self):
         try:
@@ -112,7 +130,7 @@ class Cliente:
                 self.close_connection()
                 break
             elif option == "1":
-                self.enviar_pedido()
+                self.menu_enviar_pedido()
             elif option == "2":
                 self.tcp_connection.send(bytes("LISTAR", "utf-8"))
                 self.escutar_resposta()

@@ -21,7 +21,7 @@ services:
 
   worker:
     build:
-      context: ./service/
+      context: ./worker
       dockerfile: Dockerfile
     container_name: worker_container
     depends_on:
@@ -33,6 +33,14 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: database-postgres
       POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+    
+  script_redis:
+    build: ./script_redis
+    container_name: script_redis_container
+    depends_on:
+      - redis
+    environment:
       REDIS_HOST: redis
 
 volumes:

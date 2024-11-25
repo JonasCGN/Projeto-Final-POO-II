@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV HOST_TO_REDIS=redis
 
 # Comando padrão para executar o worker
-CMD ["python", "main.py"]
+# CMD ["python", "main.py"]

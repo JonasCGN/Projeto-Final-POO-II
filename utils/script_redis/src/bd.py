@@ -12,7 +12,6 @@ class DB_Redis:
         self.redis_client = redis.Redis(
             host=redis_host, port=6379, decode_responses=True)
         print("Conexão estabelecida com sucesso!")
-
         self.set_initial_values()
     
     def set_initial_values(self):
@@ -47,6 +46,9 @@ class DB_Redis:
     def insert(self, key, value):
         self.redis_client.set(key, value)
 
+    def remove(self, key):
+        self.redis_client.delete(key)
+    
     def increment(self, key):
         self.redis_client.incr(key)
 

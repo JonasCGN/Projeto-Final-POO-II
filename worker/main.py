@@ -7,34 +7,32 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from utils.worker.src.bd import DB_POSTGRES,Pedido
 from utils.script_redis.src.bd import DB_Redis
 
-# from src.dic_request import DicRequest
-
 qtd_requests = 1_000_000
 
 if __name__ == '__main__':
     db_postgress = DB_POSTGRES()
+    db_redis = DB_Redis()
     
-    # db_redis = DB_Redis()
-    # print(int(db_redis.get("qtd_inseridos")))
+    i = int(db_redis.get("qtd_removidos"))
     
-    # dic = DicRequest()
-
-    
+    # for i in range(10):
+    #     print(db_redis.get(f"{i.dumps()}"))
     if(db_postgress.test_connection()):
         db_postgress.database_init()
         
-        print(db_postgress.get_all())
-        
-        # pedido = Pedido(
-        #     pedidos = [1,2,3,4,5],
-        #     data = "2021-10-10",
-        #     hora = "10:10:10"
-        # )
-        
-        # db.insert(pedido)
-        
-        
-        
+        print((db_postgress.get_all()))
+        while True:
+            # quantidade = int(db_redis.get("qtd_inseridos"))
+            pedido = db_redis.get(f"{i}")
+
+            if db_postgress.insert(pedido):
+                db_redis.increment("qtd_removidos")
+                db_redis.remove(f"{i}")
+                i += 1
+            else:
+                print(f"Não foi possível inserir o pedido {i}")
+    else:
+        print("Não foi possível conectar ao banco de dados")
         # db.set_initial_values()
     # for _ in range(qtd_requests):
     #     db.insert(db.get("qtd_inseridos"), dic.string_pedido(dic.criar_pedido()))

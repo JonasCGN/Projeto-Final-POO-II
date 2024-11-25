@@ -66,20 +66,28 @@ class DB_POSTGRES:
         
         return retorno
     
-    def insert(self, pedido: Pedido):
-        executar = self.post_client.cursor()
-        
-        executar.execute("""
-                INSERT INTO gerencia_pedidos (pedidos) 
-                VALUES (%s);
-            """, [pedido.dump()])
-        
-        self.commit()
+    def insert(self, pedido):
+        retorno = False
+        try:
+            
+            executar = self.post_client.cursor()
+            
+            executar.execute("""
+                    INSERT INTO gerencia_pedidos (pedidos) 
+                    VALUES (%s);
+                """, [pedido])
+            
+            self.commit()
 
-        print("Dados inseridos com sucesso!")
-        
-        if executar:
-            executar.close()
+            # print("Dados inseridos com sucesso!")
+            retorno = True
+        except Exception as e:
+            print(f"Erro ao inserir dados: {e}")
+        finally:
+            if executar:
+                executar.close()
+                
+        return retorno
 
     def increment(self, key):
         self.post_client.incr(key)

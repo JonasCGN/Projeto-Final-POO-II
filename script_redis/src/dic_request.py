@@ -2,7 +2,7 @@ import random
 import time
 import json
 
-from utils.script_redis.src.produtos_mock import produtos
+from src.produto import produtos
 
 class DicRequest:
 

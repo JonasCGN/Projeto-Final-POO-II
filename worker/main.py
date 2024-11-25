@@ -1,25 +1,22 @@
 import sys
 import os
 
-# Adicione o diretório do pacote ao sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-
-from utils.worker.src.bd import DB_POSTGRES,Pedido
-from utils.script_redis.src.bd import DB_Redis
+from src.bd_postgres import DB_POSTGRES
+from src.bd_redis import DB_Redis
 
 qtd_requests = 1_000_000
 
 if __name__ == '__main__':
     db_postgress = DB_POSTGRES()
     db_redis = DB_Redis()
-    
+
     i = int(db_redis.get("qtd_removidos"))
-    
+
     # for i in range(10):
     #     print(db_redis.get(f"{i.dumps()}"))
-    if(db_postgress.test_connection()):
+    if (db_postgress.test_connection()):
         db_postgress.database_init()
-        
+
         print((db_postgress.get_all()))
         while True:
             # quantidade = int(db_redis.get("qtd_inseridos"))

@@ -9,7 +9,7 @@ import os
 # Adicione o diretório do pacote ao sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-from utils.script_redis.src.bd import DB_Redis
+from script_redis.src.bd import DB_Redis
 
 
 class TestDBRedis(unittest.TestCase):

@@ -29,8 +29,6 @@ services:
         limits:
           cpus: "2"
           memory: "2GB"
-    environment:
-      REDIS_HOST: redis
 
   script_redis:
     build: ./script_redis

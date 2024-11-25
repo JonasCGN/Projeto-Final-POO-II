@@ -34,20 +34,6 @@ class DB_POSTGRES:
             
         self.post_client.commit()
     
-    def set_initial_values(self):
-        executar = self.post_client.cursor()
-        
-        self.qtd_removidos = self.get('qtd_removidos')
-        self.qtd_inseridos = self.get('qtd_inseridos')
-
-        if self.qtd_removidos is None:
-            self.insert('qtd_removidos', 0)
-
-        if self.qtd_inseridos is None:
-            self.insert('qtd_inseridos', 0)
-
-        self.commit()
-    
     def test_connection(self):
         retorno = False
         try:
@@ -88,17 +74,6 @@ class DB_POSTGRES:
                 executar.close()
                 
         return retorno
-
-    def increment(self, key):
-        self.post_client.incr(key)
-
-    def decrement(self, key):
-        self.post_client.decr(key)
-
-    def get(self,key):
-        executar = self.post_client.cursor()
-        executar.execute("SELECT * FROM gerencia_pedidos;")
-        return executar.fetchall()
 
     def get_all(self):
         try:

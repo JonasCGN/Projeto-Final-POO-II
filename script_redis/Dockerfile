@@ -14,5 +14,8 @@ COPY . .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Define a variável de ambiente
+ENV HOST_TO_REDIS=redis
+
 # Comando padrão para executar o worker
 CMD ["python", "main.py"]

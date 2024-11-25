@@ -24,16 +24,24 @@ services:
     depends_on:
       - postgres
       - redis
-
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2GB"
     environment:
       REDIS_HOST: redis
 
   script_redis:
     build: ./script_redis
     depends_on:
+      - postgres
       - redis
-    environment:
-      REDIS_HOST: redis
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2GB"
 
 volumes:
   postgres_data:

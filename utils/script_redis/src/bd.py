@@ -1,13 +1,12 @@
 import redis
 
-
 class DB_Redis:
 
     def __init__(self):
         self.redis_client = redis.Redis(
             host='redis', port=6379, decode_responses=True)
         self.set_initial_values()
-
+    
     def set_initial_values(self):
         self.qtd_removidos = self.get('qtd_removidos')
         self.qtd_inseridos = self.get('qtd_inseridos')

@@ -12,7 +12,7 @@ COPY . .
 
 # Instala as dependências
 RUN pip install --upgrade pip
-# RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Comando padrão para executar o worker
 CMD ["python", "main.py"]

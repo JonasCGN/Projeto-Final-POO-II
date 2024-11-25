@@ -26,10 +26,6 @@ services:
       - redis
 
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: database-postgres
-      POSTGRES_HOST: postgres
       REDIS_HOST: redis
 
   script_redis:

@@ -16,12 +16,18 @@ COPY . .
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Copia o restante dos arquivos
 COPY . .
 
 # Define o comando padrão para execução
 CMD ["python", "app.py"]
 =======
+=======
+# Define a variável de ambiente
+ENV HOST_TO_REDIS=redis
+
+>>>>>>> origin/dev_KauaHen
 # Comando padrão para executar o worker
 CMD ["python", "main.py"]
 >>>>>>> origin/satiro

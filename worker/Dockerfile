@@ -8,18 +8,26 @@ RUN apt-get update && apt-get install -y htop && apt-get clean
 WORKDIR /app
 
 # Copia o arquivo requirements.txt para o contêiner
-# COPY requirements.txt .
+COPY requirements.txt .
 
 # Instala as dependências
 RUN pip install --upgrade pip
+<<<<<<< HEAD
 <<<<<<< HEAD
 #RUN pip install --no-cache-dir -r requirements.txt
 =======
 # RUN pip install --no-cache-dir -r requirements.txt
 >>>>>>> origin/satiro
+=======
+RUN pip install --no-cache-dir -r requirements.txt
+>>>>>>> origin/dev_KauaHen
 
 # Copia o código do worker para o contêiner
-# COPY worker.py .
+COPY . .
+
+ENV HOST_TO_REDIS=redis
+ENV HOST_TO_POSTGRES=postgres
+
 
 # Comando padrão para executar o worker
-# CMD ["python", "worker.py"]
+CMD ["python", "main.py"]

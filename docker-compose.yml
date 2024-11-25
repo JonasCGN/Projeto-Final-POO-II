@@ -1,21 +1,19 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: postgres_container
     restart: always
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: database-postgres
     ports:
-      - "5410:5432"
+      - "5432:5432"
 
   redis:
     image: redis:latest
-    container_name: redis_container
     restart: always
     ports:
-      - "6380:6379"
+      - "6379:6379"
     volumes:
       - redis_data:/data
     
@@ -25,7 +23,6 @@ services:
     build:
       context: ./worker
       dockerfile: Dockerfile
-    container_name: worker_container
     depends_on:
       - postgres
       - redis
@@ -38,8 +35,12 @@ services:
       REDIS_HOST: redis
     
   script_redis:
+<<<<<<< HEAD
     build:
       context: ./script_redis
+=======
+    build: ./script_redis
+>>>>>>> origin/satiro
     depends_on:
       - redis
     volumes:

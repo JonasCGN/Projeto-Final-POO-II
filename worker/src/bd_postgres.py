@@ -4,6 +4,7 @@ import os
 import json
 from datetime import datetime
 
+
 class DB_POSTGRES:
 
     def __init__(self):

@@ -1,9 +1,10 @@
 import json
 from bd_postgres import DB_POSTGRES
 import time
+from produto import Produto, GerenciarProdutos
 
-def inserir_pedido():
-        #listar produtos add ai fica a duvida onde estão esse produtos 
+
+def inserir_pedido():         
         ids = input("Insira os IDs dos pedidos: ")
         pedidos = json.loads(ids)
         data = time.strftime("%Y-%m-%d")
@@ -20,6 +21,7 @@ def inserir_pedido():
 def menu(): 
     db = DB_POSTGRES()
     
+    
     while True:
         print("\n----- MENU -----")
         print("1. Inserir Pedido")
@@ -29,10 +31,16 @@ def menu():
         opcao = input("Escolha uma opcao")
         
         if opcao == '1': 
+            gerenciador = GerenciarProdutos()
+            produtos = gerenciador.listar_produtos()
+            
+            for produto in produtos:
+                print(produto)
+                
             pedido = inserir_pedido()
             pedido_json = json.dumps(pedido)
             
-            if db.insert(pedido): 
+            if db.insert(pedido_json): 
                 print("Peido inserido com suscesso!")
             else: 
                 print("erro ao inserir no banco de dados")

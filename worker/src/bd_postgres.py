@@ -78,11 +78,9 @@ class DB_POSTGRES:
         try:
 
             executar = self.post_client.cursor()
-            
             pedido = json.loads(pedido)
+            
             data_datetime = datetime.strptime(pedido['data'], '%Y-%m:%d').date()
-            print(data_datetime)
-            # Converter para timestamp
             
             executar.execute("""
                     INSERT INTO gerencia_pedidos (pedidos,data, hora) 

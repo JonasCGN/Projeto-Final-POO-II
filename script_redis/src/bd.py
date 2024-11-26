@@ -4,7 +4,6 @@ import os
 
 import redis.exceptions
 
-
 class DB_Redis:
 
     def __init__(self):

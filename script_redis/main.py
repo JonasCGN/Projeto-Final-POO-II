@@ -4,7 +4,7 @@ import os
 from src.bd import DB_Redis
 from src.dic_request import DicRequest
 
-qtd_requests = 1_000_000
+qtd_requests = 100
 
 if __name__ == '__main__':
     db = DB_Redis()

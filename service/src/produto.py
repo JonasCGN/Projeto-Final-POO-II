@@ -75,7 +75,6 @@ class Produto:
         O método  __str__ é usado para definir a representação em forma de string de uma instância da classe. Quando o objeto é convertido em uma string (por exemplo, com print), este método é chamado."""
         return f"{self.nome} - R${self.preco:.2f}"
 
-
 class GerenciarProdutos:
     """
     Classe para gerenciar produtos em um estoque. Permite adicionar, listar, comprar, 
@@ -161,7 +160,6 @@ class GerenciarProdutos:
             bool: Retorna True se o produto for encontrado; caso contrário, False.
         """
         return nome in self.produtos
-
 
 produtos = {
     1: Produto("Coca-Cola", 5.00, 6),

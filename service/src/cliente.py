@@ -122,8 +122,9 @@ class Cliente:
         if not produtos:
             print("não chegou o pedido aqui")
             return None
+        ids = json.loads(produtos)
         pedido = {
-            "id": produtos,
+            "id": ids,
             "data": time.strftime("%Y-%m-%d"),
             "hora": time.strftime("%H:%M:%S")
         }
@@ -136,6 +137,7 @@ class Cliente:
             print("Erro ao enviar pedido")
             return None
         return pedido
+    
     
     def menu_enviar_pedido(self):
         """

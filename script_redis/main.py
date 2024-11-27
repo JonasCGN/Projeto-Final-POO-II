@@ -1,3 +1,6 @@
+import sys
+import os
+
 from src.bd import DB_Redis
 from src.dic_request import DicRequest
 

@@ -13,7 +13,7 @@ class DB_Redis:
             host=redis_host, port=6379, decode_responses=True)
         print("Conexão estabelecida com sucesso!")
         self.set_initial_values()
-
+    
     def set_initial_values(self):
         while True:
             try:
@@ -29,12 +29,12 @@ class DB_Redis:
 
                 print("Valores iniciais carregados com sucesso!")
                 break
-            except redis.BusyLoadingError:
-                print("Aguarde, o Redis está carregando os dados...")
-                sleep(2)
             except redis.ConnectionError:
                 print("Conexão com o Redis não estabelecida.")
                 break
+            except redis.BusyLoadingError:
+                print("Aguarde, o Redis está carregando os dados...")
+                sleep(2)
 
     def test_connection(self):
         try:
@@ -48,7 +48,7 @@ class DB_Redis:
 
     def remove(self, key):
         self.redis_client.delete(key)
-
+    
     def increment(self, key):
         self.redis_client.incr(key)
 

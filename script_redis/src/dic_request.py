@@ -1,8 +1,8 @@
 import random
 import time
 import json
-from src.produtos_mock import produtos
 
+from src.produto import produtos
 
 class DicRequest:
 

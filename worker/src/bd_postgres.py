@@ -39,7 +39,7 @@ class DB_POSTGRES:
             if executar:
                 executar.close()
 
-        self.post_client.commit()
+        self.commit()
 
     def test_connection(self):
         retorno = False
@@ -60,19 +60,6 @@ class DB_POSTGRES:
         return retorno
 
     def insert(self, pedido:str):
-        """
-            Insere um pedido no banco de dados
-            \n
-            Args:
-                pedido (str): Pedido em formato JSON
-            \n
-            Formato do pedido:
-            {
-                "pedidos": [1, 2, 3],
-                "data": "2021-08-15",
-                "hora": "15:00:00"
-            }
-        """
         retorno = False
         try:
 

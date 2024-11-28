@@ -4,6 +4,7 @@ import os
 import json
 from datetime import datetime
 
+
 class DB_POSTGRES:
 
     def __init__(self):
@@ -64,17 +65,23 @@ class DB_POSTGRES:
         try:
 
             executar = self.post_client.cursor()
-            
             pedido = json.loads(pedido)
-            data_datetime = datetime.strptime(pedido['data'], '%Y-%m:%d').date()
-            print(data_datetime)
-            # Converter para timestamp
             
-            executar.execute("""
-                    INSERT INTO gerencia_pedidos (pedidos,data, hora) 
-                    VALUES (%s, %s, %s);
-                """, [pedido['pedidos'], data_datetime, pedido['hora']])
+            data_datetime = datetime.strptime(pedido['data'], '%Y-%m:%d').date()
+            
+            query = """
+                INSERT INTO gerencia_pedidos (pedidos, data, hora) 
+                VALUES (%s, %s, %s)
+                RETURNING id;
+            """
+            valores = [pedido['pedidos'], data_datetime, pedido['hora']]
 
+            # Executa o comando e captura o retorno
+            executar.execute(query, valores)
+            id_gerado = executar.fetchone()[0]
+
+            print("ID gerado:", id_gerado)
+            
             self.commit()
 
             retorno = True

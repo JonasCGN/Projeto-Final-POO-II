@@ -13,7 +13,6 @@
 from time import sleep
 import redis
 import os
-
 import redis.exceptions
 
 class DB_Redis:

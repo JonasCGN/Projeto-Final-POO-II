@@ -89,9 +89,9 @@ def menu():
             id_pedido = int(input("Digite o id do pedido que deseja buscar "))
             pedido = db.get(id_pedido)
             if pedido:
-                print(f" pedido encontrado:", pedido[0], pedido[1], pedido[2], pedido[3])
+                print(f"Pedido encontrado:", pedido[0], pedido[1], pedido[2], pedido[3])
             else:
-                print("Pedido encontrado ")
+                print("Pedido nao encontrado ")
                 
         elif opcao =='3':
             pedidos = db.get_all() 

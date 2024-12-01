@@ -25,5 +25,7 @@ if __name__ == '__main__':
 
     db.test_connection()
     for _ in range(qtd_requests):
-        db.insert(db.get("qtd_inseridos"), dic.string_pedido(dic.criar_pedido()))
+        pedido_string = dic.string_pedido(dic.criar_pedido())
+        print(pedido_string)
+        db.insert(db.get("qtd_inseridos"), pedido_string)
         db.increment("qtd_inseridos")

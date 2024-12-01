@@ -1,3 +1,26 @@
+"""
+Script: test_servidor.py
+Descrição: Este script contém testes unitários para a classe Servidor, que gerencia conexões de clientes e o processamento de mensagens. O script utiliza o framework pytest para validar o funcionamento correto do servidor, como a inicialização, a conexão de usuários e o gerenciamento de mensagens.
+
+Funcionalidades:
+- Testa a inicialização e configuração do servidor, incluindo a verificação do endereço e do tipo de socket.
+- Testa o método 'is_suport_connect' para verificar se o servidor pode aceitar mais conexões.
+- Testa o método 'add_clientes' para garantir que os clientes sejam corretamente adicionados ao servidor.
+- Testa a conexão de um usuário, incluindo cenários de servidor cheio, nome de usuário em uso e conexão bem-sucedida.
+- Testa o processamento de mensagens enviadas pelos clientes, incluindo respostas corretas para comandos e a impressão de mensagens de erro para comandos inválidos.
+
+Requisitos:
+- Python 3.x
+- Módulos: pytest, unittest.mock
+
+Como usar:
+1. Execute os testes com o comando pytest no terminal.
+2. O script testará a classe Servidor e suas funcionalidades, incluindo o gerenciamento de conexões de clientes e o processamento de mensagens, verificando:
+   - A inicialização e configuração do servidor.
+   - A adição e remoção de clientes.
+   - O gerenciamento de conexões, incluindo limitações de usuários e verificação de nomes duplicados.
+   - O processamento de mensagens de clientes, como o comando 'QTD_PRODUTOS' e a compra de produtos.
+"""
 import pytest
 from unittest.mock import Mock, patch, MagicMock, call
 from socket import AF_INET, SOCK_STREAM

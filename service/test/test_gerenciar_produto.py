@@ -1,3 +1,21 @@
+"""
+Script: test_gerenciar_produto.py
+Descrição: Este script contém testes unitários para a classe GerenciarProdutos e seus métodos, como adicionar, comprar, procurar e listar produtos. Ele utiliza o framework pytest para validar as funcionalidades de gerenciamento de produtos.
+
+Funcionalidades:
+- Testa os métodos add_produto, comprar_produto, procurar_produto e listar_produtos da classe GerenciarProdutos.
+- Valida se a adição de produtos, compra, busca e listagem estão funcionando corretamente.
+- Utiliza a fixture do pytest para instanciar objetos da classe GerenciarProdutos.
+
+Requisitos:
+- Python 3.x
+- Módulos: pytest
+
+Como usar:
+1. Execute os testes com o comando `pytest` no terminal.
+2. Os testes verificarão se os métodos da classe GerenciarProdutos interagem corretamente com os produtos.
+"""
+
 from src.produto import Produto, GerenciarProdutos
 import pytest
 

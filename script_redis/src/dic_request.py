@@ -1,10 +1,29 @@
+"""
+Este módulo contém a classe DicRequest para manipulação e criação de pedidos.
+
+A classe oferece métodos para:
+- Selecionar produtos aleatoriamente.
+- Obter a hora e a data atual em formatos específicos.
+- Criar um dicionário representando um pedido com lista de produtos, data e hora.
+- Converter o dicionário do pedido para uma string no formato JSON.
+
+Importações:
+- random: Para seleção aleatória de produtos.
+- time: Para obter a hora e a data atuais.
+- json: Para conversão de dicionários para strings JSON.
+- produtos: Um dicionário de produtos importado do módulo `src.produto`.
+
+Classes:
+- DicRequest: Classe principal com métodos para manipulação de pedidos.
+"""
+
 import random
 import time
 import json
-
 from src.produto import produtos
 
 class DicRequest:
+    
     """
     Classe DicRequest para manipulação de pedidos.
     Métodos:

@@ -1,6 +1,32 @@
+"""
+Script: produtos.py
+Descrição: Este script define as classes Produto e GerenciarProdutos. A classe Produto é responsável por representar um produto no estoque, com informações como nome, preço e quantidade. A classe GerenciarProdutos é responsável por gerenciar o estoque de produtos, incluindo funcionalidades como adicionar, listar, comprar, salvar e carregar produtos.
+
+Funcionalidades:
+- Classe Produto:
+    - Inicializar um produto com nome, preço e quantidade.
+    - Converter a instância para JSON (dump) e carregar dados de JSON (load).
+    - Definir uma representação em string do produto.
+  
+- Classe GerenciarProdutos:
+    - Adicionar ou atualizar produtos no estoque.
+    - Listar todos os produtos.
+    - Realizar compras de produtos e calcular o valor total.
+    - Serializar o estoque para JSON e carregar os dados a partir de JSON.
+    - Procurar produtos pelo nome.
+
+Requisitos:
+- Python 3.x
+- Módulos padrão: json
+
+Como usar:
+1. Crie instâncias da classe Produto para representar os itens no estoque.
+2. Utilize a classe GerenciarProdutos para adicionar produtos ao estoque e gerenciar as operações.
+3. Use os métodos da classe GerenciarProdutos para listar produtos, realizar compras e salvar ou carregar os dados do estoque.
+4. A conversão para JSON pode ser útil para persistir o estado do estoque ou para comunicação com outros sistemas.
+"""
+
 import json
-
-
 class Produto:
     """
     classe:Produto

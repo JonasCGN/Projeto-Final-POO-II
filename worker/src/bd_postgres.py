@@ -1,3 +1,14 @@
+
+"""
+Este módulo gerencia a conexão com o banco de dados PostgreSQL e operações relacionadas a pedidos.
+Classes:
+    DB_POSTGRES: Classe responsável pela conexão com o PostgreSQL e gerenciamento de pedidos.
+
+Execução:
+    A classe DB_POSTGRES realiza a conexão com o banco de dados, inicializa a tabela de pedidos, insere novos pedidos,
+    consulta pedidos existentes e executa transações.
+"""
+
 import psycopg2
 from time import sleep
 import os

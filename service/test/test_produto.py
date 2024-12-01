@@ -1,3 +1,24 @@
+"""
+Script: test_produto.py
+Descrição: Este script contém testes unitários para a classe Produto. Ele valida a funcionalidade de inicialização do produto, a conversão para string e o carregamento de dados do produto.
+
+Funcionalidades:
+- Testa a inicialização de um objeto Produto, validando se os atributos 'nome' e 'preco' são configurados corretamente.
+- Testa o método __str__, que converte o produto para sua representação em string, no formato 'nome - R$preco'.
+- Testa o método 'load', que carrega dados de um dicionário para os atributos do produto.
+
+Requisitos:
+- Python 3.x
+- Módulos: pytest
+
+Como usar:
+1. Execute os testes com o comando pytest no terminal.
+2. Os testes verificarão se a classe Produto está funcionando conforme esperado, incluindo:
+   - Inicialização com valores de nome e preço.
+   - Representação correta em string.
+   - Carregamento de dados do produto a partir de um dicionário.
+"""
+
 import pytest
 from src.produto import Produto, GerenciarProdutos
 

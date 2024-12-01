@@ -1,3 +1,15 @@
+"""
+ Este módulo define a classe DB_Redis para interagir com um banco de dados Redis. 
+    A classe DB_Redis fornece métodos para:
+    - Inicializar a conexão com o Redis e carregar valores iniciais.
+    - Inserir, remover, incrementar e decrementar pares chave-valor no Redis.
+    - Testar a conexão com o Redis.
+    - Obter o valor de uma chave no Redis.
+    Classes:
+        DB_Redis: Classe para interagir com um banco de dados Redis.
+        redis.BusyLoadingError: Lançada quando o Redis está carregando dados.
+        redis.ConnectionError: Lançada quando a conexão com o Redis não pode ser estabelecida.
+"""
 from time import sleep
 import redis
 import os
@@ -5,6 +17,7 @@ import os
 import redis.exceptions
 
 class DB_Redis:
+   
     """
     Classe para interagir com um banco de dados Redis.
     Métodos:

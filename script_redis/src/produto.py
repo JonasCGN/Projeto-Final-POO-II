@@ -1,3 +1,11 @@
+"""
+Este módulo define a classe Produto e um dicionário de produtos predefinidos.
+
+A classe Produto permite representar produtos com nome, preço e quantidade disponíveis.
+
+O dicionário `produtos` armazena instâncias da classe Produto, associadas a identificadores únicos.
+"""
+
 import json
 
 class Produto:

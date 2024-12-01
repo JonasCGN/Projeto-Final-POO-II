@@ -1,3 +1,27 @@
+"""
+Script: cliente.py
+Descrição: Este script define a classe Cliente, responsável por estabelecer uma conexão TCP com um servidor, listar produtos disponíveis e enviar pedidos de compra.
+
+Funcionalidades:
+- Conectar ao servidor.
+- Listar produtos disponíveis.
+- Enviar pedidos de compra.
+- Interagir por meio de um menu.
+
+Requisitos:
+- Python 3.x
+- Módulos padrão: socket, json, sys, time
+
+Como usar:
+1. Inicie o script.
+2. Quando solicitado, insira seu nome de usuário.
+3. O menu de opções será exibido:
+   - 0: Sair e encerrar a conexão.
+   - 1: Enviar um pedido ao servidor.
+   - 2: Listar produtos disponíveis no servidor.
+4. Para enviar um pedido, insira os IDs dos produtos.
+5. Para sair, selecione a opção 0.
+"""
 import socket
 import sys
 import json

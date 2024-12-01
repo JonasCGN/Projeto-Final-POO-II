@@ -1,3 +1,12 @@
+"""
+Este módulo contém testes para a classe DB_Redis, utilizando a biblioteca unittest.
+
+Os testes verificam:
+- Conexão bem-sucedida ao banco de dados Redis.
+- Tratamento de falhas na conexão com o Redis.
+
+Mocks são utilizados para simular o comportamento da classe Redis e garantir testes isolados.
+"""
 import unittest
 import redis
 import sys

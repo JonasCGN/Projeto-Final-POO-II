@@ -1,3 +1,30 @@
+"""
+Script: servidor.py
+Descrição: Este script define a classe Servidor, responsável por gerenciar conexões de múltiplos clientes, processar mensagens e enviar respostas.
+
+Funcionalidades:
+- Aceitar conexões de clientes.
+- Manter um controle dos clientes conectados.
+- Listar produtos disponíveis.
+- Enviar quantidade de produtos.
+- Processar pedidos de compra em formato JSON e calcular o total.
+- Gerenciar desconexões e erros.
+
+Requisitos:
+- Python 3.x
+- Módulos: socket, threading, json
+
+Como usar:
+1. Inicie o script.
+2. O servidor começa a escutar na porta 9000.
+3. Os clientes podem:
+   - Enviar "LISTAR" para ver os produtos disponíveis.
+   - Enviar "QTD_PRODUTOS" para ver a quantidade de produtos.
+   - Enviar um pedido no formato JSON: {"id": [1, 2, 3]}.
+4. O servidor pode aceitar até 1000 clientes simultaneamente.
+5. Para desconectar, o cliente envia "<nome>, exit".
+"""
+
 import socket
 from threading import Thread
 import json

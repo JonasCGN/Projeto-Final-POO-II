@@ -1,5 +1,16 @@
-import json
+"""
+Este módulo contém duas classes para gerenciar produtos em um estoque: `Produto` e `GerenciarProdutos`.
 
+Classes:
+    Produto: Representa um produto com atributos como nome, preço e quantidade.
+    GerenciarProdutos: Gerencia um estoque de produtos, permitindo adicionar, listar, comprar e procurar produtos.
+
+Execução:
+    A classe `Produto` define os atributos do produto e métodos para manipular esses dados. 
+    A classe `GerenciarProdutos` gerencia uma lista de produtos, permitindo várias operações de estoque.
+"""
+
+import json
 
 class Produto:
     """
@@ -60,7 +71,8 @@ class Produto:
             "preco": self.preco,
             "quantidade": self.quantidade,
         })
-        """O método dump retorna  os dados de uma instância da classe em uma string JSON, facilitando a exportação ou manipulação dos dados em formato estruturado."""
+        
+    """O método dump retorna  os dados de uma instância da classe em uma string JSON, facilitando a exportação ou manipulação dos dados em formato estruturado."""
 
     def load(self, data: dict):
         

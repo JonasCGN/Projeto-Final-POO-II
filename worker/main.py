@@ -1,6 +1,3 @@
-from time import sleep
-from src.bd_postgres import DB_POSTGRES
-from src.bd_redis import DB_Redis
 
 """
 Este script é responsável por sincronizar dados entre um banco de dados PostgreSQL e um banco de dados Redis.
@@ -24,6 +21,10 @@ Variáveis:
 - db_redis: Instância da classe DB_Redis.
 - i: Contador de itens removidos, inicializado a partir do valor armazenado no Redis.
 """
+from time import sleep
+from src.bd_postgres import DB_POSTGRES
+from src.bd_redis import DB_Redis
+
 
 if __name__ == '__main__':
     db_postgress = DB_POSTGRES()

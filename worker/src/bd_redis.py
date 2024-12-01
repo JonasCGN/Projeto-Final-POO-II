@@ -1,3 +1,13 @@
+"""
+Este módulo gerencia a conexão com o banco de dados Redis e operações relacionadas a chaves e valores.
+Classes:
+    DB_Redis: Classe responsável pela conexão com o Redis e gerenciamento de chaves e valores.
+
+Execução:
+    A classe DB_Redis realiza a conexão com o Redis, carrega valores iniciais, e oferece métodos para inserir,
+    remover, incrementar, decrementar e obter valores de chaves no banco de dados Redis.
+"""
+
 from time import sleep
 import redis
 import os

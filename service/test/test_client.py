@@ -1,3 +1,20 @@
+"""
+Script: test_cliente.py
+Descrição: Este script contém testes unitários para a classe Cliente. Ele utiliza o framework pytest para validar os métodos da classe Cliente, garantindo que interajam corretamente com a conexão TCP e com a entrada do usuário.
+
+Funcionalidades:
+- Testa os métodos da classe Cliente: escutar_resposta, enviar_pedido, menu_enviar_pedido, menu, e close_connection.
+- Utiliza Mock e Patch para simular as interações com a conexão TCP e entradas do usuário.
+
+Requisitos:
+- Python 3.x
+- Módulos: pytest, unittest.mock
+
+Como usar:
+1. Execute os testes com o comando `pytest` no terminal.
+2. Os testes verificarão se os métodos interagem corretamente com a conexão TCP e com o console.
+"""
+
 import pytest
 from unittest.mock import Mock, patch, call
 from src.cliente import Cliente

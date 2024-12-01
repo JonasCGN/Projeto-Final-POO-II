@@ -1,3 +1,29 @@
+"""
+Este módulo gerencia pedidos de produtos utilizando um banco de dados PostgreSQL.
+
+Funções:
+    inserir_pedido: Solicita ao usuário a inserção de IDs de pedidos e retorna um dicionário com os pedidos, data e hora.
+    menu: Exibe um menu interativo para gerenciar pedidos de produtos. O menu permite:
+        1. Inserir um novo pedido.
+        2. Buscar um pedido existente pelo ID.
+        3. Listar todos os pedidos.
+        4. Sair do programa.
+
+Dependências:
+    - DB_POSTGRES: Classe responsável pela interação com o banco de dados PostgreSQL.
+    - GerenciarProdutos: Classe responsável por gerenciar os produtos disponíveis.
+    - Produto: Classe que representa um produto.
+    - json: Módulo utilizado para converter o pedido em formato JSON antes de inseri-lo no banco de dados.
+    - time: Módulo utilizado para formatar data e hora de inserção dos pedidos.
+
+Exceções:
+    - O programa exibe mensagens de erro apropriadas se ocorrerem problemas ao inserir ou buscar pedidos no banco de dados.
+    - Valida a entrada do usuário para garantir que uma opção válida seja selecionada.
+
+A execução do programa começa ao chamar a função `menu()`, que permanece em execução até que o usuário escolha a opção de sair.
+
+"""
+
 import json
 from src.bd_postgres import DB_POSTGRES
 import time

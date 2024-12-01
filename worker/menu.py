@@ -5,6 +5,16 @@ from src.produto import Produto, GerenciarProdutos
 
 
 def inserir_pedido():         
+        """
+        Solicita ao usuário a inserção dos IDs dos pedidos, formata a data e hora atuais,
+        e retorna um dicionário com os pedidos, data e hora.
+        Returns:
+            dict: Um dicionário contendo os pedidos, data e hora no seguinte formato:
+                {
+                    "pedidos": [list]: Lista de pedidos inseridos pelo usuário,
+                    "data": str: Data atual no formato "YYYY-%m:%d",
+                    "hora": str: Hora atual no formato "HH:%M:%S"
+        """
         ids = input("Insira os IDs dos pedidos: ")
         pedidos = [json.loads(ids)]
         data = time.strftime("%Y-%m:%d")
@@ -19,6 +29,28 @@ def inserir_pedido():
         return pedido_formatado
 
 def menu(): 
+    """
+    Exibe um menu interativo para gerenciar pedidos de produtos.
+    O menu permite ao usuário:
+    1. Inserir um novo pedido.
+    2. Buscar um pedido existente pelo ID.
+    3. Listar todos os pedidos.
+    4. Sair do programa.
+    Funções:
+    - Inserir Pedido: Lista os produtos disponíveis e permite ao usuário inserir um novo pedido no banco de dados.
+    - Buscar Pedido: Solicita o ID do pedido e exibe os detalhes do pedido correspondente, se encontrado.
+    - Listar Todos os Pedidos: Exibe uma lista de todos os pedidos armazenados no banco de dados.
+    - Sair: Encerra o programa.
+    O menu continua a ser exibido até que o usuário escolha a opção de sair.
+    Exceções:
+    - Exibe mensagens de erro apropriadas se ocorrerem problemas ao inserir ou buscar pedidos no banco de dados.
+    - Valida a entrada do usuário para garantir que uma opção válida seja selecionada.
+    Dependências:
+    - DB_POSTGRES: Classe responsável pela interação com o banco de dados PostgreSQL.
+    - GerenciarProdutos: Classe responsável por gerenciar os produtos disponíveis.
+    - Produto: Classe que representa um produto.
+    - json: Módulo utilizado para converter o pedido em formato JSON antes de inseri-lo no banco de dados.
+    """
     db = DB_POSTGRES()
     gerenciador = GerenciarProdutos()
     produtos = {

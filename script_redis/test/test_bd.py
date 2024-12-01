@@ -1,15 +1,11 @@
 import unittest
-from unittest.mock import patch, MagicMock
-
 import redis
-
 import sys
 import os
-
-# Adicione o diretório do pacote ao sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
-
+from unittest.mock import patch, MagicMock
 from script_redis.src.bd import DB_Redis
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
 
 class TestDBRedis(unittest.TestCase):

@@ -32,7 +32,10 @@ class DB_Redis:
         redis_host = os.getenv('HOST_TO_REDIS', 'localhost')
         print(f"Conectando ao Redis em {redis_host}...")
         self.redis_client = redis.Redis(
-            host=redis_host, port=6379, decode_responses=True)
+            host=redis_host, 
+            port=6379, 
+            decode_responses=True
+        )
         print("Conexão estabelecida com sucesso!")
         self.set_initial_values()
     

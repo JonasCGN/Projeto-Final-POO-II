@@ -9,7 +9,8 @@ Execução:
     consulta pedidos existentes e executa transações.
 """
 
-import psycopg2
+from typing import Union
+import psycopg2  # type: ignore
 from time import sleep
 import os
 import json
@@ -25,7 +26,8 @@ class DB_POSTGRES:
         database_init:
             Inicializa a tabela 'gerencia_pedidos' no banco de dados, se ela não existir.
         test_connection:
-            Testa a conexão com o banco de dados PostgreSQL e retorna True se a conexão for bem-sucedida, caso contrário, retorna False.
+            Testa a conexão com o banco de dados PostgreSQL e retorna True se a conexão for bem-sucedida, 
+            caso contrário, retorna False.
         insert:
             Insere um pedido no banco de dados.
                 pedido (str): Pedido em formato JSON.
@@ -37,7 +39,8 @@ class DB_POSTGRES:
         commit:
             Realiza o commit das transações pendentes no banco de dados.
    '''
-    def __init__(self):
+
+    def __init__(self) -> None:
         """
         Inicializa uma instância da classe e tenta conectar ao banco de dados PostgreSQL.
 
@@ -61,11 +64,12 @@ class DB_POSTGRES:
                 print(f"Conectado ao PostgreSQL em {post_host}...")
                 break
             except psycopg2.OperationalError:
-                print("Não foi possível conectar ao PostgreSQL. Tentando novamente em 2 segundos...")
+                print(
+                    "Não foi possível conectar ao PostgreSQL. Tentando novamente em 2 segundos...")
                 sleep(2)
                 continue
 
-    def database_init(self):
+    def database_init(self) -> None:
         """
         Inicializa a tabela 'gerencia_pedidos' no banco de dados PostgreSQL.
         A tabela 'gerencia_pedidos' possui as seguintes colunas:
@@ -75,13 +79,14 @@ class DB_POSTGRES:
         - hora: Hora do pedido que não pode ser nula.
         Em caso de sucesso, uma mensagem de confirmação será impressa.
         Em caso de falha, uma mensagem de erro será impressa com a descrição da exceção.
-        A conexão com o banco de dados é fechada no bloco 'finally' e a transação é confirmada após a execução do comando.
+        A conexão com o banco de dados é fechada no bloco 'finally' e a transação é confirmada após a execução do
+        comando.
         Raises:
             Exception: Se ocorrer um erro durante a criação da tabela.
         """
         try:
             executar = self.post_client.cursor()
-            
+
             executar.execute("""
                 CREATE TABLE IF NOT EXISTS gerencia_pedidos (
                     id SERIAL PRIMARY KEY,
@@ -100,7 +105,7 @@ class DB_POSTGRES:
 
         self.commit()
 
-    def test_connection(self):
+    def test_connection(self) -> bool:
         """
         Testa a conexão com o banco de dados PostgreSQL.
         Tenta criar um cursor e executar um comando SQL para obter a versão do PostgreSQL.
@@ -126,15 +131,14 @@ class DB_POSTGRES:
 
         return retorno
 
-    def insert(self, pedido:str):
+    def insert(self, pedido: str) -> bool:
         retorno = False
         try:
-
             executar = self.post_client.cursor()
             pedido = json.loads(pedido)
-            
+
             data_datetime = datetime.strptime(pedido['data'], '%Y-%m:%d').date()
-            
+
             query = """
                 INSERT INTO gerencia_pedidos (pedidos, data, hora) 
                 VALUES (%s, %s, %s)
@@ -142,12 +146,7 @@ class DB_POSTGRES:
             """
             valores = [pedido['pedidos'], data_datetime, pedido['hora']]
 
-            # Executa o comando e captura o retorno
             executar.execute(query, valores)
-            id_gerado = executar.fetchone()[0]
-
-            print("ID gerado:", id_gerado)
-            
             self.commit()
 
             retorno = True
@@ -160,7 +159,7 @@ class DB_POSTGRES:
 
         return retorno
 
-    def get(self,id:int):
+    def get(self, id: int) -> Union[tuple, None]:
         """
         Recupera um registro da tabela 'gerencia_pedidos' com base no ID fornecido.
         Args:
@@ -173,22 +172,22 @@ class DB_POSTGRES:
         try:
             executar = self.post_client.cursor()
             executar.execute("SELECT * FROM gerencia_pedidos WHERE id = %s;", [id])
-
             resultado = executar.fetchone()
-            
+
             return resultado
         except Exception as e:
             print(f"Erro ao consultar dados: {e}")
             return None
-    
-    def get_all(self):
+
+    def get_all(self) -> Union[list, None]:
         """
         Recupera todos os registros da tabela 'gerencia_pedidos' no banco de dados PostgreSQL.
         Retorna:
             list: Uma lista de tuplas contendo todos os registros da tabela 'gerencia_pedidos'.
             None: Se ocorrer um erro durante a consulta.
         Exceções:
-            Exception: Captura qualquer exceção que ocorra durante a execução da consulta SQL e imprime uma mensagem de erro.
+            Exception: Captura qualquer exceção que ocorra durante a execução da consulta SQL e imprime uma mensagem
+            de erro.
         """
         try:
             executar = self.post_client.cursor()
@@ -202,7 +201,7 @@ class DB_POSTGRES:
             print(f"Erro ao consultar dados: {e}")
             return None
 
-    def commit(self):
+    def commit(self) -> None:
         """
         Confirma as transações pendentes no banco de dados PostgreSQL.
 

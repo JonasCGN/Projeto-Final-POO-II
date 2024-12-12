@@ -4,88 +4,82 @@ Este módulo contém duas classes para gerenciar produtos em um estoque: `Produt
 Classes:
     Produto: Representa um produto com atributos como nome, preço e quantidade.
     GerenciarProdutos: Gerencia um estoque de produtos, permitindo adicionar, listar, comprar e procurar produtos.
-
-Execução:
-    A classe `Produto` define os atributos do produto e métodos para manipular esses dados. 
-    A classe `GerenciarProdutos` gerencia uma lista de produtos, permitindo várias operações de estoque.
 """
 
 import json
+from typing import List
+
 
 class Produto:
     """
     classe:Produto
     Metodo: __init__
-    o metodo __init__ é o construtor da classe Produto. ele é usado para inicializar uma nova instancia de um produto com as informações fornecidas.
+    o metodo __init__ é o construtor da classe Produto. ele é usado para inicializar uma nova instancia de um produto
+    com as informações fornecidas.
     """
-       
+
     def __init__(self, nome: str = None, preco: float = None, quantidade: int = None) -> None:
-        
         """Parametros
-    
+
         nome(str):para o nome do produto
         tipo esperado:str
         valor padrão:None
-        
+
         preco(float):para o preço do produto.
         tipo esperado:float
         valor padrão:None
-        
+
         quantidade(int):A quantidade de produto disponivel em estoque.
         tipo esperado:int
         valor padrão:None
-        
-        atributos criados: Os atributos criados são associados a instancia da classe de acordo com os argumentos fornecidos.
-        
+
+        atributos criados: Os atributos criados são associados a instancia da classe de acordo com os argumentos
+        fornecidos.
+
         self.nome:armazena o nome do produto
         self.preco:armazena o preço do produto.
         self.quantidade:armazena a quantidade do produto.
-    """
+        """
         self.nome = nome
         self.preco = preco
         self.quantidade = quantidade
-        
-   
-        
-        
 
-    def dump(self):
+    def dump(self) -> str:
         """Método: dump
         O método dump é usado para converter os dados de uma instância da classe Produto em uma representação JSON.
-        
+
         Parâmetros
         Este método não requer parâmetros adicionais além do padrão self, que representa a instância da classe.
 
         Retorno:str
-        
+
         Retorna uma string no formato JSON contendo os atributos da instância (nome, preco, quantidade).
-        
+
         Comportamento:
-        Usa a função json.dumps para criar uma string JSON a partir de um dicionário com os valores dos atributos da instância (self.nome, self.preco, self.quantidade)."""
-         
-         
+        Usa a função json.dumps para criar uma string JSON a partir de um dicionário com os valores dos atributos da
+        instância (self.nome, self.preco, self.quantidade)."""
+
         return json.dumps({
-           
-            
             "nome": self.nome,
             "preco": self.preco,
             "quantidade": self.quantidade,
         })
-        
-    """O método dump retorna  os dados de uma instância da classe em uma string JSON, facilitando a exportação ou manipulação dos dados em formato estruturado."""
 
-    def load(self, data: dict):
-        
+    """O método dump retorna  os dados de uma instância da classe em uma string JSON, facilitando a exportação ou
+    manipulação dos dados em formato estruturado."""
+
+    def load(self, data: dict) -> None:
         """O método load é usado para carregar os dados de um dicionário para os atributos de uma instância da classe"""
         self.nome = data["nome"]
         self.preco = data["preco"]
         self.quantidade = data["quantidade"]
-        
 
     def __str__(self) -> str:
         """Método: __str__
-        O método  __str__ é usado para definir a representação em forma de string de uma instância da classe. Quando o objeto é convertido em uma string (por exemplo, com print), este método é chamado."""
+        O método  __str__ é usado para definir a representação em forma de string de uma instância da classe. Quando o
+        objeto é convertido em uma string (por exemplo, com print), este método é chamado."""
         return f"{self.nome} - R${self.preco:.2f}"
+
 
 class GerenciarProdutos:
     """
@@ -96,13 +90,14 @@ class GerenciarProdutos:
         produtos (dict): Dicionário contendo os produtos. As chaves são os nomes dos 
         produtos e os valores são objetos da classe Produto.
     """
-    def __init__(self):
+
+    def __init__(self) -> None:
         """
         Inicializa o gerenciador de produtos com um dicionário vazio.
         """
         self.produtos = {}
 
-    def add_produto(self, produto: Produto, quantidade: int):
+    def add_produto(self, produto: Produto, quantidade: int) -> bool:
         """
         Adiciona um produto ao estoque ou atualiza a quantidade de um produto existente.
 
@@ -117,9 +112,11 @@ class GerenciarProdutos:
         self.produtos[produto.quantidade] = quantidade
         return True
 
-    def listar_produtos(self):
+    def listar_produtos(self) -> List[Produto]:
+        """
+        Retorna uma lista de todos os produtos no estoque.
+        """
         return [produto for produto in self.produtos.values()]
-    
 
     def comprar_produto(self, nome: str, qtd: int) -> float:
         """
@@ -135,7 +132,7 @@ class GerenciarProdutos:
         produto = self.produtos[nome]
         return produto.preco * qtd
 
-    def dump(self):
+    def dump(self) -> str:
         """
         Serializa o estoque de produtos para um formato JSON.
 
@@ -147,8 +144,7 @@ class GerenciarProdutos:
             data[key] = value.dump()
         return json.dumps(data)
 
-    def load(self, data: dict):
-        
+    def load(self, data: dict) -> None:
         """
         Carrega produtos a partir de um dicionário de dados em formato JSON.
 
@@ -161,7 +157,7 @@ class GerenciarProdutos:
             produto.load(json.loads(value))
             self.produtos[key] = produto
 
-    def procurar_produto(self, nome: str) -> Produto:
+    def procurar_produto(self, nome: str) -> List[Produto]:
         """
         Busca um produto pelo nome no estoque.
 

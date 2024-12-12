@@ -8,10 +8,6 @@ Funcionalidades:
 - Enviar pedidos de compra.
 - Interagir por meio de um menu.
 
-Requisitos:
-- Python 3.x
-- Módulos padrão: socket, json, sys, time
-
 Como usar:
 1. Inicie o script.
 2. Quando solicitado, insira seu nome de usuário.
@@ -31,18 +27,18 @@ SERVER_POST = 9000
 BUFFER = 1024
 ADDRESS = "127.0.0.1"
 
+
 class Cliente:
     """
     Classe que representa um cliente que interage com um servidor TCP.
-    
+
     Atributos:
         name (str): O nome do cliente, usado para identificá-lo.
         tcp_connection (socket.socket): A conexão TCP do cliente com o servidor.
         buffer_size (int): O tamanho do buffer de recepção de dados.
     """
-    
 
-    def __init__(self, name = '', tcp_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)):
+    def __init__(self, name='', tcp_connection=socket.socket(socket.AF_INET, socket.SOCK_STREAM)) -> None:
         """
         Construtor da classe Cliente.
 
@@ -50,22 +46,17 @@ class Cliente:
             name (str): O nome do cliente, usado para identificá-lo.
             tcp_connection (socket.socket): A conexão TCP do cliente com o servidor.
             buffer_size (int): O tamanho do buffer de recepção de dados.
-
-        Retorna:    
-            Nenhum.
-            
         """
         self.tcp_connection = tcp_connection
         self.name = name
-      
-        
+
     def __call__(self):
         """
          Método que inicia a conexão do cliente com o servidor e executa o menu de interação com o servidor.
 
          Parâmetros:
             Nenhum.
-        
+
         Retorna:
             Uma string com a resposta do servidor.
          """
@@ -86,9 +77,8 @@ class Cliente:
         except ConnectionError as error:
             print("Conexão encerrada\nErro:", error)
             sys.exit()
-   
 
-    def conectar(self, address,server_post):
+    def conectar(self, address, server_post):
         """
          Método que estabelece uma conexão com um servidor TCP.
 
@@ -102,7 +92,7 @@ class Cliente:
 
         Retorna:
             str: A resposta recebida do servidor após a conexão.
-        
+
         Comportamento:
             1. Estabelece uma conexão com o servidor especificado.
             2. Envia o nome do cliente para o servidor.
@@ -110,11 +100,10 @@ class Cliente:
 
 
         """
-        self.tcp_connection.connect((address,server_post))
+        self.tcp_connection.connect((address, server_post))
         self.tcp_connection.send(bytes(self.name, "utf-8"))
         return self.escutar_resposta()
-   
-        
+
     def enviar_pedido(self, produtos):
         """
             Método responsável por enviar um pedido ao servidor.
@@ -152,17 +141,16 @@ class Cliente:
             "data": time.strftime("%Y-%m-%d"),
             "hora": time.strftime("%H:%M:%S")
         }
-        
-        try: 
+
+        try:
             pedido_json = json.dumps(pedido)
             self.tcp_connection.send(pedido_json.encode("utf-8"))
             print("Pedido enviado com sucesso")
-        except Exception as e: 
+        except Exception as e:
             print("Erro ao enviar pedido")
             return None
         return pedido
-    
-    
+
     def menu_enviar_pedido(self):
         """
         Método responsável por executar o menu de envio de pedidos ao servidor.
@@ -178,7 +166,7 @@ class Cliente:
         Retorna:
             dict: Um dicionário contendo os dados do pedido caso produtos tenham sido adicionados.
             None: Retorna `None` caso o usuário não adicione nenhum produto ou em caso de erro.
-        
+
         Comportamento:
             1. Solicita IDs de produtos ao usuário, validando se as entradas são números.
             2. Comunica-se com o servidor para obter a quantidade total de produtos disponíveis.
@@ -194,49 +182,46 @@ class Cliente:
 
         while True:
             mensagem = input(f"(0 - Finalizar Pedido), id do Produto {count}: ")
-            
-            #validar entrada 
-            if not mensagem: 
-               print("insira o id do produto que deseja comprar")
-               continue
-            if mensagem =="0": 
-                if count ==1:
+
+            # validar entrada
+            if not mensagem:
+                print("insira o id do produto que deseja comprar")
+                continue
+            if mensagem == "0":
+                if count == 1:
                     print("Pedido invalido. Nenhum produto add")
                     return None
-                else: 
+                else:
                     print("finalizando pedido hehhe")
                     break
-            if not mensagem.isdigit(): 
+            if not mensagem.isdigit():
                 print("insira um id valido(numero)")
                 continue
-            # ver o numero de produtos que tem 
+            # ver o numero de produtos que tem
             try:
                 self.tcp_connection.send(b"QTD_PRODUTOS")
                 resposta = self.tcp_connection.recv(self.buffer_size).decode("utf-8")
-                
-                if not resposta.isdigit(): 
+
+                if not resposta.isdigit():
                     print("erro ao obter a quant de produtos")
                     continue
-                
+
                 qtd_produtos = int(resposta)
                 produto_id = int(mensagem)
-                
+
                 if produto_id < 1 or produto_id > qtd_produtos:
-                        print(f"Insira um ID válido (1 a {qtd_produtos}).")
-                        continue
-                #add produto ao pedido 
+                    print(f"Insira um ID válido (1 a {qtd_produtos}).")
+                    continue
+                # add produto ao pedido
                 id_produtos.append(produto_id)
                 print(f"Produto {produto_id} adicionado ao pedido")
-                count += 1 
-            except Exception as e: 
+                count += 1
+            except Exception as e:
                 print(f"erro na comunicação com o server: {e}")
                 return None
         return self.enviar_pedido(id_produtos)
-            
-            
-    
-    def escutar_resposta(self):
 
+    def escutar_resposta(self):
         """
         Método que escuta a resposta do servidor.
 
@@ -273,9 +258,9 @@ class Cliente:
                 print(msg_recebida)
         except (socket.timeout, OSError):
             pass
-        
+
         return msg_recebida
-    
+
     def close_connection(self):
         """
         Método que fecha a conexão do cliente com o servidor.
@@ -294,7 +279,6 @@ class Cliente:
             - É importante garantir que o método seja chamado quando o cliente não 
             precisar mais se comunicar com o servidor, para evitar conexões abertas desnecessárias.
             - Caso o envio da mensagem falhe, o fechamento da conexão ainda será realizado.
-        
         """
 
         self.tcp_connection.send(bytes(f"{self.name}, exit", "utf-8"))
@@ -329,7 +313,6 @@ class Cliente:
             cliente.menu()
         """
 
-
         while True:
             print("0 - Sair")
             print("1 - Enviar pedido")
@@ -346,4 +329,3 @@ class Cliente:
                 self.escutar_resposta()
             else:
                 print("Opção inválida")
-

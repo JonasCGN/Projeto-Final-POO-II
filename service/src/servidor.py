@@ -10,10 +10,6 @@ Funcionalidades:
 - Processar pedidos de compra em formato JSON e calcular o total.
 - Gerenciar desconexões e erros.
 
-Requisitos:
-- Python 3.x
-- Módulos: socket, threading, json
-
 Como usar:
 1. Inicie o script.
 2. O servidor começa a escutar na porta 9000.
@@ -35,6 +31,7 @@ HOST = "127.0.0.1"
 PORT = 9000
 NMR_CLIENTES = 1000
 
+
 class User:
     """
     Classe que representa um usuário conectado ao servidor.
@@ -46,11 +43,10 @@ class User:
         O endereço do cliente conectado.
     name: str
         O nome do usuário.
-    
+
     """
 
-    def __init__(self, cliente_socket, cliente_addrs,user_name) -> None:
-
+    def __init__(self, cliente_socket: socket.socket, cliente_addrs: str, user_name: str) -> None:
         """
         Construtor da classe User.
 
@@ -62,10 +58,11 @@ class User:
         Retorna:
             None.
         """
-        
+
         self.cliente_socket: socket.socket = cliente_socket
         self.cliente_addrs = cliente_addrs
         self.name = user_name
+
 
 class Servidor:
     """
@@ -80,7 +77,7 @@ class Servidor:
         _clientes (dict[str, User]): Dicionário que mapeia o nome de cada usuário ao seu respectivo objeto User.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Construtor da classe Servidor.
 
@@ -90,7 +87,7 @@ class Servidor:
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._clientes: dict[str, User] = {}
 
-    def init(self):
+    def init(self) -> None:
         """
         Inicializa o servidor, configurando o socket para reutilizar o endereço, vinculando-o ao endereço especificado
         e iniciando a escuta para conexões.
@@ -106,7 +103,7 @@ class Servidor:
         self.server_socket.listen(NMR_CLIENTES)
 
     @property
-    def clientes(self):
+    def clientes(self) -> dict[str, User]:
         """
         Propriedade para acessar o dicionário de clientes conectados.
 
@@ -115,7 +112,7 @@ class Servidor:
         """
         return self._clientes
 
-    def is_suport_connect(self):
+    def is_suport_connect(self) -> bool:
         """
         Verifica se o servidor suporta novas conexões com base no limite máximo de clientes.
 
@@ -141,7 +138,7 @@ class Servidor:
         self.clientes[user_name] = User(cliente_socket, cliente_addrs, user_name)
         return True
 
-    def connect_user(self):
+    def connect_user(self) -> None:
         """
         Aceita uma nova conexão de cliente, verifica se o servidor suporta a conexão e gerencia nomes duplicados.
 
@@ -160,9 +157,10 @@ class Servidor:
         else:
             print(f"Cliente {name} conectado.")
             client_socket.send("connected: conectado!".encode())
-            Thread(target=self.handle_client, args=(self.clientes[name], name)).start()
+            Thread(target=self.handle_client, args=(
+                self.clientes[name], name)).start()
 
-    def handle_process(self, cliente_send: User, msg_recebida: str):
+    def handle_process(self, cliente_send: User, msg_recebida: str) -> None:
         """
         Processa as mensagens enviadas pelos clientes e executa a ação correspondente.
 
@@ -174,12 +172,15 @@ class Servidor:
             None.
         """
         if msg_recebida == 'LISTAR':
-            str_produtos = "\n".join([f"{id} - {produto}" for id, produto in produtos.items()])
+            str_produtos = "\n".join(
+                [f"{id} - {produto}" for id, produto in produtos.items()])
             cliente_send.cliente_socket.send(str_produtos.encode())
-            print(f"Enviado a lista de produtos para o cliente {cliente_send.cliente_addrs}.")
+            print(f"Enviado a lista de produtos para o cliente {
+                  cliente_send.cliente_addrs}.")
         elif msg_recebida == "QTD_PRODUTOS":
             cliente_send.cliente_socket.send(str(len(produtos)).encode())
-            print(f"Enviado a quantidade de produtos para o cliente {cliente_send.cliente_addrs}.")
+            print(f"Enviado a quantidade de produtos para o cliente {
+                  cliente_send.cliente_addrs}.")
         else:
             try:
                 pedido = json.loads(msg_recebida)
@@ -190,7 +191,7 @@ class Servidor:
             except json.JSONDecodeError:
                 print(f"Erro ao decodificar a mensagem do cliente {cliente_send.cliente_addrs}.")
 
-    def handle_client(self, cliente_send: User, name_send):
+    def handle_client(self, cliente_send: User, name_send: str) -> None:
         """
         Gerencia as mensagens recebidas de um cliente específico até que a conexão seja encerrada.
 
@@ -203,7 +204,8 @@ class Servidor:
         """
         while True:
             try:
-                msg_recebida = cliente_send.cliente_socket.recv(BUFFER).decode()
+                msg_recebida = cliente_send.cliente_socket.recv(
+                    BUFFER).decode()
                 if msg_recebida == f"{name_send}, exit" or not msg_recebida:
                     raise ConnectionResetError
                 self.handle_process(cliente_send, msg_recebida)
@@ -212,5 +214,6 @@ class Servidor:
                 self.clientes.pop(name_send, None)
                 break
             except json.JSONDecodeError:
-                print(f"Erro ao decodificar a mensagem do cliente {cliente_send.cliente_addrs}.")
+                print(f"Erro ao decodificar a mensagem do cliente {
+                      cliente_send.cliente_addrs}.")
                 break

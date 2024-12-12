@@ -16,12 +16,8 @@ Dependências:
     - json: Módulo utilizado para converter o pedido em formato JSON antes de inseri-lo no banco de dados.
     - time: Módulo utilizado para formatar data e hora de inserção dos pedidos.
 
-Exceções:
-    - O programa exibe mensagens de erro apropriadas se ocorrerem problemas ao inserir ou buscar pedidos no banco de dados.
-    - Valida a entrada do usuário para garantir que uma opção válida seja selecionada.
-
-A execução do programa começa ao chamar a função `menu()`, que permanece em execução até que o usuário escolha a opção de sair.
-
+A execução do programa começa ao chamar a função `menu()`, que permanece em execução até que o usuário escolha a opção 
+de sair.
 """
 
 import json
@@ -30,31 +26,32 @@ import time
 from src.produto import Produto, GerenciarProdutos
 
 
-def inserir_pedido():         
-        """
-        Solicita ao usuário a inserção dos IDs dos pedidos, formata a data e hora atuais,
-        e retorna um dicionário com os pedidos, data e hora.
-        Returns:
-            dict: Um dicionário contendo os pedidos, data e hora no seguinte formato:
-                {
-                    "pedidos": [list]: Lista de pedidos inseridos pelo usuário,
-                    "data": str: Data atual no formato "YYYY-%m:%d",
-                    "hora": str: Hora atual no formato "HH:%M:%S"
-        """
-        ids = input("Insira os IDs dos pedidos: ")
-        pedidos = [json.loads(ids)]
-        data = time.strftime("%Y-%m:%d")
-        hora = time.strftime("%H:%M:%S")
+def inserir_pedido():
+    """
+    Solicita ao usuário a inserção dos IDs dos pedidos, formata a data e hora atuais,
+    e retorna um dicionário com os pedidos, data e hora.
+    Returns:
+        dict: Um dicionário contendo os pedidos, data e hora no seguinte formato:
+            {
+                "pedidos": [list]: Lista de pedidos inseridos pelo usuário,
+                "data": str: Data atual no formato "YYYY-%m:%d",
+                "hora": str: Hora atual no formato "HH:%M:%S"
+    """
+    ids = input("Insira os IDs dos pedidos: ")
+    pedidos = [json.loads(ids)]
+    data = time.strftime("%Y-%m:%d")
+    hora = time.strftime("%H:%M:%S")
 
-        pedido_formatado = {
-            "pedidos": pedidos,
-            "data": data,
-            "hora": hora
-        }
-        
-        return pedido_formatado
+    pedido_formatado = {
+        "pedidos": pedidos,
+        "data": data,
+        "hora": hora
+    }
 
-def menu(): 
+    return pedido_formatado
+
+
+def menu():
     """
     Exibe um menu interativo para gerenciar pedidos de produtos.
     O menu permite ao usuário:
@@ -86,9 +83,9 @@ def menu():
         4: Produto("Fanta", 2.00, 4),
         5: Produto("Sprite", 1.00, 1),
     }
-    
+
     gerenciador.produtos = produtos
-    
+
     while True:
         print("\n----- MENU -----")
         print("1. Inserir Pedido")
@@ -96,35 +93,35 @@ def menu():
         print("3. Listar Todos os Pedidos")
         print("4. Sair")
         opcao = input("Escolha uma opcao")
-        
-        if opcao == '1': 
+
+        if opcao == '1':
             produtos = gerenciador.listar_produtos()
-            
+
             for produto in produtos:
                 print(produto)
-                
+
             pedido = inserir_pedido()
             pedido_json = json.dumps(pedido)
-            
-            if db.insert(pedido_json): 
+
+            if db.insert(pedido_json):
                 print("Peido inserido com suscesso!")
-            else: 
+            else:
                 print("erro ao inserir no banco de dados")
-                
-        elif opcao =='2': 
+
+        elif opcao == '2':
             id_pedido = int(input("Digite o id do pedido que deseja buscar "))
             pedido = db.get(id_pedido)
             if pedido:
                 print(f"Pedido encontrado:", pedido[0], pedido[1], pedido[2], pedido[3])
             else:
                 print("Pedido nao encontrado ")
-                
-        elif opcao =='3':
-            pedidos = db.get_all() 
+
+        elif opcao == '3':
+            pedidos = db.get_all()
             if pedidos:
                 print("\nLista de Pedidos:")
-                for id,pedido,data,hora in pedidos:
-                    print("Id:",id,"Pedido:",pedido,"Data:",data,"Hora:",hora)
+                for id, pedido, data, hora in pedidos:
+                    print("Id:", id, "Pedido:", pedido, "Data:", data, "Hora:", hora)
             else:
                 print("Nenhum pedido encontrado.")
 
@@ -135,5 +132,6 @@ def menu():
         else:
             print("Opção inválida, tente novamente.")
 
+
 if __name__ == "__main__":
-    menu()  
+    menu()

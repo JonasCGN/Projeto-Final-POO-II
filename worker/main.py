@@ -81,6 +81,7 @@ class Sincronizacao:
                 pedidos = pool.map(self.db_redis.get, chaves)
                 print("Valores pegos com sucesso!")
 
+            self.db_postgress.start_cursor()
             with ThreadPool(numero_de_threads) as pool:
                 print(f"Sincronizando lote {quantidade_de_batch + 1} com o PostgreSQL...")
                 pool.map(self.sincronizar_lotes, pedidos)

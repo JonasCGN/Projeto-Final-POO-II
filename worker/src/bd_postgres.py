@@ -130,9 +130,7 @@ class DB_POSTGRES:
     def insert(self, pedido: str) -> bool:
         retorno = False
         try:
-            executar = self.post_client.cursor()
             pedido = json.loads(pedido)
-
             data_datetime = datetime.strptime(pedido['data'], '%Y-%m:%d').date()
 
             query = """
@@ -140,9 +138,7 @@ class DB_POSTGRES:
                 VALUES (%s, %s, %s)
             """
             valores = [pedido['pedidos'], data_datetime, pedido['hora']]
-
-            executar.execute(query, valores)
-            self.commit()
+            self.cursor_de_insercao.execute(query, valores)
 
             retorno = True
         except Exception as e:
@@ -192,6 +188,13 @@ class DB_POSTGRES:
         except Exception as e:
             print(f"Erro ao consultar dados: {e}")
             return None
+    
+    def start_cursor(self) -> None:
+        """
+        Inicia um novo cursor para executar operações no banco de dados PostgreSQL.
+        """
+        self.cursor_de_insercao = self.post_client.cursor()
+
 
     def commit(self) -> None:
         """

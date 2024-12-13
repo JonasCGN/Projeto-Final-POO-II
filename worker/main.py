@@ -81,11 +81,11 @@ class Sincronizacao:
                 pedidos = pool.map(self.db_redis.get, chaves)
                 print("Valores pegos com sucesso!")
 
-            # No momento, 1000 inserção por segundo. Não está utilizando o maximo da cpu.
-            # with ThreadPool(numero_de_threads) as pool:
-            #     print(f"Sincronizando lote {quantidade_de_batch + 1} com o PostgreSQL...")
-            #     pool.map(self.sincronizar_lotes, pedidos)
-            #     print(f"Lote {quantidade_de_batch +1} sincronizado com o PostgreSQL com sucesso!")
+            with ThreadPool(numero_de_threads) as pool:
+                print(f"Sincronizando lote {quantidade_de_batch + 1} com o PostgreSQL...")
+                pool.map(self.sincronizar_lotes, pedidos)
+                print(f"Lote {quantidade_de_batch +1} sincronizado com o PostgreSQL com sucesso!")
+            self.db_postgress.commit() # Commit após cada lote
 
             with ThreadPool(numero_de_threads) as pool:
                 print(f"Removendo lote {quantidade_de_batch + 1} do Redis...")

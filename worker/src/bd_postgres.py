@@ -64,10 +64,11 @@ class DB_POSTGRES:
                 print(f"Conectado ao PostgreSQL em {post_host}...")
                 break
             except psycopg2.OperationalError:
-                print(
-                    "Não foi possível conectar ao PostgreSQL. Tentando novamente em 2 segundos...")
+                print("Não foi possível conectar ao PostgreSQL. Tentando novamente em 2 segundos...")
                 sleep(2)
                 continue
+
+        self.cursor_inserct = self.post_client.cursor()
 
     def database_init(self) -> None:
         """
@@ -99,11 +100,6 @@ class DB_POSTGRES:
             print("Tabela inicializada com sucesso!")
         except Exception as e:
             print(f"Não foi possível criar a tabela: {e}")
-        finally:
-            if executar:
-                executar.close()
-
-        self.commit()
 
     def test_connection(self) -> bool:
         """
@@ -142,7 +138,6 @@ class DB_POSTGRES:
             query = """
                 INSERT INTO gerencia_pedidos (pedidos, data, hora) 
                 VALUES (%s, %s, %s)
-                RETURNING id;
             """
             valores = [pedido['pedidos'], data_datetime, pedido['hora']]
 
@@ -153,9 +148,6 @@ class DB_POSTGRES:
         except Exception as e:
             print(f"Erro ao inserir dados: {e}")
             self.post_client.rollback()
-        finally:
-            if executar:
-                executar.close()
 
         return retorno
 

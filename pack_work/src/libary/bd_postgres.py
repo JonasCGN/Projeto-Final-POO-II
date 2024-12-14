@@ -96,7 +96,7 @@ class DB_POSTGRES:
                     hora TIME NOT NULL
                 );
             """)
-
+            self.commit()
             print("Tabela inicializada com sucesso!")
         except Exception as e:
             print(f"Não foi possível criar a tabela: {e}")

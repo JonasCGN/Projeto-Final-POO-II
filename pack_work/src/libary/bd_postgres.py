@@ -194,6 +194,12 @@ class DB_POSTGRES:
         Inicia um novo cursor para executar operações no banco de dados PostgreSQL.
         """
         self.cursor_de_insercao = self.post_client.cursor()
+    
+    def close_cursor(self) -> None:
+        """
+        Fecha o cursor atual e descarta todas as operações pendentes.
+        """
+        self.cursor_de_insercao.close()
 
 
     def commit(self) -> None:

@@ -4,7 +4,6 @@ Classes:
     DB_Redis: Classe responsável pela conexão com o Redis e gerenciamento de chaves e valores.
 """
 
-from time import sleep
 import redis  # type: ignore
 import os
 

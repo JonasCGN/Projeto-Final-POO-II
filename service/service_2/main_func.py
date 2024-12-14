@@ -21,9 +21,9 @@ de sair.
 """
 
 import json
-from src.bd_postgres import DB_POSTGRES
+from libary.bd_postgres import DB_POSTGRES
 import time
-from src.produto import Produto, GerenciarProdutos
+from libary.produto import Produto, GerenciarProdutos
 
 
 def inserir_pedido():

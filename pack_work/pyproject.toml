@@ -2,7 +2,7 @@
 name = "pack-work"
 version = "0.1.0"
 description = ""
-authors = ["KauaHenSilva <kaua.sbc@gmail.com>"]
+authors = ["Kaua Hen, Emilly, Jonas, Wallison, Flavio"] 
 readme = "README.md"
 packages = [
     { include = "libary", from = "src" }
@@ -10,7 +10,6 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-requests = "2.25"
 redis = "5.2.0"
 
 [build-system]

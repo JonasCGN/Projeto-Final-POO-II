@@ -87,7 +87,6 @@ class DB_POSTGRES:
         """
         try:
             executar = self.post_client.cursor()
-
             executar.execute("""
                 CREATE TABLE IF NOT EXISTS gerencia_pedidos (
                     id SERIAL PRIMARY KEY,
@@ -96,6 +95,7 @@ class DB_POSTGRES:
                     hora TIME NOT NULL
                 );
             """)
+            
             self.commit()
             print("Tabela inicializada com sucesso!")
         except Exception as e:

@@ -1,16 +1,13 @@
 [tool.poetry]
-name = "pack-work"
+name = "produt_maneger"
 version = "0.1.0"
 description = ""
-authors = ["Kaua Hen, Emilly, Jonas, Wallison, Flavio"] 
+authors = ["Flavio, Kaua"]
 readme = "README.md"
-packages = [
-    { include = "libary", from = "src" }
-]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-redis = "5.2.0"
+
 
 [build-system]
 requires = ["poetry-core"]

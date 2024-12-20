@@ -1,18 +1,6 @@
-services:
-  redis:
-    image: redis:latest
-    restart: always
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
+version: '3.9'
 
-  script_redis:
-    build: ./script_redis
-    depends_on:
-      - postgres
-      - redis
-  
+services:
   postgres:
     image: postgres:16-alpine
     restart: always
@@ -22,20 +10,10 @@ services:
       POSTGRES_DB: database-postgres
     ports:
       - "5432:5432"
+    
+  # server:
+  #   build: ./server
   
-  worker:
-    build:
-      context: ./worker
-      dockerfile: Dockerfile
-    depends_on:
-      - postgres
-      - redis
-    deploy:
-      resources:
-        limits:
-          cpus: "2"
-          memory: "2GB"
-
-volumes:
-  postgres_data:
-  redis_data:
+  # cliete:
+  #   build: ./cliente
+  

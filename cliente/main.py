@@ -12,7 +12,16 @@ Execução:
     para realizar a ação associada ao seu funcionamento.
 """
 
-from src.cliente import Cliente
+# from src.cliente import Cliente
+
+# if __name__ == "__main__":
+#     Cliente()()
+
+import sys
+from PyQt5.QtWidgets import QApplication
+from src.screen.home_ui import Home
 
 if __name__ == "__main__":
-    Cliente()()
+    app = QApplication(sys.argv)
+    window = Home()
+    app.exec_()

@@ -1,0 +1,1 @@
+from .func_produtos import inserir_produto, get_all_itens_str

@@ -16,10 +16,20 @@ Execução:
     3. Entrará em um loop infinito aguardando conexões de usuários, chamando o método 'connect_user()' para cada novo
     usuário.
 """
-from src.servidor import Servidor
+# from src.servidor import Servidor
+
+# if __name__ == "__main__":
+#     servidor = Servidor()
+#     servidor.init()
+#     while True:
+#         servidor.connect_user()
+
+from src.screen.home_ui import Home
+from PyQt5.QtWidgets import QApplication
+import sys
+
 
 if __name__ == "__main__":
-    servidor = Servidor()
-    servidor.init()
-    while True:
-        servidor.connect_user()
+    app = QApplication(sys.argv)
+    window = Home()
+    app.exec_()

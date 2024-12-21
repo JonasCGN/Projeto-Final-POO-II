@@ -13,7 +13,12 @@ services:
     
   # server:
   #   build: ./server
-  
+  #   volumes:
+  #     - /tmp/.X11-unix:/tmp/.X11-unix
+  #     - /dev/dri:/dev/dri
+  #   environment:
+  #     - DISPLAY=${DISPLAY}
+    
   # cliete:
   #   build: ./cliente
   

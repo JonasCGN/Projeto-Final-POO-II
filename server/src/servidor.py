@@ -222,6 +222,5 @@ class Servidor:
                 self.clientes.pop(name_send, None)
                 break
             except json.JSONDecodeError:
-                print(f"Erro ao decodificar a mensagem do cliente {
-                      cliente_send.cliente_addrs}.")
+                print(f"Erro ao decodificar a mensagem do cliente {cliente_send.cliente_addrs}.")
                 break

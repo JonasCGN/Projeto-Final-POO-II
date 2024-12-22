@@ -17,7 +17,8 @@ class BdPedido(Bd_Base):
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS Pedido (
                     id SERIAL PRIMARY KEY,
-                    pedidos INTEGER[] NOT NULL,
+                    mesa INT NOT NULL,
+                    status VARCHAR(255) NOT NULL,
                     data_hora TIMESTAMP NOT NULL,
                 );
             """)
@@ -65,6 +66,18 @@ class BdPedido(Bd_Base):
             return None
         finally:
             cursor.close()
+    
+    def get_last_100(self) -> Union[list, None]:
+        try:
+            cursor = self.get_cursor()
+            cursor.execute("SELECT * FROM Pedido ORDER BY id DESC LIMIT 100;")
+            resultados = cursor.fetchall()
+            return resultados
+        except Exception:
+            return None
+        finally:
+            cursor.close()
+
 
     def get_all(self) -> Union[list, None]:
         try:

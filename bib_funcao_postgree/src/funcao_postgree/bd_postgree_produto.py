@@ -16,7 +16,7 @@ class BdProduto(Bd_Base):
                     id SERIAL PRIMARY KEY,
                     nome VARCHAR(255) UNIQUE,
                     preco DECIMAL(10, 2) NOT NULL,
-                    quantidade INT NOT NULL
+                    disponivel BOOLEAN DEFAULT TRUE
                 );
             """)
 
@@ -28,14 +28,14 @@ class BdProduto(Bd_Base):
 
     def _format_from_inserct(self, produto: str) -> dict:
         valor =  json.loads(produto)
-        return (valor['nome'], valor["preco"], valor["quantidade"])
+        return (valor['nome'], valor["preco"], valor["disponivel"])
 
     def insert_produto(self, produto: str) -> bool:
         retorno = True
         try:
             valor = self._format_from_inserct(produto)
             query = """
-                INSERT INTO Produto (nome, preco, quantidade) 
+                INSERT INTO Produto (nome, preco, disponivel) 
                 VALUES (%s, %s, %s)
             """
             cursor = self.get_cursor()
@@ -57,7 +57,7 @@ class BdProduto(Bd_Base):
             valor = self._format_from_inserct(produto)
             query = """
                 UPDATE Produto 
-                SET nome = %s, preco = %s, quantidade = %s
+                SET nome = %s, preco = %s, disponivel = %s
                 WHERE id = %s
             """
             
@@ -84,6 +84,23 @@ class BdProduto(Bd_Base):
             self.commit()
         except Exception as e:
             print("[LOG ERRO] Erro ao remover produto: ", e)
+            self.post_client.rollback()
+            retorno = False
+        finally:
+            cursor.close()
+
+        return retorno
+
+    def trocar_disponibilidade(self, id_produto: int) -> bool:
+        retorno = True
+        try:
+            cursor = self.get_cursor()
+            cursor.execute("SELECT disponivel FROM Produto WHERE id = %s;", [id_produto])
+            disponivel = cursor.fetchone()[0]
+            cursor.execute("UPDATE Produto SET disponivel = %s WHERE id = %s;", [not disponivel, id_produto])
+            self.commit()
+        except Exception as e:
+            print("[LOG ERRO] Erro ao trocar disponibilidade: ", e)
             self.post_client.rollback()
             retorno = False
         finally:

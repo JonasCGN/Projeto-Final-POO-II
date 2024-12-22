@@ -1,2 +1,0 @@
-from .adicionar_product_ui import AdicionarProducto
-from .editar_produto_ui import EditarProduto

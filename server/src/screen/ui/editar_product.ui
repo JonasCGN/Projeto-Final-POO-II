@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>150</height>
+    <height>171</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,13 +48,17 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_quantidade">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="placeholderText">
-         <string>Quantidade do produto</string>
-        </property>
+       <widget class="QComboBox" name="comboBox_disponibilidade">
+        <item>
+         <property name="text">
+          <string>Disponível</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Indisponível</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>

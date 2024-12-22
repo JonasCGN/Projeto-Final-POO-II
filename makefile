@@ -1,9 +1,12 @@
-all: venv creat_paste_bibs build_bib_funcao_postgree build_bib_sincronizacao_servidor_cliente
+all: venv databese_up creat_paste_bibs build_bib_funcao_postgree build_bib_sincronizacao_servidor_cliente
 server: all install_requeriments_server run_server
 cliente: all install_requeriments_cliente run_cliente
 
 venv:
 	@test -d .venv || python3 -m venv .venv
+
+databese_up:
+	@sudo docker-compose up -d --build
 
 creat_paste_bibs:
 	@mkdir server/bibs -p

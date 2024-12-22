@@ -75,6 +75,21 @@ class BdProduto(Bd_Base):
             cursor.close()
 
         return retorno
+
+    def remover_produto(self, id_produto: int) -> bool:
+        retorno = True
+        try:
+            cursor = self.get_cursor()
+            cursor.execute("DELETE FROM Produto WHERE id = %s;", (id_produto))
+            self.commit()
+        except Exception as e:
+            print("[LOG ERRO] Erro ao remover produto: ", e)
+            self.post_client.rollback()
+            retorno = False
+        finally:
+            cursor.close()
+
+        return retorno
         
     def get(self, id: int) -> Union[tuple, None]:
         try:

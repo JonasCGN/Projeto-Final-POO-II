@@ -4,11 +4,9 @@ from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5 import uic
 from . import EditarProduto, AdicionarProducto
-from src.func import pegar_todos_itens_str, enviar_mensagem_de_sincronizacao, iniciar_servidor_sincronizado
+from src.func.sincronizacao import enviar_mensagem_de_sincronizacao, iniciar_servidor_sincronizado
+from src.func.func_produtos import pegar_todos_itens_str, remover_produto
 
-
-class SignalHandler(QObject):
-    atualizar_signal = pyqtSignal()
 
 
 class TelaPrincipal(QMainWindow):
@@ -18,12 +16,10 @@ class TelaPrincipal(QMainWindow):
         iniciar_servidor_sincronizado(self.sync_tratament)
         
         self.init_vars()
-        
-        self.signal_handler = SignalHandler()
-        self.signal_handler.atualizar_signal.connect(self.atualizar_lista_produto)
 
         self.pushButton_adicionar_produto.clicked.connect(self.screen_add_product.show)
         self.pushButton_editar_produto.clicked.connect(self.abrir_editar_produto)
+        self.pushButton_remover_produto.clicked.connect(self.remover_produto)
         
         self.show()
     
@@ -44,7 +40,7 @@ class TelaPrincipal(QMainWindow):
             
     def sync_tratament(self, msg):
         if msg == 'sync':
-            self.signal_handler.atualizar_signal.emit()
+            self.atualizar_lista_produto()
             enviar_mensagem_de_sincronizacao('sync')
         
     def abrir_editar_produto(self):
@@ -57,10 +53,35 @@ class TelaPrincipal(QMainWindow):
             try:
                 id, nome, preco, quantidade = item_text.split(', ')
                 id, nome, preco, quantidade = (id.split(": ")[1], nome.split(": ")[1], preco.split(": ")[1], quantidade.split(": ")[1])
-                print(nome, preco, quantidade)
                 self.screen_edit_product.start_values((id, nome, preco, quantidade))
                 self.screen_edit_product.show()
             except ValueError as e:
                 QMessageBox.warning(self, "Erro", "Não foi possível extrair os dados do produto selecionado.")
         else:
             QMessageBox.warning(self, "Erro", "Selecione um produto para editar.")
+    
+    def remover_produto(self):
+        selected_index = self.lst_todos_produtos.selectedIndexes()
+        
+        if selected_index:
+            selected_item = self.lst_todos_produtos.model().itemFromIndex(selected_index[0])
+            item_text = selected_item.text()
+
+            try:
+                remove = False
+                id = item_text.split(', ')[0].split(": ")[1]
+                if QMessageBox.question(
+                    self, "Remover produto", "Tem certeza que deseja remover o produto?",
+                    QMessageBox.Yes | QMessageBox.No) == QMessageBox.Yes:
+                    remove = True
+                
+                if remove:
+                    print("[LOG INFO] Removendo produto")
+                    remover_produto(id)
+                    self.sync_tratament("sync")
+                    enviar_mensagem_de_sincronizacao("sync")
+                    
+            except ValueError as e:
+                QMessageBox.warning(self, "Erro", "Não foi possível extrair os dados do produto selecionado.")
+        else:
+            QMessageBox.warning(self, "Erro", "Selecione um produto para remover.")

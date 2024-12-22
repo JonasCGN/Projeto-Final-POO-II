@@ -38,6 +38,7 @@ class EditarProduto(QMainWindow):
             if atualizar_produto(produto, self.id):
                 QMessageBox.information(self, "Sucesso", "Produto editado!")
                 enviar_mensagem_de_sincronizacao("sync")
+                print("[LOG INFO] Produto editado com sucesso!")
             else:
                 QMessageBox.warning(self, "Erro", "Verifique sua conexão com a internet e o produto que está inserindo.")
 

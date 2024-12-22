@@ -37,8 +37,8 @@ class AdicionarProducto(QMainWindow):
 
             if inserir_produto(produto):
                 QMessageBox.information(self, "Sucesso", "Produto inserido com sucesso!")
-                self.clear_line_edit()
                 enviar_mensagem_de_sincronizacao("sync")
+                self.clear_line_edit()
             else:
                 QMessageBox.warning(self, "Erro", "Verifique sua conexão com a internet e o produto que está inserindo.")
 

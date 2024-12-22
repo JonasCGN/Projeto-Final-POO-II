@@ -15,5 +15,10 @@ def atualizar_produto(product: dict[str, Union[str, int, float]], id_product: st
     return status
 
 
+def remover_produto(id_product: str) -> bool:
+    status = bd_produto.remover_produto(id_product)
+    return status
+
+
 def pegar_todos_itens_str():
     return [f"id: {item[0]}, Nome: {item[1]}, Preço: {item[2]}, Quantidade: {item[3]}" for item in bd_produto.get_all()]

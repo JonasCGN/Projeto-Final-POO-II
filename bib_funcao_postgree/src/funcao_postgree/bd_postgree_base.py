@@ -1,6 +1,6 @@
 import psycopg2
 from time import sleep
-
+import os
 
 class Bd_Base:
 
@@ -13,13 +13,14 @@ class Bd_Base:
     def _conectar(self):
         while True:
             try:
+                host = os.getenv("POSTGRES_HOST", "localhost")
                 Bd_Base.post_client = psycopg2.connect(
-                    host="localhost",
+                    host=host,
                     database='database-postgres',
                     user='root',
                     password='root'
                 )
-                print("[LOG INFO] Conectado ao PostgreSQL em localhost...")
+                print("[LOG INFO] Conectado ao PostgreSQL em: ", host)
                 break
             except psycopg2.OperationalError as e:
                 print(f"[LOG ERRO] Erro ao conectar ao PostgreSQL: {e}")

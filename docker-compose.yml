@@ -10,15 +10,3 @@ services:
       POSTGRES_DB: database-postgres
     ports:
       - "5432:5432"
-    
-  # server:
-  #   build: ./server
-  #   volumes:
-  #     - /tmp/.X11-unix:/tmp/.X11-unix
-  #     - /dev/dri:/dev/dri
-  #   environment:
-  #     - DISPLAY=${DISPLAY}
-    
-  # cliete:
-  #   build: ./cliente
-  

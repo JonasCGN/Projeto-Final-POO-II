@@ -1,7 +1,7 @@
 from typing import Callable, Tuple
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5 import uic
-from src.func import atualizar_produto
+from src.func import atualizar_produto, enviar_mensagem_de_sincronizacao
 
 
 class EditarProduto(QMainWindow):
@@ -37,6 +37,7 @@ class EditarProduto(QMainWindow):
 
             if atualizar_produto(produto, self.id):
                 QMessageBox.information(self, "Sucesso", "Produto editado!")
+                enviar_mensagem_de_sincronizacao("sync")
             else:
                 QMessageBox.warning(self, "Erro", "Verifique sua conexão com a internet e o produto que está inserindo.")
 

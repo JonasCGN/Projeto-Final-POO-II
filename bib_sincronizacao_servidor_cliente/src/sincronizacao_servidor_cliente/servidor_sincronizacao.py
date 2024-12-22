@@ -24,11 +24,10 @@ class ServidorSincronizacao:
         self.executando = True
         try:
             self._iniciar_servidor()
-            self._aceitar_conexoes(ao_receber_mensagem)
+            thread = threading.Thread(target=self._aceitar_conexoes, args=(ao_receber_mensagem,), daemon=True)
+            thread.start()
         except Exception as e:
             raise ErroServidor(f"Erro ao iniciar o servidor: {e}")
-        finally:
-            self.parar()
 
     def _iniciar_servidor(self):
         self.servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -61,7 +60,7 @@ class ServidorSincronizacao:
     def _fechar_socket_servidor(self):
         try:
             self.servidor_socket.close()
-            print("[LOG INFO ] Servidor encerrado.")
+            print("[LOG INFO] Servidor encerrado.")
         except Exception as e:
             print(f"[LOG ERRO] Erro ao fechar o servidor: {e}")
 
@@ -75,6 +74,7 @@ class ServidorSincronizacao:
             with cliente_socket:
                 while self.executando:
                     self._receber_e_processar_mensagem(cliente_socket, endereco, ao_receber_mensagem)
+                    
         except ConnectionError:
             print(f"[LOG INFO] Cliente {endereco} desconectou.")
         except Exception as e:

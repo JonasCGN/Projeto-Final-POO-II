@@ -15,8 +15,7 @@ class TelaPrincipal(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('src/screen/ui/tela_principal.ui', self)
-        self.server_thread = threading.Thread(target=iniciar_servidor_sincronizado, args=(self.sync_tratament,), daemon=True)
-        self.server_thread.start()
+        iniciar_servidor_sincronizado(self.sync_tratament)
         
         self.init_vars()
         

@@ -1,6 +1,6 @@
 import json
 from typing import Union
-from postgre_func.bd_postgree_produto import BdProduto
+from funcao_postgree.bd_postgree_produto import BdProduto
 
 bd_produto = BdProduto()
 

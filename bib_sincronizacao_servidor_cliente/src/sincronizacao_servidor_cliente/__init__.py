@@ -1,0 +1,2 @@
+from .cliente_sincronizacao import ClienteSincronizado
+from .servidor_sincronizacao import ServidorSincronizacao

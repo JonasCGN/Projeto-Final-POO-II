@@ -24,12 +24,12 @@ Execução:
 #     while True:
 #         servidor.connect_user()
 
-from src.screen.home_ui import Home
+from src.screen.tela_principal_ui import TelaPrincipal
 from PyQt5.QtWidgets import QApplication
 import sys
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = Home()
+    window = TelaPrincipal()
     app.exec_()

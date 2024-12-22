@@ -18,15 +18,13 @@ class BdPedido(Bd_Base):
                 CREATE TABLE IF NOT EXISTS Pedido (
                     id SERIAL PRIMARY KEY,
                     pedidos INTEGER[] NOT NULL,
-                    data DATE NOT NULL,
-                    hora TIME NOT NULL
+                    data_hora TIMESTAMP NOT NULL,
                 );
             """)
-            
             self.commit()
-            print("Tabela inicializada com sucesso!")
+            print("[LOG INFO] Tabela inicializada com sucesso!")
         except Exception as e:
-            print(f"Não foi possível criar a tabela: {e}")
+            print(f"[LOG ERRO] Não foi possível criar a tabela: {e}")
         finally:
             cursor.close()
     
@@ -56,15 +54,6 @@ class BdPedido(Bd_Base):
         return retorno
 
     def get(self, id: int) -> Union[tuple, None]:
-        """
-        Recupera um registro da tabela 'gerencia_pedidos' com base no ID fornecido.
-        Args:
-            id (int): O ID do registro a ser recuperado.
-        Returns:
-            tuple: Uma tupla contendo os dados do registro, ou None se ocorrer um erro.
-        Raises:
-            Exception: Se ocorrer um erro durante a consulta ao banco de dados.
-        """
         try:
             cursor = self.get_cursor()
             cursor.execute("SELECT * FROM Pedido WHERE id = %s;", [id])
@@ -72,21 +61,12 @@ class BdPedido(Bd_Base):
 
             return resultado
         except Exception as e:
-            print(f"Erro ao consultar dados: {e}")
+            print(f"[LOG ERRO] Erro ao consultar dados: {e}")
             return None
         finally:
             cursor.close()
 
     def get_all(self) -> Union[list, None]:
-        """
-        Recupera todos os registros da tabela 'gerencia_pedidos' no banco de dados PostgreSQL.
-        Retorna:
-            list: Uma lista de tuplas contendo todos os registros da tabela 'gerencia_pedidos'.
-            None: Se ocorrer um erro durante a consulta.
-        Exceções:
-            Exception: Captura qualquer exceção que ocorra durante a execução da consulta SQL e imprime uma mensagem
-            de erro.
-        """
         try:
             cursor = self.get_cursor()
             cursor.execute("SELECT * FROM Pedido;")

@@ -11,12 +11,19 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Adicionar Produto</string>
+   <string>editar produto</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="label_id">
+        <property name="text">
+         <string>Id do pedido: </string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QLineEdit" name="lineEdit_nome">
         <property name="inputMask">
@@ -53,7 +60,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_confim">
         <property name="text">
-         <string>adicionar</string>
+         <string>editar</string>
         </property>
        </widget>
       </item>

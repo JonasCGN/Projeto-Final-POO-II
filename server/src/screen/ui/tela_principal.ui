@@ -7,22 +7,22 @@
     <x>0</x>
     <y>0</y>
     <width>668</width>
-    <height>343</height>
+    <height>335</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Home</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout_5">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_pedido_andamento">
        <attribute name="title">
-        <string>Pedidios em andamento</string>
+        <string>Pedidios</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
@@ -60,39 +60,6 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_pedido_finalizado_cancelado">
-       <attribute name="title">
-        <string>Pedidos Finalizados e Cancelados</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <item>
-         <widget class="QFrame" name="frame_3">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <widget class="QListView" name="lst_todos_pedidos_3"/>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QPushButton" name="pushButton_5">
-               <property name="text">
-                <string>Refetivar Pedido</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="tab_controle_cardapio">
        <attribute name="title">
         <string>Controle de Cardapio</string>
@@ -108,7 +75,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QListView" name="lst_todos_pedidos">
+            <widget class="QListView" name="lst_todos_produtos">
              <property name="editTriggers">
               <set>QAbstractItemView::NoEditTriggers</set>
              </property>
@@ -127,7 +94,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton">
+              <widget class="QPushButton" name="pushButton_editar_produto">
                <property name="text">
                 <string>Editar produto selecionado</string>
                </property>
@@ -157,6 +124,34 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>668</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAtualizar">
+    <property name="title">
+     <string>Atualizar</string>
+    </property>
+    <addaction name="actionAtualizar_dados_do_Cardapio"/>
+    <addaction name="actionAtualizar_dados_dos_pedidos"/>
+   </widget>
+   <addaction name="menuAtualizar"/>
+  </widget>
+  <action name="actionAtualizar_dados_do_Cardapio">
+   <property name="text">
+    <string>Atualizar dados do Cardapio</string>
+   </property>
+  </action>
+  <action name="actionAtualizar_dados_dos_pedidos">
+   <property name="text">
+    <string>Atualizar dados dos pedidos</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

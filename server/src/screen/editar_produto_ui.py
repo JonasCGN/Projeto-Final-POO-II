@@ -1,23 +1,24 @@
-from typing import Callable
+from typing import Callable, Tuple
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5 import uic
-from src.func import inserir_produto
+from src.func import atualizar_produto
 
 
-class AddProduct(QMainWindow):
+class EditarProduto(QMainWindow):
     def __init__(self, atualizar_product: Callable):
         super().__init__()
-        uic.loadUi('src/screen/ui/add_product.ui', self)
-        
-        self.pushButton_confim.clicked.connect(self.inserir_valor)
+        uic.loadUi('src/screen/ui/editar_product.ui', self)
+        self.pushButton_confim.clicked.connect(self.editar_valor)
         self.pushButton_confim.clicked.connect(atualizar_product)
+      
+    def start_values(self, values_start: Tuple[str, str, str, str]):
+        self.id, nome, preco, quantidade = values_start
+        self.label_id.setText(f"Id do pedido: {self.id}")
+        self.lineEdit_nome.setText(nome)
+        self.lineEdit_quantidade.setText(quantidade)
+        self.lineEdit_preco.setText(preco)
 
-    def clear_line_edit(self):
-        self.lineEdit_nome.clear()
-        self.lineEdit_quantidade.clear()
-        self.lineEdit_preco.clear()
-
-    def inserir_valor(self):
+    def editar_valor(self):
         try:
             nome = self.lineEdit_nome.text()
             quantidade = self.lineEdit_quantidade.text()
@@ -34,9 +35,8 @@ class AddProduct(QMainWindow):
             preco = float(preco)
             produto = {"nome": nome, "quantidade": quantidade, "preco": preco}
 
-            if inserir_produto(produto):
-                QMessageBox.information(self, "Sucesso", "Produto inserido com sucesso!")
-                self.clear_line_edit()
+            if atualizar_produto(produto, self.id):
+                QMessageBox.information(self, "Sucesso", "Produto editado!")
             else:
                 QMessageBox.warning(self, "Erro", "Verifique sua conexão com a internet e o produto que está inserindo.")
 

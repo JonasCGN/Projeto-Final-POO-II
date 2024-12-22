@@ -1,1 +1,2 @@
-from .func_produtos import inserir_produto, get_all_itens_str
+from .func_produtos import inserir_produto, atualizar_produto, pegar_todos_itens_str
+from .sincronizacao import iniciar_servidor_sincronizado, enviar_mensagem_de_sincronizacao

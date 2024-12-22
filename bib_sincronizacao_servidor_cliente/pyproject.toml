@@ -1,16 +1,15 @@
 [tool.poetry]
-name = "postgre_func"
+name = "sincronizacao_servidor_cliente"
 version = "0.1.0"
 description = ""
-authors = ["Kaua Hen, Emilly, Jonas, Wallison, Flavio"] 
+authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 packages = [
-    { include = "postgre_func", from = "src" }
+    { include = "sincronizacao_servidor_cliente", from = "src" }
 ]
-
 [tool.poetry.dependencies]
 python = "^3.10"
-psycopg2-binary = "2.9.10"
+
 
 [build-system]
 requires = ["poetry-core"]

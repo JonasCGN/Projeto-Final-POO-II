@@ -2,12 +2,16 @@ all: venv databese_up creat_paste_bibs build_bib_funcao_postgree build_bib_sincr
 server: all install_requeriments_server run_server
 cliente: all install_requeriments_cliente run_cliente
 
+install_depedencia:
+	@sudo apt-get install python3-venv python3-pip docker.io docker-compose -y
+	@curl -sSL https://install.python-poetry.org | python3 -
+	@poetry --version
+
 clear:
 	@rm -rf server/bibs
 	@rm -rf cliente/bibs
 	@rm -rf bib_funcao_postgree/dist
 	@rm -rf bib_sincronizacao_servidor_cliente/dist
-
 
 venv:
 	@test -d .venv || python3 -m venv .venv

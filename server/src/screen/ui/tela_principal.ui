@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_controle_cardapio">
        <attribute name="title">
@@ -75,7 +75,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QListView" name="lst_todos_pedidos_2"/>
+         <widget class="QListView" name="lst_todos_pedidos"/>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_2">

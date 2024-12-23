@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5 import uic
+
+from src.func.func_pedidos import get_utimos_1000_pedidos
 from .editar_produto_ui import EditarProduto
 from .adicionar_product_ui import AdicionarProducto
 from src.func.sincronizacao import enviar_mensagem_de_sincronizacao, iniciar_servidor_sincronizado
@@ -38,6 +40,7 @@ class TelaPrincipal(QMainWindow):
         self.screen_add_product = AdicionarProducto(self.atualizar_lista_produto)
         self.screen_edit_product = EditarProduto(self.atualizar_lista_produto)
         self.atualizar_lista_produto()
+        self.atualizar_lista_pedido()
         
     def sync_tratament(self, msg):
         if msg == 'sync_produto':
@@ -121,14 +124,10 @@ class TelaPrincipal(QMainWindow):
     
     def atualizar_lista_pedido(self):
         print("[LOG INFO] Atualizando lista de pedidos")
-        # model = QStandardItemModel()
-        # self.lst_todos_pedidos.setModel(model)
+        model = QStandardItemModel()
+        self.lst_todos_pedidos.setModel(model)
         
-        # for entry in pegar_pedidos_em_desenvolvimento_str():
-        #     item = QStandardItem(entry)
-        #     model.appendRow(item)
-        
-        # self.lineEdit_quantidade_a_remover.clear()
-        # self.lineEdit_quantidade.clear()
-        # self.atualizar_pedido_desenvolvimento()
+        for pedido in get_utimos_1000_pedidos():
+            item = QStandardItem(pedido)
+            model.appendRow(item)
         

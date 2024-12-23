@@ -29,6 +29,26 @@ class BdPedido(Bd_Base):
         finally:
             cursor.close()
     
+    def editar_status(self, status: str, id_pedido: int) -> bool:
+        retorno = True
+        try:
+            query = """
+                UPDATE Pedido 
+                SET status = %s
+                WHERE id = %s
+            """
+            cursor = self.get_cursor()
+            cursor.execute(query, (status, id_pedido))
+            self.commit()
+        except Exception as e:
+            print("[LOG ERRO] Erro ao editar status do pedido: ", e)
+            self.post_client.rollback()
+            retorno = False
+        finally:
+            cursor.close()
+
+        return retorno
+    
     def _format_from_inserct(self, pedido: str) -> dict:
         valor =  json.loads(pedido)
         return (valor['mesa'], valor["status"], valor["data_hora"])

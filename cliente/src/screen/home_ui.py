@@ -53,6 +53,13 @@ class Home(QMainWindow):
         
         for pedido in get_utimos_1000_pedidos():
             item = QStandardItem(pedido)
+            if "Pedido em andamento" in pedido.split(", ")[2].split(": ")[1]:
+                item.setBackground(QBrush(QColor(255, 255, 0)))
+            if "Pedido cancelado" in pedido.split(", ")[2].split(": ")[1]:
+                item.setBackground(QBrush(QColor(255, 0, 0)))
+            if "Pedido finalizado" in pedido.split(", ")[2].split(": ")[1]:
+                item.setBackground(QBrush(QColor(0, 255, 0)))
+            
             model.appendRow(item)
             
 

@@ -15,6 +15,10 @@ def transformar_lista_str_em_lista_tuple(lista: list[str]) -> list[Tuple[str, in
     
     return lista_tuple
 
+def editar_status_pedido(id_pedido: str, status: str) -> bool:
+    status = bd_pedido.editar_status(status, id_pedido)
+    return status
+
 def get_utimos_1000_pedidos() -> list[str]:
     pedidos = []
     for pedido in bd_pedido.get_last_1000():
@@ -24,4 +28,4 @@ def get_utimos_1000_pedidos() -> list[str]:
         data_hora = pedido[3]
         pedidos.append(f"ID: {id}, Mesa: {mesa}, Status: {status}, Data/Hora: {data_hora}")
     
-    return sorted(pedidos, key=lambda x: int(x.split(",")[0].split(": ")[1]))
+    return pedidos

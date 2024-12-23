@@ -33,4 +33,8 @@ def get_utimos_1000_pedidos() -> list[str]:
         data_hora = pedido[3]
         pedidos.append(f"ID: {id}, Mesa: {mesa}, Status: {status}, Data/Hora: {data_hora}")
     
-    return sorted(pedidos, key=lambda x: int(x.split(",")[0].split(": ")[1]))
+    return pedidos
+
+def editar_status_pedido(id_pedido: str, status: str) -> bool:
+    status = bd_pedido.editar_status(id_pedido, status)
+    return status

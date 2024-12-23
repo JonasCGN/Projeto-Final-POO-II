@@ -78,36 +78,50 @@
          <widget class="QListView" name="lst_todos_pedidos"/>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="text">
-           <string>Editar Pedido</string>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="leftMargin">
+           <number>0</number>
           </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="pushButton_5">
             <property name="text">
-             <string>Refetivar Pedido</string>
+             <string>Exibir Pedido</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="pushButton_2">
             <property name="text">
-             <string>Finalizar Pedido</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_4">
-            <property name="text">
-             <string>Cancelar Pedido</string>
+             <string>Editar Pedido</string>
             </property>
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_status_do_pedido">
+          <item>
+           <property name="text">
+            <string>Pedido em andamento</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Pedido cancelado</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Pedido finalizado</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3"/>
         </item>
        </layout>
       </widget>

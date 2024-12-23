@@ -3,9 +3,9 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5 import uic
 
-from src.func.func_pedidos import get_utimos_1000_pedidos
 from .editar_produto_ui import EditarProduto
 from .adicionar_product_ui import AdicionarProducto
+from src.func.func_pedidos import get_utimos_1000_pedidos, editar_status_pedido
 from src.func.sincronizacao import enviar_mensagem_de_sincronizacao, iniciar_servidor_sincronizado
 from src.func.func_produtos import pegar_todos_itens_str, remover_produto, trocar_disponibilidade
 
@@ -33,9 +33,40 @@ class TelaPrincipal(QMainWindow):
         self.pushButton_trocar_disponibilidade.clicked.connect(self.trocar_disponibilidade)
         self.actionAtualizar_dados_do_Cardapio.triggered.connect(self.atualizar_lista_produto)
         
+        self.comboBox_status_do_pedido.setEnabled(False)
+        self.lst_todos_pedidos.clicked.connect(self.test)
+        self.current_pedido_id = None 
+        
         self.show()
     
-
+    def test(self):
+        try:
+            self.comboBox_status_do_pedido.currentTextChanged.disconnect()
+        except TypeError:
+            pass
+    
+        selected_index = self.lst_todos_pedidos.selectedIndexes()
+        
+        if selected_index:
+            self.comboBox_status_do_pedido.setEnabled(True)
+            selected_item = self.lst_todos_pedidos.model().itemFromIndex(selected_index[0])
+            item_text = selected_item.text()
+            
+            id = item_text.split(", ")[0].split(": ")[1]
+            status = item_text.split(", ")[2].split(": ")[1]
+        
+            self.current_pedido_id = id
+            
+            self.comboBox_status_do_pedido.setCurrentText(status)
+            self.comboBox_status_do_pedido.currentTextChanged.connect(self.editar_status_pedido)
+        else:
+            QMessageBox.warning(self, "Erro", "Selecione um pedido para editar.")
+    
+    def editar_status_pedido(self):
+        status = self.comboBox_status_do_pedido.currentText()
+        editar_status_pedido(self.current_pedido_id, status)
+        self.sync_tratament("sync_pedido")
+        
     def init_vars(self):
         self.screen_add_product = AdicionarProducto(self.atualizar_lista_produto)
         self.screen_edit_product = EditarProduto(self.atualizar_lista_produto)
@@ -129,5 +160,12 @@ class TelaPrincipal(QMainWindow):
         
         for pedido in get_utimos_1000_pedidos():
             item = QStandardItem(pedido)
+            if "Pedido em andamento" in pedido.split(", ")[2].split(": ")[1]:
+                item.setBackground(QBrush(QColor(255, 255, 0)))
+            if "Pedido cancelado" in pedido.split(", ")[2].split(": ")[1]:
+                item.setBackground(QBrush(QColor(255, 0, 0)))
+            if "Pedido finalizado" in pedido.split(", ")[2].split(": ")[1]:
+                item.setBackground(QBrush(QColor(0, 255, 0)))
             model.appendRow(item)
+
         

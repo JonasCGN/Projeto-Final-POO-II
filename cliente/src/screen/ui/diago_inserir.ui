@@ -42,6 +42,11 @@
         </item>
         <item>
          <property name="text">
+          <string>Pedido cancelado</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Pedido finalizado</string>
          </property>
         </item>

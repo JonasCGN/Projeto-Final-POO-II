@@ -13,6 +13,5 @@ def pegar_todos_itens_str() -> list[str]:
         disponivel = "disponível" if bool(product[3]) else "indisponível"
         produtos.append(f"ID: {id}, Nome: {nome}, Preço: {preco}, Status: {disponivel}")
     
-    # ordenar por id
-    return sorted(produtos, key=lambda x: int(x.split(",")[0].split(": ")[1]))
+    return produtos
   

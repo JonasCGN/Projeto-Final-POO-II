@@ -124,7 +124,7 @@ class BdProduto(Bd_Base):
     def get_all(self) -> Union[list]:
         try:
             cursor = self.get_cursor()
-            cursor.execute("SELECT * FROM Produto;")
+            cursor.execute("SELECT * FROM Produto ORDER BY id ASC;")
             resultados = cursor.fetchall()
             return resultados
         except Exception:

@@ -108,12 +108,6 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_relatorio">
-       <attribute name="title">
-        <string>Relatorio</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_6"/>
-      </widget>
      </widget>
     </item>
    </layout>

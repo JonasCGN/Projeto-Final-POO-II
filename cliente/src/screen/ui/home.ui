@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="tabBarAutoHide">
        <bool>true</bool>
@@ -157,7 +157,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QListWidget" name="listWidget"/>
+         <widget class="QListView" name="listView_list_pedidos"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">

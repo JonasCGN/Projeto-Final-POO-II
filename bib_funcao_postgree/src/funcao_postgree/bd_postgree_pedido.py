@@ -19,7 +19,7 @@ class BdPedido(Bd_Base):
                     id SERIAL PRIMARY KEY,
                     mesa INT NOT NULL,
                     status VARCHAR(255) NOT NULL,
-                    data_hora TIMESTAMP NOT NULL,
+                    data_hora TIMESTAMP NOT NULL
                 );
             """)
             self.commit()
@@ -54,10 +54,10 @@ class BdPedido(Bd_Base):
 
         return retorno
     
-    def get_last_100(self) -> Union[list, None]:
+    def get_last_1000(self) -> Union[list, None]:
         try:
             cursor = self.get_cursor()
-            cursor.execute("SELECT * FROM Pedido ORDER BY id DESC LIMIT 100;")
+            cursor.execute("SELECT * FROM Pedido ORDER BY id DESC LIMIT 1000;")
             resultados = cursor.fetchall()
             return resultados
         except Exception:

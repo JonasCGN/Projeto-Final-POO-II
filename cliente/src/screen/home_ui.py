@@ -7,12 +7,14 @@ from src.func.func_pedidos_desenvolvimento import (
     adicionar_pedido_em_desenvolvimento,
     remover_pedido_em_desenvolvimento
 )
+from src.func.func_pedido import inserir_pedido, get_utimos_1000_pedidos, transformar_lista_str_em_lista_tuple
 from src.func.func_produtos import pegar_todos_itens_str
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
 
 class SignalHandler(QObject):
     atualizar_produto_signal = pyqtSignal()
+    atualizar_pedido_signal = pyqtSignal()
 
 class Home(QMainWindow):
     def __init__(self):
@@ -20,16 +22,20 @@ class Home(QMainWindow):
         uic.loadUi('src/screen/ui/home.ui', self)
         self.signal_handler = SignalHandler()
         self.signal_handler.atualizar_produto_signal.connect(self.atualizar_lista_produto)
+        self.signal_handler.atualizar_pedido_signal.connect(self.atualizar_list_pedido)
         iniciar_cliente_sincronizado(self.logica_de_sincronizacao)
         self.pushButton_adicionar_ao_pedido.clicked.connect(self.adicionar_pedido_desenvolvimento)
         self.pushButton_remover_pedido_temporario.clicked.connect(self.remover_pedido_desenvolvimento)
         self.pushButton_efetivar_pedido.clicked.connect(self.efetivar_pedido)
         self.atualizar_lista_produto()
+        self.atualizar_list_pedido()
         self.show()
 
     def logica_de_sincronizacao(self, msg):
         if msg == "sync_produto":
             self.signal_handler.atualizar_produto_signal.emit()
+        elif msg == "sync_pedido":
+            self.signal_handler.atualizar_pedido_signal.emit()
 
     def atualizar_lista_produto(self):
         model = QStandardItemModel()
@@ -40,6 +46,15 @@ class Home(QMainWindow):
                 item.setBackground(QBrush(QColor(255, 0, 0)))
             model.appendRow(item)
         self.atualizar_pedido_desenvolvimento()
+    
+    def atualizar_list_pedido(self):
+        model = QStandardItemModel()
+        self.listView_list_pedidos.setModel(model)
+        
+        for pedido in get_utimos_1000_pedidos():
+            item = QStandardItem(pedido)
+            model.appendRow(item)
+            
 
     def validar_quantidade(self, quantidade_input):
         quantidade = quantidade_input.text()
@@ -124,4 +139,9 @@ class Home(QMainWindow):
             
         dialogo_confirmacao = DialogoEfetivarPedido()
         if dialogo_confirmacao.exec_() == QDialog.Accepted:
+            numero_de_mesa = dialogo_confirmacao.lineEdit_numero_da_mesa.text()
+            status = dialogo_confirmacao.comboBox_status.currentText()
+            inserir_pedido(transformar_lista_str_em_lista_tuple(pedidos_em_desenvolvimento), numero_de_mesa, status)
             enviar_mensagem_de_sincronizacao("sync_pedido")
+        else:
+            QMessageBox.warning(self, "Aviso", "Pedido cancelado")

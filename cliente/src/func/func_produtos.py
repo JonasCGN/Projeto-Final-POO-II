@@ -15,3 +15,4 @@ def pegar_todos_itens_str() -> list[str]:
     
     # ordenar por id
     return sorted(produtos, key=lambda x: int(x.split(",")[0].split(": ")[1]))
+  

@@ -30,42 +30,29 @@ class BdPedido(Bd_Base):
             cursor.close()
     
     def _format_from_inserct(self, pedido: str) -> dict:
-        pedido = json.loads(pedido)
-        data_datetime = datetime.strptime(pedido['data'], '%Y-%m:%d').date()
-
-        return {
-            "pedidos": pedido['pedidos'],
-            "data": data_datetime,
-            "hora": pedido['hora']
-        }
+        valor =  json.loads(pedido)
+        return (valor['mesa'], valor["status"], valor["data_hora"])
 
     def insert_pedido(self, pedido: str) -> bool:
         retorno = True
         try:
-            valores = self._format_from_inserct(pedido)
+            valor = self._format_from_inserct(pedido)
             query = """
-                INSERT INTO Pedido (pedidos, data, hora) 
+                INSERT INTO Pedido (mesa, status, data_hora) 
                 VALUES (%s, %s, %s)
             """
-            self.cursor_de_insercao.execute(query, valores)
-        except Exception:
+            cursor = self.get_cursor()
+            cursor.execute(query, valor)
+            self.commit()
+            
+        except Exception as e:
+            print("[LOG ERRO] Erro ao inserir pedido: ", e)
             self.post_client.rollback()
             retorno = False
-
-        return retorno
-
-    def get(self, id: int) -> Union[tuple, None]:
-        try:
-            cursor = self.get_cursor()
-            cursor.execute("SELECT * FROM Pedido WHERE id = %s;", [id])
-            resultado = cursor.fetchone()
-
-            return resultado
-        except Exception as e:
-            print(f"[LOG ERRO] Erro ao consultar dados: {e}")
-            return None
         finally:
             cursor.close()
+
+        return retorno
     
     def get_last_100(self) -> Union[list, None]:
         try:

@@ -37,7 +37,7 @@ class EditarProduto(QMainWindow):
             
             if atualizar_produto(produto, self.id):
                 QMessageBox.information(self, "Sucesso", "Produto editado!")
-                enviar_mensagem_de_sincronizacao("sync")
+                enviar_mensagem_de_sincronizacao("sync_produto")
                 print("[LOG INFO] Produto editado com sucesso!")
                 self.close()
             else:

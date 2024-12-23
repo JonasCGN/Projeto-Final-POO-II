@@ -69,19 +69,25 @@
                <widget class="QListView" name="listView_cardapio"/>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton_6">
+               <widget class="QPushButton" name="pushButton_adicionar_ao_pedido">
                 <property name="text">
                  <string>Adicionar ao pedido</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit">
+               <widget class="QLineEdit" name="lineEdit_quantidade_inserir">
+                <property name="inputMethodHints">
+                 <set>Qt::ImhDigitsOnly</set>
+                </property>
                 <property name="text">
                  <string/>
                 </property>
                 <property name="placeholderText">
                  <string>Quantidade a adicionar</string>
+                </property>
+                <property name="clearButtonEnabled">
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -111,17 +117,17 @@
                </widget>
               </item>
               <item>
-               <widget class="QListView" name="listView_2"/>
+               <widget class="QListView" name="listView_pedido_desenvolvimento"/>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton_5">
+               <widget class="QPushButton" name="pushButton_remover_pedido_temporario">
                 <property name="text">
                  <string>Remover do pedido</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_2">
+               <widget class="QLineEdit" name="lineEdit_quantidade_a_remover">
                 <property name="text">
                  <string/>
                 </property>
@@ -137,7 +143,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_7">
+         <widget class="QPushButton" name="pushButton_efetivar_pedido">
           <property name="text">
            <string>Efetivar pedido</string>
           </property>

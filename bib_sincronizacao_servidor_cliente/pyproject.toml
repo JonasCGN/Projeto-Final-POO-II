@@ -2,7 +2,7 @@
 name = "sincronizacao_servidor_cliente"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["DEVFlavioLima7"]
 readme = "README.md"
 packages = [
     { include = "sincronizacao_servidor_cliente", from = "src" }

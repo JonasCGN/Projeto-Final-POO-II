@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5 import uic
 from .editar_produto_ui import EditarProduto
@@ -8,7 +8,8 @@ from src.func.sincronizacao import enviar_mensagem_de_sincronizacao, iniciar_ser
 from src.func.func_produtos import pegar_todos_itens_str, remover_produto, trocar_disponibilidade
 
 class SignalHandler(QObject):
-    atualizar_signal = pyqtSignal() 
+    atualizar_produto = pyqtSignal() 
+    atualizar_pedido = pyqtSignal()
 
 
 class TelaPrincipal(QMainWindow):
@@ -17,7 +18,8 @@ class TelaPrincipal(QMainWindow):
         uic.loadUi('src/screen/ui/tela_principal.ui', self)
         
         self.signal_handler = SignalHandler()
-        self.signal_handler.atualizar_signal.connect(self.atualizar_lista_produto)
+        self.signal_handler.atualizar_produto.connect(self.atualizar_lista_produto)
+        self.signal_handler.atualizar_pedido.connect(self.atualizar_lista_pedido)
         
         iniciar_servidor_sincronizado(self.sync_tratament)
         
@@ -38,9 +40,12 @@ class TelaPrincipal(QMainWindow):
         self.atualizar_lista_produto()
         
     def sync_tratament(self, msg):
-        if msg == 'sync':
-            self.signal_handler.atualizar_signal.emit()
-            enviar_mensagem_de_sincronizacao('sync')
+        if msg == 'sync_produto':
+            self.signal_handler.atualizar_produto.emit()
+            enviar_mensagem_de_sincronizacao('sync_produto')
+        elif msg == 'sync_pedido':
+            self.signal_handler.atualizar_pedido.emit()
+            enviar_mensagem_de_sincronizacao('sync_pedido')
 
     def atualizar_lista_produto(self):
         print("[LOG INFO] Atualizando lista de produtos")
@@ -49,6 +54,8 @@ class TelaPrincipal(QMainWindow):
 
         for entry in pegar_todos_itens_str():
             item = QStandardItem(entry)
+            if "indisponível" in entry.split(", ")[3].split(": ")[1]:
+                item.setBackground(QBrush(QColor(255, 0, 0)))
             model.appendRow(item)
             
         
@@ -88,7 +95,7 @@ class TelaPrincipal(QMainWindow):
                 if remove:
                     print("[LOG INFO] Removendo produto")
                     remover_produto(id)
-                    self.sync_tratament("sync")
+                    self.sync_tratament("sync_produto")
                     
             except ValueError as e:
                 QMessageBox.warning(self, "Erro", "Não foi possível extrair os dados do produto selecionado.")
@@ -106,9 +113,22 @@ class TelaPrincipal(QMainWindow):
             id = item_text.split(', ')[0].split(": ")[1]
             print("[LOG INFO] Trocando disponibilidade")
             if trocar_disponibilidade(id):
-                self.sync_tratament("sync")
+                self.sync_tratament("sync_produto")
             else:
                 QMessageBox.warning(self, "Erro", "Não foi possível trocar a disponibilidade do produto.")
         else:
             QMessageBox.warning(self, "Erro", "Selecione um produto para trocar a disponibilidade.")
+    
+    def atualizar_lista_pedido(self):
+        print("[LOG INFO] Atualizando lista de pedidos")
+        # model = QStandardItemModel()
+        # self.lst_todos_pedidos.setModel(model)
+        
+        # for entry in pegar_pedidos_em_desenvolvimento_str():
+        #     item = QStandardItem(entry)
+        #     model.appendRow(item)
+        
+        # self.lineEdit_quantidade_a_remover.clear()
+        # self.lineEdit_quantidade.clear()
+        # self.atualizar_pedido_desenvolvimento()
         

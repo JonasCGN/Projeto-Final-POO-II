@@ -43,7 +43,8 @@ class Bd_Base:
         self._conectar()
 
     def commit(self) -> None:
-        while True:
+        qtd_tentativas = 0
+        while True and qtd_tentativas < 3:
             try:
                 Bd_Base.post_client.commit()
                 break
@@ -51,3 +52,8 @@ class Bd_Base:
                 print(f"[LOG ERRO] Erro ao tentar fazer commit: {e}")
                 print("T[LOG INFO] Tentando reiniciar a conexão...")
                 self._reiniciar_coneccao()
+                qtd_tentativas += 1
+        
+        if qtd_tentativas == 3:
+            print("[LOG ERRO] Não foi possível fazer commit após 3 tentativas. Encerrando...")
+            exit(1)

@@ -35,7 +35,7 @@ class AdicionarProducto(QMainWindow):
 
             if inserir_produto(produto):
                 QMessageBox.information(self, "Sucesso", "Produto inserido com sucesso!")
-                enviar_mensagem_de_sincronizacao("sync")
+                enviar_mensagem_de_sincronizacao("sync_produto")
                 print("[LOG INFO] Produto inserido com sucesso!")
                 self.clear_values()
                 self.close()

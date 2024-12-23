@@ -26,6 +26,7 @@ Execução:
 
 from src.screen.tela_principal_ui import TelaPrincipal
 from PyQt5.QtWidgets import QApplication
+from src.func.sincronizacao import close_server
 import sys
 
 
@@ -33,3 +34,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = TelaPrincipal()
     app.exec_()
+    close_server()

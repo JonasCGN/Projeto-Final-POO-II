@@ -63,3 +63,31 @@ class BdPedidoProduto(Bd_Base):
             return False
         finally:
             cursor.close()
+
+    def get_produtos_do_pedido(self, id_pedido: int) -> List[Dict[str, int | float]] | None:
+        try:
+            cursor = self.get_cursor()
+            cursor.execute("""
+                SELECT Produto_Pedido.produto_id, Produto.nome, Produto_Pedido.quantidade, Produto_Pedido.preco_pago
+                FROM Produto_Pedido
+                JOIN Produto ON Produto_Pedido.produto_id = Produto.id
+                WHERE Produto_Pedido.pedido_id = %s;
+            """, (id_pedido,))
+
+            produtos = cursor.fetchall()
+            produtos = [
+                {
+                    'produto_id': produto[0],
+                    'nome': produto[1],
+                    'quantidade': produto[2],
+                    'preco_pago': produto[3]
+                }
+                for produto in produtos
+            ]
+
+            return produtos
+        except Exception as e:
+            print(f"[LOG ERRO] Erro ao buscar produtos do pedido: {e}")
+            return None
+        finally:
+            cursor.close()

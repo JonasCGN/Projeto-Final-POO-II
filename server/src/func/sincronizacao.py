@@ -10,3 +10,6 @@ def iniciar_servidor_sincronizado(on_message: Callable):
 def enviar_mensagem_de_sincronizacao(msg: str):
     sync_server.enviar_msg_para_todos_clientes(msg)
 
+def close_server():
+    enviar_mensagem_de_sincronizacao("server_down")
+    sync_server.parar()

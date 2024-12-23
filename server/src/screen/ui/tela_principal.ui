@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_controle_cardapio">
        <attribute name="title">
@@ -78,28 +78,11 @@
          <widget class="QListView" name="lst_todos_pedidos"/>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="leftMargin">
-           <number>0</number>
+         <widget class="QPushButton" name="pushButton_exibir_pedido">
+          <property name="text">
+           <string>Exibir Pedido</string>
           </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QPushButton" name="pushButton_5">
-            <property name="text">
-             <string>Exibir Pedido</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="text">
-             <string>Editar Pedido</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         </widget>
         </item>
         <item>
          <widget class="QComboBox" name="comboBox_status_do_pedido">

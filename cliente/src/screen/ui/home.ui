@@ -165,16 +165,9 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="pushButton_exibir_pedido">
             <property name="text">
              <string>Exibir Pedido</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_5">
-            <property name="text">
-             <string>Editar Pedido</string>
             </property>
            </widget>
           </item>

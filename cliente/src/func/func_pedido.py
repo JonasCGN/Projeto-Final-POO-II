@@ -36,5 +36,9 @@ def get_utimos_1000_pedidos() -> list[str]:
     return pedidos
 
 def editar_status_pedido(id_pedido: str, status: str) -> bool:
-    status = bd_pedido.editar_status(id_pedido, status)
+    status = bd_pedido.editar_status(status, id_pedido)
     return status
+
+def get_produtos_do_pedido(id_pedido: str) -> list[str]:
+    pedidos = bd_pedido_produto.get_produtos_do_pedido(id_pedido)
+    return pedidos

@@ -5,6 +5,7 @@ from PyQt5 import uic
 
 from .editar_produto_ui import EditarProduto
 from .adicionar_product_ui import AdicionarProducto
+from .exibir_pedido import DialogoExibirProduto
 from src.func.func_pedidos import get_utimos_1000_pedidos, editar_status_pedido
 from src.func.sincronizacao import enviar_mensagem_de_sincronizacao, iniciar_servidor_sincronizado
 from src.func.func_produtos import pegar_todos_itens_str, remover_produto, trocar_disponibilidade
@@ -34,12 +35,13 @@ class TelaPrincipal(QMainWindow):
         self.actionAtualizar_dados_do_Cardapio.triggered.connect(self.atualizar_lista_produto)
         
         self.comboBox_status_do_pedido.setEnabled(False)
-        self.lst_todos_pedidos.clicked.connect(self.test)
+        self.lst_todos_pedidos.clicked.connect(self.status_pedido_selecionado)
         self.current_pedido_id = None 
         
+        self.pushButton_exibir_pedido.clicked.connect(self.exibir_pedido)
         self.show()
     
-    def test(self):
+    def status_pedido_selecionado(self):
         try:
             self.comboBox_status_do_pedido.currentTextChanged.disconnect()
         except TypeError:
@@ -61,6 +63,11 @@ class TelaPrincipal(QMainWindow):
             self.comboBox_status_do_pedido.currentTextChanged.connect(self.editar_status_pedido)
         else:
             QMessageBox.warning(self, "Erro", "Selecione um pedido para editar.")
+            
+    def exibir_pedido(self):
+        dialogo = DialogoExibirProduto(self.current_pedido_id)
+        dialogo.exec()
+        
     
     def editar_status_pedido(self):
         status = self.comboBox_status_do_pedido.currentText()

@@ -1,7 +1,9 @@
 from typing import Tuple
 from funcao_postgree.bd_postgree_pedido import BdPedido
+from funcao_postgree.bd_postgree_pedido_produto import BdPedidoProduto
 
 bd_pedido = BdPedido()
+bd_pedido_produto = BdPedidoProduto()
 
 
 def transformar_lista_str_em_lista_tuple(lista: list[str]) -> list[Tuple[str, int]]:
@@ -28,4 +30,8 @@ def get_utimos_1000_pedidos() -> list[str]:
         data_hora = pedido[3]
         pedidos.append(f"ID: {id}, Mesa: {mesa}, Status: {status}, Data/Hora: {data_hora}")
     
+    return pedidos
+
+def get_produtos_do_pedido(id_pedido: str) -> list[str]:
+    pedidos = bd_pedido_produto.get_produtos_do_pedido(id_pedido)
     return pedidos

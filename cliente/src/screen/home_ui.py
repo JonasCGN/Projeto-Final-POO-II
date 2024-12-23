@@ -42,7 +42,7 @@ class Home(QMainWindow):
         self.listView_cardapio.setModel(model)
         for entry in pegar_todos_itens_str():
             item = QStandardItem(entry)
-            if "indisponível" in entry.split(", ")[3].split(": ")[1]:
+            if "indisponível" == entry.split(", ")[3].split(": ")[1]:
                 item.setBackground(QBrush(QColor(255, 0, 0)))
             model.appendRow(item)
         self.atualizar_pedido_desenvolvimento()
@@ -119,7 +119,7 @@ class Home(QMainWindow):
             partes = entry.split(", ")
             nome_produto = partes[0].split(": ")[1]
             status_produto = partes[3].split(": ")[1]
-            if "disponível" in status_produto:
+            if "disponível" == status_produto:
                 produtos_disponiveis.append(nome_produto)
                 
         return produtos_disponiveis

@@ -19,5 +19,5 @@ def enviar_mensagem_de_sincronizacao_server(msg: str):
     sync_server.enviar_msg_para_todos_clientes(msg)
 
 def close_server():
-    enviar_mensagem_de_sincronizacao_cliente("server_down")
+    enviar_mensagem_de_sincronizacao_server("server_down")
     sync_server.parar()

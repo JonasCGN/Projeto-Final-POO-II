@@ -21,7 +21,7 @@ import sys
 from sincronizacao_servidor_cliente.cliente_sincronizacao import ErroCliente
 from src.screen.autenticacao import Autenticacao
 from PyQt5.QtWidgets import QApplication, QMessageBox 
-from src.screen.home_ui import Home
+from src.screen.home_cliente_ui import Home
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

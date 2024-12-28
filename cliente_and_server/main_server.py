@@ -24,7 +24,7 @@ Execução:
 #     while True:
 #         servidor.connect_user()
 
-from src.screen.tela_principal_ui import TelaPrincipal
+from src.screen.tela_principal_server_ui import TelaPrincipalServer
 from src.screen.autenticacao import Autenticacao
 from PyQt5.QtWidgets import QApplication
 from src.func.sincronizacao import close_server
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     app.exec_()
     
     if autenticacao.autenticado:
-        tela_principal = TelaPrincipal()
+        tela_principal = TelaPrincipalServer()
         tela_principal.show()
         app.exec_()
     

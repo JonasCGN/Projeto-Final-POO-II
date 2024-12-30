@@ -47,6 +47,9 @@ class Autenticacao(QMainWindow):
         print(f"[LOG INFO] Cadastro realizado {usuario}, {email}, {senha}")
         inserir_funcionario({"usuario": usuario, "email": email, "senha": senha})
         QMessageBox.information(self, "Sucesso", "Cadastro realizado com sucesso!")
+        
+        self.autenticado = True
+        self.close()
             
     def recuperar_senha(self):
         print("Envindo email para recuperação de senha, verifique sua caixa de entrada.")

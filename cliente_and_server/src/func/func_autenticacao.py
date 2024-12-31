@@ -3,6 +3,7 @@ Módulo responsável por grenciar a autenticação do usuário.
 """
 
 import json
+from typing import Tuple, Union
 from funcao_postgree.bd_postgree_funcionario import BdFuncionario
 
 bd_funcionario = BdFuncionario()
@@ -32,3 +33,18 @@ def validar_acesso(usuario: str, senha: str) -> bool:
     """
     
     return bd_funcionario.validar_acesso(usuario, senha)
+
+def recuperar_senha(email: str) -> Tuple[str, str] | False:
+    """
+    Recupera a senha do usuário.
+    
+    Args:
+        email (str): Email do usuário.
+    
+    Returns:
+        str: Senha do usuário.
+    """
+    
+    return bd_funcionario.recuperar_senha_usuario(email)
+
+    

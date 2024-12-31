@@ -5,6 +5,7 @@ Módulo de autenticação do sistema.
 from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from src.func.func_autenticacao import  inserir_funcionario, validar_acesso
+from src.screen.dialogo_recuperacao_senha import DialogoRecuperarSenha
 
 class Autenticacao(QMainWindow):
     """
@@ -72,9 +73,10 @@ class Autenticacao(QMainWindow):
         """
         Recupera a senha do usuário.
         """
-        print("Envindo email para recuperação de senha, verifique sua caixa de entrada.")
-        QMessageBox.information(self, "Recuperação de Senha", "Enviamos um email para recuperação de senha.")
-    
+        dialogo = DialogoRecuperarSenha()
+        dialogo.exec_()
+        
+        
     def show_error(self, message: str):
         """
         Exibe uma mensagem de erro na tela. 

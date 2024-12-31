@@ -2,8 +2,10 @@
 Modulo responsável pela adiministração do banco de dados dos funcionários.
 """
 
+import random
+import string
 from .bd_postgree_base import Bd_Base
-from typing import Union
+from typing import Tuple, Union
 import json
 from passlib.hash import pbkdf2_sha256 # type: ignore
 
@@ -116,3 +118,46 @@ class BdFuncionario(Bd_Base):
             cursor.close()
 
         return retorno
+
+    def recuperar_senha_usuario(self, email: str) -> Union[Tuple[str, str], bool]:
+        """
+        Gera uma nova senha para um funcionário e atualiza no banco.
+        
+        Args:
+            email (str): Email do funcionário.
+        
+        Returns:
+            Union[str, bool]: Nova senha gerada se o funcionário for encontrado, False caso contrário.
+        """
+        
+        nova_senha = ''.join(random.choices(string.ascii_letters + string.digits, k=8))  # Gera senha aleatória de 8 caracteres
+        hash_senha = pbkdf2_sha256.hash(nova_senha)
+        retorno = False
+
+        try:
+            query_select = """
+                SELECT * FROM funcionario
+                WHERE email = %s
+            """
+            query_update = """
+                UPDATE funcionario
+                SET senha = %s
+                WHERE email = %s
+            """
+            cursor = self.get_cursor()
+            cursor.execute(query_select, (email,))
+            resultado = cursor.fetchone()
+            
+            if resultado:
+                cursor.execute(query_update, (hash_senha, email))
+                self.commit() 
+                retorno = (resultado[1], nova_senha)
+            
+        except Exception as e:
+            print("[LOG ERRO] Erro ao recuperar senha: ", e)
+        finally:
+            if cursor:
+                cursor.close()
+
+        return retorno
+

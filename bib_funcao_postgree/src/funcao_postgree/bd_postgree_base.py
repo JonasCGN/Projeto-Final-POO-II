@@ -1,16 +1,29 @@
+"""
+Módulo com a classe base para conexão com o banco de dados PostgreSQL.
+"""
+
 import psycopg2
 from time import sleep
 import os
 
 class Bd_Base:
+    """
+    Classe base para conexão com o banco de dados PostgreSQL.
+    """
 
     post_client = None
 
     def __init__(self) -> None:
+        """
+        Inicializa a conexão com o banco de dados.
+        """
         if Bd_Base.post_client is None:
             self._conectar()
 
-    def _conectar(self):
+    def _conectar(self) -> None:
+        """
+        Conecta ao banco de dados PostgreSQL.
+        """
         while True:
             try:
                 host = os.getenv("POSTGRES_HOST", "localhost")
@@ -28,12 +41,21 @@ class Bd_Base:
                 sleep(2)
 
     def get_cursor(self) -> psycopg2.extensions.cursor:
+        """
+        Retorna um cursor para a conexão com o banco de dados.
+
+        Returns:
+            psycopg2.extensions.cursor: Cursor para a conexão com o banco de dados.
+        """
         if Bd_Base.post_client.closed:
             print("[LOG INFO] Conexão perdida. Tentando restabelecer...")
             self._reiniciar_coneccao()
         return Bd_Base.post_client.cursor()
 
-    def _reiniciar_coneccao(self):
+    def _reiniciar_coneccao(self) -> None:
+        """
+        Reinicia a conexão com o banco de dados.
+        """
         if Bd_Base.post_client is not None:
             try:
                 Bd_Base.post_client.close()
@@ -43,6 +65,9 @@ class Bd_Base:
         self._conectar()
 
     def commit(self) -> None:
+        """
+        Realiza o commit da transação.
+        """
         qtd_tentativas = 0
         while True and qtd_tentativas < 3:
             try:

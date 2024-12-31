@@ -1,8 +1,18 @@
+"""
+Módulo que contém a classe DialogoEfetivarPedido
+"""
+
 from PyQt5.QtWidgets import QDialog, QLineEdit, QComboBox, QDialogButtonBox
 from PyQt5 import uic
 
 class DialogoEfetivarPedido(QDialog):
+    """
+    Classe que representa a tela de efetivação de um pedido
+    """
     def __init__(self):
+        """
+        Inicializa a tela de efetivação de um pedido
+        """
         super().__init__()
         uic.loadUi("src/screen/ui/diago_inserir.ui", self) 
 
@@ -15,6 +25,9 @@ class DialogoEfetivarPedido(QDialog):
         self.buttonBox.rejected.connect(self.reject)
         
     def verificar_preenchimento(self):
+        """
+        Verifica se o campo 'Número da mesa' foi preenchido corretamente.
+        """
         if not self.numero_da_mesa.text().strip():
             self.numero_da_mesa.setStyleSheet("border: 1px solid red;")
             print("[LOG ERRO] O campo 'Número da mesa' está vazio.")

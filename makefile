@@ -21,8 +21,7 @@ databese_up:
 	@sudo docker-compose up -d --build 
 
 creat_paste_bibs:
-	@mkdir server/bibs -p
-	@mkdir cliente/bibs -p
+	@mkdir cliente_and_server/bibs -p
 
 build_bib_funcao_postgree:
 	@cd bib_funcao_postgree && make

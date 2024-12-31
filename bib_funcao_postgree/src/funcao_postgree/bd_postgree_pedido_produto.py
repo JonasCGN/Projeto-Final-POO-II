@@ -1,15 +1,28 @@
+"""
+Modulo responsável por realizar a comunicação com o banco de dados dos pedidos e produtos.
+"""
+
 from .bd_postgree_base import Bd_Base
 from typing import Union, List, Dict
 from datetime import datetime
 
 
 class BdPedidoProduto(Bd_Base):
+    """
+    Classe para manipulação de dados da tabela Produto_Pedido no banco de dados PostgreSQL.
+    """
 
     def __init__(self) -> None:
+        """
+        Inicializa a conexão com o banco de dados, e cria a tabela Produto_Pedido caso não exista.
+        """
         super().__init__()
         self.database_init()
 
     def database_init(self) -> None:
+        """
+        Inicia a estrutura do banco de dados, criando a tabela Produto_Pedido caso não exista.
+        """
         try:
             cursor = self.get_cursor()
 
@@ -34,6 +47,18 @@ class BdPedidoProduto(Bd_Base):
             cursor.close()
 
     def inserir_pedido_com_produtos(self, produtos: List[Dict[int, float]], mesa: int, status: str) -> bool:
+        """
+        Insere um pedido e seus produtos no banco de dados.
+        
+        Args:
+            produtos (List[Dict[int, float]]): Lista de produtos a serem inseridos no pedido,
+            Cada produto é um dicionário com as chaves 'produto_id', 'quantidade' e 'preco_pago'.
+            mesa (int): Número da mesa do pedido.
+            status (str): Status do pedido.
+            
+        Returns:
+            bool: True se a inserção foi bem sucedida, False caso contrário.
+        """
         try:
             cursor = self.get_cursor()
             data_hora = datetime.now()
@@ -65,6 +90,16 @@ class BdPedidoProduto(Bd_Base):
             cursor.close()
 
     def get_produtos_do_pedido(self, id_pedido: int) -> List[Dict[str, int | float]] | None:
+        """
+        Busca os produtos de um pedido no banco de dados.
+        
+        Args:
+            id_pedido (int): ID do pedido.
+        
+        Returns:
+            List[Dict[str, int | float]] | None: Lista de produtos do pedido, ou None em caso de erro.
+            A lista contém dicionários com as chaves 'produto_id', 'nome', 'quantidade' e 'preco_pago'.
+        """
         try:
             cursor = self.get_cursor()
             cursor.execute("""

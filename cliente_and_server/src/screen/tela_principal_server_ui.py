@@ -1,8 +1,11 @@
+"""
+Módulo que contém a classe TelaPrincipalServer, que é a tela principal do servidor.
+"""
+
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5 import uic
-
 from .editar_produto_ui import EditarProduto
 from .adicionar_product_ui import AdicionarProducto
 from .dialogo_exibir_pedido import DialogoExibirProduto
@@ -11,12 +14,24 @@ from src.func.sincronizacao import enviar_mensagem_de_sincronizacao_server, inic
 from src.func.func_produtos import pegar_todos_itens_str, remover_produto, trocar_disponibilidade
 
 class SignalHandler(QObject):
+    """
+    Classe que gerencia os sinais de atualização de produtos e pedidos.
+    """
     atualizar_produto = pyqtSignal() 
     atualizar_pedido = pyqtSignal()
 
 
 class TelaPrincipalServer(QMainWindow):
-    def __init__(self):
+    """
+    Classe que representa a tela principal do servidor.
+    """
+    
+    def __init__(self) -> None:
+        """
+        Inicializa a tela principal do servidor, conectando os sinais, slots e inicializando as variáveis.
+        e iniciando o servidor de sincronização.
+        """
+        
         super().__init__()
         uic.loadUi('src/screen/ui/tela_principal_server.ui', self)
         
@@ -41,7 +56,10 @@ class TelaPrincipalServer(QMainWindow):
         self.pushButton_exibir_pedido.clicked.connect(self.exibir_pedido)
         self.show()
     
-    def status_pedido_selecionado(self):
+    def status_pedido_selecionado(self) -> None:
+        """
+        Método que é chamado quando um pedido é selecionado na lista de pedidos.
+        """
         try:
             self.comboBox_status_do_pedido.currentTextChanged.disconnect()
         except TypeError:
@@ -64,23 +82,36 @@ class TelaPrincipalServer(QMainWindow):
         else:
             QMessageBox.warning(self, "Erro", "Selecione um pedido para editar.")
             
-    def exibir_pedido(self):
+    def exibir_pedido(self) -> None:
+        """
+        Método que é chamado quando o botão de exibir pedido é clicado.
+        """
         dialogo = DialogoExibirProduto(self.current_pedido_id)
         dialogo.exec()
         
     
-    def editar_status_pedido(self):
+    def editar_status_pedido(self) -> None:
+        """
+        Método que é chamado quando o status de um pedido é editado.
+        """
         status = self.comboBox_status_do_pedido.currentText()
         editar_status_pedido(self.current_pedido_id, status)
         self.sync_tratament("sync_pedido")
         
-    def init_vars(self):
+    def init_vars(self) -> None:
+        """
+        Inicializa as variáveis da classe.
+        """
         self.screen_add_product = AdicionarProducto(self.atualizar_lista_produto)
         self.screen_edit_product = EditarProduto(self.atualizar_lista_produto)
         self.atualizar_lista_produto()
         self.atualizar_lista_pedido()
         
-    def sync_tratament(self, msg):
+    def sync_tratament(self, msg: str) -> None:
+        """
+        Método que é chamado quando uma mensagem de sincronização é recebida. O mesmo trata a mensagem e 
+        atualiza a lista de produtos ou pedidos conforme necessário.
+        """
         if msg == 'sync_produto':
             self.signal_handler.atualizar_produto.emit()
             enviar_mensagem_de_sincronizacao_server('sync_produto')
@@ -88,7 +119,10 @@ class TelaPrincipalServer(QMainWindow):
             self.signal_handler.atualizar_pedido.emit()
             enviar_mensagem_de_sincronizacao_server('sync_pedido')
 
-    def atualizar_lista_produto(self):
+    def atualizar_lista_produto(self) -> None:
+        """
+    '    Método que atualiza a lista de produtos.
+        """
         print("[LOG INFO] Atualizando lista de produtos")
         model = QStandardItemModel()
         self.lst_todos_produtos.setModel(model)
@@ -100,7 +134,10 @@ class TelaPrincipalServer(QMainWindow):
             model.appendRow(item)
             
         
-    def abrir_editar_produto(self):
+    def abrir_editar_produto(self) -> None:
+        """
+        Método que é chamado quando o botão de editar produto é clicado.
+        """
         selected_index = self.lst_todos_produtos.selectedIndexes()
         
         if selected_index:
@@ -118,7 +155,10 @@ class TelaPrincipalServer(QMainWindow):
         else:
             QMessageBox.warning(self, "Erro", "Selecione um produto para editar.")
     
-    def remover_produto(self):
+    def remover_produto(self) -> None:
+        """
+        Método que é chamado quando o botão de remover produto é clicado.
+        """
         selected_index = self.lst_todos_produtos.selectedIndexes()
         
         if selected_index:
@@ -143,7 +183,10 @@ class TelaPrincipalServer(QMainWindow):
         else:
             QMessageBox.warning(self, "Erro", "Selecione um produto para remover.")
     
-    def trocar_disponibilidade(self):   
+    def trocar_disponibilidade(self) -> None:
+        """
+        Método que é chamado quando o botão de trocar disponibilidade é clicado.
+        """
         selected_index = self.lst_todos_produtos.selectedIndexes()
         
         if selected_index:
@@ -160,7 +203,11 @@ class TelaPrincipalServer(QMainWindow):
         else:
             QMessageBox.warning(self, "Erro", "Selecione um produto para trocar a disponibilidade.")
     
-    def atualizar_lista_pedido(self):
+    def atualizar_lista_pedido(self) -> None:
+        """
+        Método que atualiza a lista de pedidos.
+        """
+        
         print("[LOG INFO] Atualizando lista de pedidos")
         model = QStandardItemModel()
         self.lst_todos_pedidos.setModel(model)

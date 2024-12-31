@@ -1,14 +1,34 @@
+"""
+Módulo para a implementação do cliente de sincronização.
+"""
+
 import socket
 import threading
 from typing import Callable
 
 
 class ErroCliente(Exception):
+    """
+    Exceção para erros relacionados ao cliente de sincron
+    """
     pass
 
 
 class ClienteSincronizado:
-    def __init__(self, endereco: str = "localhost", porta: int = 12345, tamanho_buffer: int = 1024):
+    """
+    Classe para implementação do cliente de sincronização.
+    """
+    
+    def __init__(self, endereco: str = "localhost", porta: int = 12345, tamanho_buffer: int = 1024) -> None:
+        """
+        Inicializa o cliente de sincronização.
+
+        Args:
+            endereco (str, optional):  Endereço do servidor para conexão. Defaults to "localhost".
+            porta (int, optional): Porta do servidor para conexão. Defaults to 12345.
+            tamanho_buffer (int, optional): Tamanho do buffer para recebimento de mensagens. Defaults to 1024.
+            
+        """
         self.endereco = endereco
         self.porta = porta
         self.tamanho_buffer = tamanho_buffer
@@ -17,6 +37,15 @@ class ClienteSincronizado:
         self.thread_escuta = None
 
     def iniciar(self, ao_receber_mensagem: Callable[[str], None]):
+        """
+        Inicia a conexão com o servidor.
+
+        Args:
+            ao_receber_mensagem (Callable[[str], None]): Função de callback para receber mensagens do servidor.
+
+        Raises:
+            ErroCliente: O cliente já está conectado.
+        """
         if self.executando:
             raise ErroCliente("O cliente já está conectado.")
 
@@ -32,7 +61,13 @@ class ClienteSincronizado:
             self.executando = False
             raise ErroCliente(f"Erro ao conectar ao servidor: {e}")
 
-    def _escutar(self, ao_receber_mensagem: Callable[[str], None]):
+    def _escutar(self, ao_receber_mensagem: Callable[[str], None]) -> None:
+        """
+        Função interna para escutar mensagens do servidor.
+
+        Args:
+            ao_receber_mensagem (Callable[[str], None]): Função de callback para receber mensagens do servidor.
+        """
         try:
             while self.executando:
                 try:
@@ -53,7 +88,13 @@ class ClienteSincronizado:
         finally:
             self.parar()
 
-    def enviar_mensagem(self, mensagem: str):
+    def enviar_mensagem(self, mensagem: str) -> None:
+        """
+        Envia uma mensagem para o servidor.
+        
+        Args:
+            mensagem (str): Mensagem a ser enviada.
+        """
         if not self.executando or not self.soket_cliente:
             raise ErroCliente("O cliente não está conectado.")
         try:
@@ -62,7 +103,10 @@ class ClienteSincronizado:
         except Exception as e:
             raise ErroCliente(f"Erro ao enviar mensagem: {e}")
 
-    def parar(self):
+    def parar(self) -> None:
+        """
+        Encerra a conexão com o servidor.
+        """
         self.executando = False
         if self.soket_cliente:
             try:

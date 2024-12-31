@@ -1,3 +1,7 @@
+"""
+Módulo que contém a classe EditarProduto, que é responsável por editar um produto.
+"""
+
 from typing import Callable, Tuple
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5 import uic
@@ -6,13 +10,23 @@ from src.func.sincronizacao import enviar_mensagem_de_sincronizacao_server
 
 
 class EditarProduto(QMainWindow):
+    """
+    Classe que representa a tela de edição de um produto.
+    """
+    
     def __init__(self, atualizar_product: Callable):
+        """
+        Inicializa a tela de edição de um produto.
+        """
         super().__init__()
         uic.loadUi('src/screen/ui/editar_product.ui', self)
         self.pushButton_confim.clicked.connect(self.editar_valor)
         self.pushButton_confim.clicked.connect(atualizar_product)
       
     def start_values(self, values_start: Tuple[str, str, str, str]):
+        """
+        Inicia os valores da tela de edição de produto.
+        """
         self.id, nome, preco, disponivel = values_start
         self.label_id.setText(f"Id do pedido: {self.id}")
         self.lineEdit_nome.setText(nome)
@@ -20,6 +34,9 @@ class EditarProduto(QMainWindow):
         self.lineEdit_preco.setText(preco)
 
     def editar_valor(self):
+        """
+        Edita o valor do produto.
+        """
         try:
             nome = self.lineEdit_nome.text()
             preco = self.lineEdit_preco.text()

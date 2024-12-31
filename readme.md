@@ -66,33 +66,21 @@ python3 -m venv venv
 
 Agora o projeto está configurado. Você pode executá-lo com os seguintes comandos:
 
-#### Executação de todos os projetos
-> Executação de todos os serviços
+#### Inicialização do banco de dados
+
+> Inicialização do banco de dados
 ```bash
 docker-compose up --build
 ```
 
 #### Executação de cada projeto separadamente
 
-> Executação do banco de dados
+> Execução do servidor
 ```bash
-docker-compose up -d redis postgres 
+make server
 ```
 
-> Executação do worker
+> Execução do cliente
 ```bash
-pip install -r "worker\requirements.txt"
-python worker\main.py
-```
-
-> Executação do script_redis
-```bash
-pip install -r "script_redis\requirements.txt"
-python script_redis\main.py
-```
-
-> Executação do service
-```bash
-pip install -r "service\requirements.txt"
-python service\main.py
+make client
 ```

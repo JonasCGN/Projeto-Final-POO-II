@@ -1,9 +1,20 @@
+"""
+Módulo de autenticação do sistema.
+"""
+
 from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from src.func.func_autenticacao import  inserir_funcionario, validar_acesso
 
 class Autenticacao(QMainWindow):
+    """
+    Classe que representa a tela de autenticação do sistema
+    """
+    
     def __init__(self):
+        """
+        Inicializa a tela de autenticação do sistema
+        """
         super().__init__()
         uic.loadUi('src/screen/ui/autenticacao.ui', self)
         self.autenticado = False 
@@ -12,6 +23,9 @@ class Autenticacao(QMainWindow):
         self.pushButton_cadrastro.clicked.connect(self.validar_cadastro)
     
     def validar_acesso_login(self):
+        """
+        Valida o acesso do usuário.
+        """
         usuario = self.lineEdit_usuario_login.text()
         senha = self.lineEdit_senha_login.text()
         
@@ -27,6 +41,9 @@ class Autenticacao(QMainWindow):
         self.close()
     
     def validar_cadastro(self):
+        """
+        Valida o cadastro do usuário.
+        """
         usuario = self.lineEdit_usuario.text()
         email = self.lineEdit_email.text()
         senha = self.lineEdit_senha.text()
@@ -52,10 +69,16 @@ class Autenticacao(QMainWindow):
         self.close()
             
     def recuperar_senha(self):
+        """
+        Recupera a senha do usuário.
+        """
         print("Envindo email para recuperação de senha, verifique sua caixa de entrada.")
         QMessageBox.information(self, "Recuperação de Senha", "Enviamos um email para recuperação de senha.")
     
     def show_error(self, message: str):
+        """
+        Exibe uma mensagem de erro na tela. 
+        """
         msg_box = QMessageBox()
         msg_box.setIcon(QMessageBox.Warning)
         msg_box.setWindowTitle("Erro de Autenticação")

@@ -1,3 +1,7 @@
+"""
+Modulo responsável por adicionar um produto na base de dados.
+"""
+
 from typing import Callable
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5 import uic
@@ -7,7 +11,14 @@ from src.func.sincronizacao import enviar_mensagem_de_sincronizacao_server
 
 
 class AdicionarProducto(QMainWindow):
+    """
+    Classe que representa a tela de adição de um produto
+    """
+    
     def __init__(self, atualizar_product: Callable):
+        """
+        Inicializa a tela de adição de um produto
+        """
         super().__init__()
         uic.loadUi('src/screen/ui/add_product.ui', self)
         
@@ -15,11 +26,17 @@ class AdicionarProducto(QMainWindow):
         self.pushButton_confim.clicked.connect(atualizar_product)
         
     def clear_values(self):
+        """
+        Limpa os valores dos campos da tela de adição de produto
+        """
         self.lineEdit_nome.clear()
         self.lineEdit_preco.clear()
         self.comboBox_disponibilidade.setCurrentText("Disponível")
 
     def inserir_valor(self):
+        """
+        Insere o valor do produto
+        """
         try:
             nome = self.lineEdit_nome.text()
             preco = self.lineEdit_preco.text()

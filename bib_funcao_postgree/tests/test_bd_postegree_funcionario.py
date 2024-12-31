@@ -3,10 +3,18 @@ from unittest.mock import patch, MagicMock
 from src.funcao_postgree.bd_postgree_funcionario import BdFuncionario
 
 class TestBdFuncionario(unittest.TestCase):
+    """
+    Testes para a classe BdFuncionario
+    """
 
     @patch("src.funcao_postgree.bd_postgree_funcionario.BdFuncionario.get_cursor")
     @patch("src.funcao_postgree.bd_postgree_funcionario.BdFuncionario.commit")
     def test_database_init(self, mock_commit, mock_get_cursor):
+        """
+        Testa o método database_init
+        
+        Verifica se o método cria a tabela funcionario
+        """
         mock_cursor = MagicMock()
         mock_get_cursor.return_value = mock_cursor
 

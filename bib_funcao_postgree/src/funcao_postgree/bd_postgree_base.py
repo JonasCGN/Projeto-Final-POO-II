@@ -13,11 +13,15 @@ class Bd_Base:
 
     post_client = None
 
-    def __init__(self) -> None:
+    def __init__(self, host: str = "localhost", database: str = "database-postgres", user: str = "root", password: str = "root") -> None:
         """
         Inicializa a conexão com o banco de dados.
         """
         if Bd_Base.post_client is None:
+            self.host = host
+            self.database = database
+            self.user = user
+            self.password = password
             self._conectar()
 
     def _conectar(self) -> None:
@@ -26,14 +30,15 @@ class Bd_Base:
         """
         while True:
             try:
-                host = os.getenv("POSTGRES_HOST", "localhost")
+                print("[LOG INFO] Tentando conectar ao PostgreSQL em:", self.host)
+                print("[LOG INFO] database:", self.database)
                 Bd_Base.post_client = psycopg2.connect(
-                    host=host,
-                    database='database-postgres',
-                    user='root',
-                    password='root'
+                    host=self.host,
+                    database=self.database,
+                    user=self.user,
+                    password=self.password
                 )
-                print("[LOG INFO] Conectado ao PostgreSQL em: ", host)
+                print("[LOG INFO] Conectado ao PostgreSQL em:", self.host)
                 break
             except psycopg2.OperationalError as e:
                 print(f"[LOG ERRO] Erro ao conectar ao PostgreSQL: {e}")

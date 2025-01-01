@@ -12,11 +12,11 @@ class BdProduto(Bd_Base):
     """
     
 
-    def __init__(self) -> None:
+    def __init__(self, host: str = 'localhost', database: str = 'database-postgres', user: str = 'root', password: str = 'root') -> None:
         """
         Inicializa a conexão com o banco de dados, e cria a tabela Produto caso não exista.
         """
-        super().__init__()
+        super().__init__(host, database, user, password)
         self.database_init()
 
     def database_init(self) -> None:

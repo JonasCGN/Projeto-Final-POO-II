@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from os import getenv
 
 load_dotenv("src/.env")
-print(getenv('EMAIL'), getenv('PASSWORD'))
 email_sender = EmailSender(getenv('EMAIL'), getenv('PASSWORD'))
 
 def enviar_email_recuperacao_de_conta(email, usuario, senha):

@@ -3,10 +3,12 @@ Módulo que contém funções para iniciar o cliente e o servidor de sincroniza�
 """
 from typing import Callable
 from sincronizacao_servidor_cliente import ClienteSincronizado, ServidorSincronizacao
+from dotenv import load_dotenv
+import os
 
-
-cliente_sincronizado = ClienteSincronizado()
-sync_server = ServidorSincronizacao()
+load_dotenv('.env')
+cliente_sincronizado = ClienteSincronizado(os.getenv('SERVER_ADDRESS'), int(os.getenv('SERVER_PORT')))
+sync_server = ServidorSincronizacao(os.getenv('SERVER_ADDRESS'), int(os.getenv('SERVER_PORT')))
 
 def iniciar_cliente_sincronizado(on_mensage: Callable) -> None:
     """

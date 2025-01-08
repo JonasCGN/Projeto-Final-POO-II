@@ -32,7 +32,7 @@ class BdFuncionario(Bd_Base):
                     id SERIAL PRIMARY KEY,
                     usuario VARCHAR(255) UNIQUE,
                     senha VARCHAR(255) NOT NULL,
-                    email VARCHAR(255) NOT NULL
+                    email VARCHAR(255) NOT NULL UNIQUE
                 );
             """)
 
@@ -101,7 +101,7 @@ class BdFuncionario(Bd_Base):
         retorno = False
         try:
             query = """
-                SELECT * FROM funcionario 
+                SELECT senha FROM funcionario 
                 WHERE usuario = %s
             """
             cursor = self.get_cursor()
@@ -109,7 +109,7 @@ class BdFuncionario(Bd_Base):
             resultado = cursor.fetchone()
             
             if resultado:
-                retorno = pbkdf2_sha256.verify(senha, resultado[2])  
+                retorno = pbkdf2_sha256.verify(senha, resultado[0])  
                
             
         except Exception as e:
@@ -130,13 +130,11 @@ class BdFuncionario(Bd_Base):
             Union[str, bool]: Nova senha gerada se o funcionário for encontrado, False caso contrário.
         """
         
-        nova_senha = ''.join(random.choices(string.ascii_letters + string.digits, k=8))  # Gera senha aleatória de 8 caracteres
-        hash_senha = pbkdf2_sha256.hash(nova_senha)
         retorno = False
 
         try:
             query_select = """
-                SELECT * FROM funcionario
+                SELECT usuario FROM funcionario
                 WHERE email = %s
             """
             query_update = """
@@ -149,9 +147,11 @@ class BdFuncionario(Bd_Base):
             resultado = cursor.fetchone()
             
             if resultado:
+                nova_senha = ''.join(random.choices(string.ascii_letters + string.digits, k=8))  # Gera senha aleatória de 8 caracteres
+                hash_senha = pbkdf2_sha256.hash(nova_senha)
                 cursor.execute(query_update, (hash_senha, email))
                 self.commit() 
-                retorno = (resultado[1], nova_senha)
+                retorno = (resultado[0], nova_senha)
             
         except Exception as e:
             print("[LOG ERRO] Erro ao recuperar senha: ", e)

@@ -63,11 +63,14 @@ class Autenticacao(QMainWindow):
             return
         
         print(f"[LOG INFO] Cadastro realizado {usuario}, {email}, {senha}")
-        inserir_funcionario({"usuario": usuario, "email": email, "senha": senha})
-        QMessageBox.information(self, "Sucesso", "Cadastro realizado com sucesso!")
         
-        self.autenticado = True
-        self.close()
+        if(inserir_funcionario({"usuario": usuario, "email": email, "senha": senha})):
+            QMessageBox.information(self, "Sucesso", "Cadastro realizado com sucesso!")
+            self.autenticado = True
+            self.close()
+        else:
+            self.show_error("Erro ao cadastrar usuário. Tente novamente.")
+        
             
     def recuperar_senha(self):
         """

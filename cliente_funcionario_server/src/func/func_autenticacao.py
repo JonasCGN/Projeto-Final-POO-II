@@ -18,7 +18,7 @@ def inserir_funcionario(funcionario: dict[str, str]) -> bool:
     Returns:
         bool: True se a inserção foi bem sucedida, False caso contrário.
     """
-    bd_funcionario.insert_funcionario(json.dumps(funcionario))
+    return bd_funcionario.insert_funcionario(json.dumps(funcionario))
 
 def validar_acesso(usuario: str, senha: str) -> bool:
     """
@@ -34,7 +34,7 @@ def validar_acesso(usuario: str, senha: str) -> bool:
     
     return bd_funcionario.validar_acesso(usuario, senha)
 
-def recuperar_senha(email: str) -> Tuple[str, str] | False:
+def recuperar_senha(email: str) -> Tuple[str, str] | bool:
     """
     Recupera a senha do usuário.
     

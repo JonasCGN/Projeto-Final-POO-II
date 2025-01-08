@@ -6,7 +6,6 @@ import socket
 import threading
 from typing import Callable
 
-
 class ErroServidor(Exception):
     """
     Exceção para erros relacionados ao servidor de sincronização.
@@ -52,8 +51,7 @@ class ServidorSincronizacao:
         self.executando = True
         try:
             self._iniciar_servidor()
-            thread = threading.Thread(target=self._aceitar_conexoes, args=(ao_receber_mensagem,), daemon=True)
-            thread.start()
+            self._aceitar_conexoes(ao_receber_mensagem)
         except Exception as e:
             raise ErroServidor(f"Erro ao iniciar o servidor: {e}")
 

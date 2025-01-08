@@ -37,16 +37,8 @@ class Home(QMainWindow):
         """
         super().__init__()
         uic.loadUi('src/screen/ui/home.ui', self)
-        self.signal_handler = SignalHandler()
-        self.signal_handler.atualizar_produto_signal.connect(self.atualizar_lista_produto)
-        self.signal_handler.atualizar_pedido_signal.connect(self.atualizar_list_pedido)
         
-        iniciar_cliente_sincronizado(self.logica_de_sincronizacao)
-        
-        self.pushButton_adicionar_ao_pedido.clicked.connect(self.adicionar_pedido_desenvolvimento)
-        self.pushButton_remover_pedido_temporario.clicked.connect(self.remover_pedido_desenvolvimento)
-        self.pushButton_efetivar_pedido.clicked.connect(self.efetivar_pedido)
-        
+
         self.comboBox_status_do_pedido.setEnabled(False)
         self.listView_list_pedidos.clicked.connect(self.status_pedido_selecionado)
         self.current_pedido_id = None 
@@ -56,60 +48,6 @@ class Home(QMainWindow):
         self.atualizar_lista_produto()
         self.atualizar_list_pedido()
         self.show()
-    
-    def status_pedido_selecionado(self):
-        """
-        Função para exibir o status do pedido selecionado.
-        """
-        try:
-            self.comboBox_status_do_pedido.currentTextChanged.disconnect()
-        except TypeError:
-            pass
-    
-        selected_index = self.listView_list_pedidos.selectedIndexes()
-        
-        if selected_index:
-            self.comboBox_status_do_pedido.setEnabled(True)
-            selected_item = self.listView_list_pedidos.model().itemFromIndex(selected_index[0])
-            item_text = selected_item.text()
-            
-            id = item_text.split(", ")[0].split(": ")[1]
-            status = item_text.split(", ")[2].split(": ")[1]
-        
-            self.current_pedido_id = id
-            
-            self.comboBox_status_do_pedido.setCurrentText(status)
-            self.comboBox_status_do_pedido.currentTextChanged.connect(self.editar_status_pedido)
-        else:
-            QMessageBox.warning(self, "Erro", "Selecione um pedido para editar.")
-            
-    def exibir_pedido(self):
-        """
-        Função para exibir o pedido selecionado.
-        """
-        dialogo = DialogoExibirProduto(self.current_pedido_id)
-        dialogo.exec()
-    
-    def editar_status_pedido(self):
-        """
-        Função para editar o status do pedido.
-        """
-        status = self.comboBox_status_do_pedido.currentText()
-        editar_status_pedido(self.current_pedido_id, status)
-        enviar_mensagem_de_sincronizacao_cliente("sync_pedido")
-        
-
-    def logica_de_sincronizacao(self, msg):
-        """
-        Função para tratar a mensagem de sincronização.
-        """
-        if msg == "sync_produto":
-            self.signal_handler.atualizar_produto_signal.emit()
-        elif msg == "sync_pedido":
-            self.signal_handler.atualizar_pedido_signal.emit()
-        elif msg == "server_down":
-            QMessageBox.warning(self, "Aviso", "Servidor está desligado")
-            self.close()
 
     def atualizar_lista_produto(self):
         """

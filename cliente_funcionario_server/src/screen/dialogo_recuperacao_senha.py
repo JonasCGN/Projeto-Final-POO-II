@@ -2,7 +2,7 @@
 from PyQt5.QtWidgets import QDialog, QLineEdit, QComboBox, QDialogButtonBox, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
 from PyQt5 import uic
-from src.func.func_email import enviar_email_recuperacao_de_conta
+from src.func.sincronizacao import enviar_mensagem_de_sincronizacao_cliente
 from src.func.func_autenticacao import recuperar_senha
 
 class DialogoRecuperarSenha(QDialog):
@@ -18,12 +18,7 @@ class DialogoRecuperarSenha(QDialog):
             self.dialog("Email Inválido", "Esse email não é válido.")
             return
         
-        usuario, senha = recuperar_senha(email)
-        if not senha:
-            self.dialog("Email não encontrado", "Esse email não está cadastrado.")
-            return
-        
-        enviar_email_recuperacao_de_conta(email, usuario, senha)
+        enviar_mensagem_de_sincronizacao_cliente(f"Email_recuperacao: {email}")
         self.dialog()
         self.close()
       

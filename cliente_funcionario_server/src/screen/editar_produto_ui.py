@@ -6,7 +6,7 @@ from typing import Callable, Tuple
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5 import uic
 from src.func.func_produtos import atualizar_produto
-from src.func.sincronizacao import enviar_mensagem_de_sincronizacao_server
+from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_server
 
 
 class EditarProduto(QMainWindow):

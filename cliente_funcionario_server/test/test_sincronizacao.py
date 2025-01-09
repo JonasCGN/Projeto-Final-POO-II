@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from src.func.sincronizacao import iniciar_cliente_sincronizado, cliente_sincronizado
+from cliente_funcionario_server.src.func.func_sincronizacao import iniciar_cliente_sincronizado, cliente_sincronizado
 
 class TestSincronizacao(unittest.TestCase):
 

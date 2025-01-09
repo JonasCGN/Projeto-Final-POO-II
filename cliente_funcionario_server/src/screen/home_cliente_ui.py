@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog
 from PyQt5 import uic
 from src.screen.dialogo_exibir_pedido import DialogoExibirProduto
 from src.screen.dialogo_efetivar_pedido import DialogoEfetivarPedido
-from src.func.sincronizacao import enviar_mensagem_de_sincronizacao_cliente, iniciar_cliente_sincronizado
+from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_cliente, iniciar_cliente_sincronizado
 from src.func.func_pedidos_desenvolvimento import (
     pegar_pedidos_em_desenvolvimento_str,
     adicionar_pedido_em_desenvolvimento,

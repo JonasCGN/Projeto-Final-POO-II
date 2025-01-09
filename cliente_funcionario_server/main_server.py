@@ -1,5 +1,5 @@
 from src.func.func_autenticacao import recuperar_senha
-from src.func.sincronizacao import close_server, enviar_mensagem_de_sincronizacao_server, iniciar_servidor_sincronizado
+from src.func.func_sincronizacao import close_server, enviar_mensagem_de_sincronizacao_server, iniciar_servidor_sincronizado
 from src.func.func_email import enviar_email_recuperacao_de_conta
 
 

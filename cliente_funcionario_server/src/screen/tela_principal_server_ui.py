@@ -13,7 +13,7 @@ from .editar_produto_ui import EditarProduto
 from .adicionar_product_ui import AdicionarProducto
 from .dialogo_exibir_pedido import DialogoExibirProduto
 from src.func.func_pedido import get_utimos_1000_pedidos, editar_status_pedido, inserir_pedido, transformar_lista_str_em_lista_tuple
-from src.func.sincronizacao import enviar_mensagem_de_sincronizacao_cliente, enviar_mensagem_de_sincronizacao_server
+from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_cliente
 from src.func.func_produtos import pegar_todos_itens_str, remover_produto, trocar_disponibilidade
 
 class SignalHandler(QObject):
@@ -170,6 +170,7 @@ class TelaPrincipalServer(QMainWindow):
             
             self.comboBox_status_do_pedido.setCurrentText(status)
             self.comboBox_status_do_pedido.currentTextChanged.connect(self.editar_status_pedido)
+            
         else:
             QMessageBox.warning(self, "Erro", "Selecione um pedido para editar.")
             
@@ -187,7 +188,8 @@ class TelaPrincipalServer(QMainWindow):
         """
         status = self.comboBox_status_do_pedido.currentText()
         editar_status_pedido(self.current_pedido_id, status)
-        self.sync_tratament("sync_pedido")
+        enviar_mensagem_de_sincronizacao_cliente("sync_pedido")
+        
         
     def init_vars(self) -> None:
         """
@@ -197,16 +199,6 @@ class TelaPrincipalServer(QMainWindow):
         self.screen_edit_product = EditarProduto(self.atualizar_lista_produto)
         self.atualizar_lista_produto()
         self.atualizar_lista_pedido()
-        
-    def sync_tratament(self, msg: str) -> None:
-        """
-        Método que é chamado quando uma mensagem de sincronização é recebida. O mesmo trata a mensagem e 
-        atualiza a lista de produtos ou pedidos conforme necessário.
-        """
-        if msg == 'sync_produto':
-            self.signal_handler.atualizar_produto.emit()
-        elif msg == 'sync_pedido':
-            self.signal_handler.atualizar_pedido.emit()
     
     def adicionar_cor_item(self, cor: QColor, item: QStandardItem) -> QIcon:
         """
@@ -331,7 +323,8 @@ class TelaPrincipalServer(QMainWindow):
                 if remove:
                     print("[LOG INFO] Removendo produto")
                     remover_produto(id)
-                    self.sync_tratament("sync_produto")
+                    enviar_mensagem_de_sincronizacao_cliente("sync_produto")
+                    
                     
             except ValueError as e:
                 QMessageBox.warning(self, "Erro", "Não foi possível extrair os dados do produto selecionado.")
@@ -352,7 +345,7 @@ class TelaPrincipalServer(QMainWindow):
             id = item_text.split(', ')[0].split(": ")[1]
             print("[LOG INFO] Trocando disponibilidade")
             if trocar_disponibilidade(id):
-                self.sync_tratament("sync_produto")
+                enviar_mensagem_de_sincronizacao_cliente("sync_produto")
             else:
                 QMessageBox.warning(self, "Erro", "Não foi possível trocar a disponibilidade do produto.")
         else:

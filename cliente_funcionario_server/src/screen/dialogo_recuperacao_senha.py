@@ -2,7 +2,7 @@
 from PyQt5.QtWidgets import QDialog, QLineEdit, QComboBox, QDialogButtonBox, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
 from PyQt5 import uic
-from src.func.sincronizacao import enviar_mensagem_de_sincronizacao_cliente
+from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_cliente
 from src.func.func_autenticacao import recuperar_senha
 
 class DialogoRecuperarSenha(QDialog):

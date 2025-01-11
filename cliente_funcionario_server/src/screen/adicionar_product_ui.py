@@ -1,33 +1,60 @@
 """
 Modulo responsável por adicionar um produto na base de dados.
 """
-
+from PyQt5.QtWidgets import (
+    QMainWindow, QLabel, QLineEdit, QComboBox, QPushButton, QVBoxLayout, QWidget, QMessageBox
+)
 from typing import Callable
-from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from PyQt5 import uic
 from src.func.func_produtos import inserir_produto
 from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_server
 
 
+class AdicionarProduto(QMainWindow):
+    """
+    Classe que representa a tela de adição de um produto.
+    """
 
-class AdicionarProducto(QMainWindow):
-    """
-    Classe que representa a tela de adição de um produto
-    """
-    
-    def __init__(self, atualizar_product: Callable):
+    def __init__(self, atualizar_produto: Callable):
         """
-        Inicializa a tela de adição de um produto
+        Inicializa a tela de adição de um produto.
         """
         super().__init__()
-        uic.loadUi('src/screen/ui/add_product.ui', self)
-        
-        self.pushButton_confim.clicked.connect(self.inserir_valor)
-        self.pushButton_confim.clicked.connect(atualizar_product)
-        
+        self.setWindowTitle("Adicionar Produto")
+        self.setGeometry(100, 100, 300, 200)
+
+        # Criando os widgets
+        self.label_nome = QLabel("Nome do Produto:")
+        self.lineEdit_nome = QLineEdit()
+
+        self.label_preco = QLabel("Preço do Produto:")
+        self.lineEdit_preco = QLineEdit()
+
+        self.label_disponibilidade = QLabel("Disponibilidade:")
+        self.comboBox_disponibilidade = QComboBox()
+        self.comboBox_disponibilidade.addItems(["Disponível", "Indisponível"])
+
+        self.pushButton_confirm = QPushButton("Confirmar")
+        self.pushButton_confirm.clicked.connect(self.inserir_valor)
+        self.pushButton_confirm.clicked.connect(atualizar_produto)
+
+        # Layout
+        layout = QVBoxLayout()
+        layout.addWidget(self.label_nome)
+        layout.addWidget(self.lineEdit_nome)
+        layout.addWidget(self.label_preco)
+        layout.addWidget(self.lineEdit_preco)
+        layout.addWidget(self.label_disponibilidade)
+        layout.addWidget(self.comboBox_disponibilidade)
+        layout.addWidget(self.pushButton_confirm)
+
+        # Definindo o widget central
+        container = QWidget()
+        container.setLayout(layout)
+        self.setCentralWidget(container)
+
     def clear_values(self):
         """
-        Limpa os valores dos campos da tela de adição de produto
+        Limpa os valores dos campos da tela de adição de produto.
         """
         self.lineEdit_nome.clear()
         self.lineEdit_preco.clear()
@@ -35,7 +62,7 @@ class AdicionarProducto(QMainWindow):
 
     def inserir_valor(self):
         """
-        Insere o valor do produto
+        Insere o valor do produto.
         """
         try:
             nome = self.lineEdit_nome.text()
@@ -46,13 +73,14 @@ class AdicionarProducto(QMainWindow):
                 raise ValueError("O nome do produto não pode estar vazio.")
             if not preco.replace('.', '', 1).isdigit():
                 raise ValueError("O preço deve ser um número válido.")
-            
+
             preco = float(preco)
             produto = {"nome": nome, "preco": preco, "disponivel": status == "Disponível"}
 
-            if inserir_produto(produto):
+           
+            if inserir_produto(produto):  
                 QMessageBox.information(self, "Sucesso", "Produto inserido com sucesso!")
-                enviar_mensagem_de_sincronizacao_server("sync_produto")
+                enviar_mensagem_de_sincronizacao_server("sync_produto")  
                 print("[LOG INFO] Produto inserido com sucesso!")
                 self.clear_values()
                 self.close()
@@ -64,3 +92,6 @@ class AdicionarProducto(QMainWindow):
 
         except Exception as e:
             QMessageBox.critical(self, "Erro", f"Erro ao inserir produto: {str(e)}")
+
+
+

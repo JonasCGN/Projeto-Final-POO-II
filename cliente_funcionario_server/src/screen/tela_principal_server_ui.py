@@ -10,11 +10,12 @@ from PyQt5 import uic
 from src.screen.dialogo_efetivar_pedido import DialogoEfetivarPedido
 from src.func.func_pedidos_desenvolvimento import adicionar_pedido_em_desenvolvimento, finalizar_pedido_em_desenvolvimento, pegar_pedidos_em_desenvolvimento_str, remover_pedido_em_desenvolvimento
 from .editar_produto_ui import EditarProduto
-from .adicionar_product_ui import AdicionarProducto
+from src.screen.adicionar_product_ui import AdicionarProduto
 from .dialogo_exibir_pedido import DialogoExibirProduto
 from src.func.func_pedido import get_utimos_1000_pedidos, editar_status_pedido, inserir_pedido, transformar_lista_str_em_lista_tuple
 from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_cliente
 from src.func.func_produtos import pegar_todos_itens_str, remover_produto, trocar_disponibilidade
+
 
 class SignalHandler(QObject):
     """
@@ -195,7 +196,7 @@ class TelaPrincipalServer(QMainWindow):
         """
         Inicializa as variáveis da classe.
         """
-        self.screen_add_product = AdicionarProducto(self.atualizar_lista_produto)
+        self.screen_add_product = AdicionarProduto(self.atualizar_lista_produto)
         self.screen_edit_product = EditarProduto(self.atualizar_lista_produto)
         self.atualizar_lista_produto()
         self.atualizar_lista_pedido()

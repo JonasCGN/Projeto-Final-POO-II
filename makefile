@@ -48,3 +48,5 @@ run_server:
 run_funcionario:
 	@clear
 	@cd cliente_funcionario_server && python3 main_funcionario.py
+	
+    

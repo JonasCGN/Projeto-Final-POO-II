@@ -1,9 +1,8 @@
-"""
-Modulo responsável por adicionar um produto na base de dados.
-"""
 from PyQt5.QtWidgets import (
     QMainWindow, QLabel, QLineEdit, QComboBox, QPushButton, QVBoxLayout, QWidget, QMessageBox
 )
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 from typing import Callable
 from src.func.func_produtos import inserir_produto
 from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_server
@@ -37,6 +36,12 @@ class AdicionarProduto(QMainWindow):
         self.pushButton_confirm.clicked.connect(self.inserir_valor)
         self.pushButton_confirm.clicked.connect(atualizar_produto)
 
+        # Adicionando a imagem de fundo
+        self.bg_label = QLabel(self)
+        self.bg_label.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))  
+        self.bg_label.setAlignment(Qt.AlignCenter)
+        self.bg_label.setScaledContents(True)
+
         # Layout
         layout = QVBoxLayout()
         layout.addWidget(self.label_nome)
@@ -48,9 +53,16 @@ class AdicionarProduto(QMainWindow):
         layout.addWidget(self.pushButton_confirm)
 
         # Definindo o widget central
-        container = QWidget()
+        container = QWidget(self)
         container.setLayout(layout)
         self.setCentralWidget(container)
+
+    def resizeEvent(self, event):
+        """
+        Garante que a imagem de fundo seja redimensionada conforme a janela muda de tamanho.
+        """
+        self.bg_label.setGeometry(0, 0, self.width(), self.height())  # Ajusta para o tamanho da janela
+        super().resizeEvent(event)
 
     def clear_values(self):
         """
@@ -77,7 +89,6 @@ class AdicionarProduto(QMainWindow):
             preco = float(preco)
             produto = {"nome": nome, "preco": preco, "disponivel": status == "Disponível"}
 
-           
             if inserir_produto(produto):  
                 QMessageBox.information(self, "Sucesso", "Produto inserido com sucesso!")
                 enviar_mensagem_de_sincronizacao_server("sync_produto")  
@@ -92,6 +103,3 @@ class AdicionarProduto(QMainWindow):
 
         except Exception as e:
             QMessageBox.critical(self, "Erro", f"Erro ao inserir produto: {str(e)}")
-
-
-

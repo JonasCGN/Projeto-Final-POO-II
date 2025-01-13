@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import QApplication, QMessageBox
 from src.func.func_sincronizacao import iniciar_cliente_sincronizado
 import sys
 
+
 app = QApplication(sys.argv)
 tela_principal = TelaPrincipalServer()
 autenticacao = Autenticacao()

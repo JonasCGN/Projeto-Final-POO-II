@@ -47,7 +47,7 @@ class Autenticacao(QMainWindow):
         self.label_usuario.setGeometry(50, 400, 400, 50)
         self.label_usuario.setStyleSheet("color: white;")
         self.label_usuario.setFont(QFont("Arial", 14, QFont.Bold))  
-        self.label_usuario.setAlignment(Qt.AlignCenter)
+      
         
         self.lineEdit_usuario_login = QLineEdit(self)
         self.lineEdit_usuario_login.setStyleSheet("padding: 5px; border: 2px solid white; border-radius: 5px;")
@@ -61,7 +61,7 @@ class Autenticacao(QMainWindow):
         self.label_senha.setGeometry(50, 400, 400, 50)
         self.label_senha.setStyleSheet("color: white;")
         self.label_senha.setFont(QFont("Arial", 14, QFont.Bold)) 
-        self.label_senha.setAlignment(Qt.AlignCenter)
+  
         
          
         self.lineEdit_senha_login = QLineEdit(self)
@@ -88,20 +88,17 @@ class Autenticacao(QMainWindow):
         self.pushButton_recuperar_login.clicked.connect(self.recuperar_senha)
 
         # Botão de cadastro
-        self.pushButton_cadastro = QPushButton("Cadastro", self)
-        self.pushButton_cadastro.setFixedWidth(400)
-        self.pushButton_cadastro.setFixedHeight(30)
-        self.pushButton_cadastro.setStyleSheet(
-            "background-color: white; color: black; border: 2px solid black; border-radius: 5px; padding: 5px;"
-        )
+        self.pushButton_cadastro = QPushButton("Não tem cadastro ? Clique aqui!! ", self)
+        self.pushButton_cadastro.setStyleSheet("color: white; border: none; text-align: center;")
         self.pushButton_cadastro.clicked.connect(self.abrir_tela_cadastro)
        
        
         # Layout principal
         self.layout_principal = QVBoxLayout()
-        self.layout_principal.setSpacing(10)
+        self.layout_principal.setSpacing(15)
         self.layout_principal.setAlignment(Qt.AlignCenter)
 
+        self.layout_principal.addWidget(self.pushButton_cadastro)
         self.layout_principal.addWidget(self.label_titulo)
         self.layout_principal.addWidget(self.label_usuario)
         self.layout_principal.addWidget(self.lineEdit_usuario_login)
@@ -109,7 +106,7 @@ class Autenticacao(QMainWindow):
         self.layout_principal.addWidget(self.lineEdit_senha_login)
         self.layout_principal.addWidget(self.pushButton_login)
         self.layout_principal.addWidget(self.pushButton_recuperar_login)
-        self.layout_principal.addWidget(self.pushButton_cadastro)
+       
 
         # Widget central
         self.widget_central = QWidget()
@@ -182,12 +179,10 @@ class CadastroTela(QMainWindow):
         self.label_titulo = QLabel("Cadastro de Usuário", self)
         self.label_titulo.setGeometry(50,50, 400, 50)
         self.label_titulo.setFont(QFont("Arial", 20, QFont.Bold))
-        self.label_titulo.setAlignment(Qt.AlignCenter)
         self.label_titulo.setStyleSheet("color: white;")
 
         # Campo de usuário
         self.label_usuario = QLabel("Usuário", self)
-        self.label_usuario.setAlignment(Qt.AlignCenter)
         self.label_usuario.setFont(QFont("Arial", 10, QFont.Bold)) 
         self.label_usuario.setStyleSheet("color: white;")
         self.lineEdit_usuario = QLineEdit(self)
@@ -201,7 +196,6 @@ class CadastroTela(QMainWindow):
         self.label_email = QLabel("Email", self)
         self.label_email.setStyleSheet("color: white;")
         self.label_email.setFont(QFont("Arial", 10, QFont.Bold)) 
-        self.label_email.setAlignment(Qt.AlignCenter)
         self.lineEdit_email = QLineEdit(self)
         self.lineEdit_email.setStyleSheet("padding: 5px; border: 2px solid white; border-radius: 5px;")
         self.lineEdit_email.setPlaceholderText("Digite seu email")
@@ -212,7 +206,6 @@ class CadastroTela(QMainWindow):
         self.label_senha = QLabel("Senha", self)
         self.label_senha.setStyleSheet("color: white;")
         self.label_senha.setFont(QFont("Arial", 10, QFont.Bold)) 
-        self.label_senha.setAlignment(Qt.AlignCenter)
         self.lineEdit_senha = QLineEdit(self)
         self.lineEdit_senha.setEchoMode(QLineEdit.Password)
         self.lineEdit_senha.setStyleSheet("padding: 5px; border: 2px solid white; border-radius: 5px;")
@@ -224,7 +217,6 @@ class CadastroTela(QMainWindow):
         self.label_confirm_senha = QLabel("Confirme a senha", self)
         self.label_confirm_senha.setFont(QFont("Arial", 10, QFont.Bold)) 
         self.label_confirm_senha.setStyleSheet("color: white;")
-        self.label_confirm_senha.setAlignment(Qt.AlignCenter)
         self.lineEdit_confirm_senha = QLineEdit(self)
         self.lineEdit_confirm_senha.setEchoMode(QLineEdit.Password)
         self.lineEdit_confirm_senha.setStyleSheet("padding: 5px; border: 2px solid white; border-radius: 5px;")
@@ -254,10 +246,11 @@ class CadastroTela(QMainWindow):
 
         # Layout de cadastro
         self.layout_cadastro = QVBoxLayout()
-        self.layout_cadastro.setSpacing(10)
+        self.layout_cadastro.setSpacing(8)
         self.layout_cadastro.setAlignment(Qt.AlignCenter)
 
         self.layout_cadastro.addWidget(self.label_titulo)
+
         self.layout_cadastro.addWidget(self.label_usuario)
         self.layout_cadastro.addWidget(self.lineEdit_usuario)
         self.layout_cadastro.addWidget(self.label_email)

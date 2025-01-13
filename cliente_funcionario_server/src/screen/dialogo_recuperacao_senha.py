@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLineEdit, QPushButton, QLabel, QMessageBox
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
 from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_cliente
 
@@ -20,6 +20,9 @@ class DialogoRecuperarSenha(QDialog):
         # Ajusta as margens do layout (esquerda, topo, direita, baixo)
         layout.setContentsMargins(20, 70, 20, 10)
 
+        # Ajuste do espaçamento entre os elementos
+        layout.setSpacing(30)  # Define o espaçamento entre os widgets (20 pixels)
+
         # Imagem de fundo
         self.fundo_label = QLabel(self)
         self.fundo_label.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))
@@ -29,43 +32,33 @@ class DialogoRecuperarSenha(QDialog):
 
         # Título
         self.lbl_titulo = QLabel("Recuperar Senha", self)
-        self.lbl_titulo.setStyleSheet(
-            """
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            """
-        )
+        self.lbl_titulo.setFont(QFont("Arial", 14, QFont.Bold))
+        self.lbl_titulo.setStyleSheet("color: white;")
         self.lbl_titulo.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.lbl_titulo)
 
-        # Campo de entrada para o email
-        self.lineEdit_email = QLineEdit(self)
-        self.lineEdit_email.setPlaceholderText("Digite seu email")
-        self.lineEdit_email.setStyleSheet(
-            """
-            background-color: transparent;
-            color: white;
-            border: 2px solid white;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 16px;
-            """
-        )
-        layout.addWidget(self.lineEdit_email)
+        # Campo de entrada para o E-mail
+        self.lineEdit_usuario_login = QLineEdit(self)
+        self.lineEdit_usuario_login.setStyleSheet("padding: 5px; border: 2px solid white; border-radius: 5px;")
+        self.lineEdit_usuario_login.setPlaceholderText("Digite seu E-mail")
+        self.lineEdit_usuario_login.setFixedWidth(400)  # largura
+        self.lineEdit_usuario_login.setFixedHeight(30)  # altura
+        layout.addWidget(self.lineEdit_usuario_login, alignment=Qt.AlignCenter)
 
         # Botão para enviar o email
         self.pushButton_enviar_email = QPushButton("Enviar Email", self)
-        self.pushButton_enviar_email.setFixedHeight(40)
         self.pushButton_enviar_email.setStyleSheet(
             """
-            background-color: black;
-            color: white;
+            padding: 5px;
             border: 2px solid white;
             border-radius: 5px;
-            padding: 5px;
+            background-color: black;
+            color: white;
+            font-size: 14px;
             """
         )
+        self.pushButton_enviar_email.setFixedWidth(200)
+        self.pushButton_enviar_email.setFixedHeight(30)
         layout.addWidget(self.pushButton_enviar_email, alignment=Qt.AlignCenter)
 
         # Conectar o botão ao método
@@ -79,7 +72,7 @@ class DialogoRecuperarSenha(QDialog):
         """
         Método para enviar o email de recuperação de senha.
         """
-        email = self.lineEdit_email.text()
+        email = self.lineEdit_usuario_login.text()  # Aqui você pode ajustar para pegar o valor do campo de usuário
         if not email or "@" not in email:
             self.exibir_mensagem("Email Inválido", "Esse email não é válido.")
             return

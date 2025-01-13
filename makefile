@@ -18,7 +18,7 @@ clear:
 
 
 databese_up:
-	@sudo docker-compose up -d --build 
+	@sudo docker-compose up -d --build
 
 creat_paste_bibs:
 	@mkdir cliente_funcionario_server/bibs -p

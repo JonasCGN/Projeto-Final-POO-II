@@ -6,7 +6,7 @@ from typing import Callable
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5 import uic
 from src.func.func_produtos import inserir_produto
-from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_server
+from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_cliente
 
 
 
@@ -52,7 +52,7 @@ class AdicionarProducto(QMainWindow):
 
             if inserir_produto(produto):
                 QMessageBox.information(self, "Sucesso", "Produto inserido com sucesso!")
-                enviar_mensagem_de_sincronizacao_server("sync_produto")
+                enviar_mensagem_de_sincronizacao_cliente("sync_produto")
                 print("[LOG INFO] Produto inserido com sucesso!")
                 self.clear_values()
                 self.close()

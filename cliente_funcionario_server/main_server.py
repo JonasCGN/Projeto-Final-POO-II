@@ -1,7 +1,14 @@
+from funcao_postgree.bd_postgree_base import Bd_Base
+from dotenv import load_dotenv
+import os
+
+load_dotenv(".env")
+Bd_Base(os.getenv('HOST_BD'), os.getenv('DATABASE'), os.getenv('USER_BD'), os.getenv('PASSWORD_BD'))
+
+
 from src.func.func_autenticacao import recuperar_senha
 from src.func.func_sincronizacao import close_server, enviar_mensagem_de_sincronizacao_server, iniciar_servidor_sincronizado
 from src.func.func_email import enviar_email_recuperacao_de_conta
-
 
 
 def sync_tratament(msg: str) -> str | None:
@@ -14,6 +21,7 @@ def sync_tratament(msg: str) -> str | None:
     if valor is not False:
       enviar_email_recuperacao_de_conta(email, *valor)
       print(f"[LOG INFO] Email de recuperação de conta enviado para '{email}'.")
+      
   else:
     print(f"[LOG INFO] Mensagem '{msg}' está sendo repassada para os clientes.")
     enviar_mensagem_de_sincronizacao_server(msg)  

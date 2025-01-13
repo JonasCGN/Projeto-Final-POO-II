@@ -15,10 +15,11 @@ class DialogoExibirProduto(QDialog):
         """
         super().__init__()
         self.setWindowTitle("Exibir Produtos do Pedido")
-        self.setGeometry(700, 600, 700, 600)
+        self.setGeometry(500, 400, 500, 400)
 
        
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(10, 20, 20, 10)
 
         
         self.fundo_label = QLabel(self)

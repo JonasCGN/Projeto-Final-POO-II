@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "sincronizacao_servidor_cliente"
+version = "0.1.0"
+description = ""
+authors = ["DEVFlavioLima7"]
+readme = "README.md"
+packages = [
+    { include = "sincronizacao_servidor_cliente", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -12,7 +12,7 @@ class TestServidorSincronizacao(unittest.TestCase):
         servidor.iniciar(mock_callback)
         
         self.assertTrue(servidor.executando)
-        mock_socket.return_value.bind.assert_called_with(('localhost', 12345))
+        mock_socket.return_value.bind.assert_called_with(('localhost',12345))
         mock_socket.return_value.listen.assert_called_once()
 
     def test_iniciar_servidor_ja_em_execucao(self):

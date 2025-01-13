@@ -19,26 +19,38 @@ class AdicionarProduto(QMainWindow):
         """
         super().__init__()
         self.setWindowTitle("Adicionar Produto")
-        self.setGeometry(100, 100, 300, 200)
+        self.setGeometry(750, 550, 750, 550)
 
         # Criando os widgets
-        self.label_nome = QLabel("Nome do Produto:")
+        self.label_nome = QLabel()
         self.lineEdit_nome = QLineEdit()
+        self.lineEdit_nome.setPlaceholderText("Nome do Produto")
+        self.lineEdit_nome.setStyleSheet("QLineEdit { color: gray; font-size: 30px; border-width: 10px;}")
+        
 
-        self.label_preco = QLabel("Preço do Produto:")
+        self.label_preco = QLabel()
         self.lineEdit_preco = QLineEdit()
+        self.lineEdit_preco.setPlaceholderText("Preço do Produto:")
+        self.lineEdit_preco.setStyleSheet("QLineEdit { color: gray; font-size: 30px; border-width: 10px; }")
 
-        self.label_disponibilidade = QLabel("Disponibilidade:")
+        self.label_disponibilidade = QLabel("STATUS:")
         self.comboBox_disponibilidade = QComboBox()
         self.comboBox_disponibilidade.addItems(["Disponível", "Indisponível"])
+        self.comboBox_disponibilidade.setStyleSheet("QComboBox { color: gray; font-size: 25px; border-width: 100px; }")
+
+        self.label_disponibilidade.setStyleSheet("QLabel { color: white;font-size: 25px; border-width: 100px; }")
+        self.comboBox_disponibilidade = QComboBox()
+        self.comboBox_disponibilidade.addItems(["Disponível", "Indisponível"])
+        self.comboBox_disponibilidade.setStyleSheet("QComboBox { color: gray; font-size: 25px; border-width: 100px; }")
 
         self.pushButton_confirm = QPushButton("Confirmar")
         self.pushButton_confirm.clicked.connect(self.inserir_valor)
         self.pushButton_confirm.clicked.connect(atualizar_produto)
+        self.pushButton_confirm.setStyleSheet("QPushButton { font-size: 30px; border-width: 10px; }")
 
         # Adicionando a imagem de fundo
         self.bg_label = QLabel(self)
-        self.bg_label.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))  
+        self.bg_label.setPixmap(QPixmap("/home/walison/Projeto-Final-POO-II/Tela base.jpg"))  
         self.bg_label.setAlignment(Qt.AlignCenter)
         self.bg_label.setScaledContents(True)
 

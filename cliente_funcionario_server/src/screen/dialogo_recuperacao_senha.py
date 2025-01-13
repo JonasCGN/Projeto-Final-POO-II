@@ -12,7 +12,7 @@ class DialogoRecuperarSenha(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Recuperar Senha")
-        self.setGeometry(500, 300, 500, 300)
+        self.setGeometry(550, 300, 550, 300)
 
         # Layout principal
         layout = QVBoxLayout(self)

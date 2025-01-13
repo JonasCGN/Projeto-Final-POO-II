@@ -44,7 +44,7 @@ class DialogoEfetivarPedido(QDialog):
         self.label_status_pedido.setStyleSheet("color: white;")
         self.status_pedido = QComboBox(self)
         self.status_pedido.setStyleSheet("padding: 5px; border: 2px solid white; border-radius: 5px;")
-        self.status_pedido.addItems(["Pendente", "Em Preparação", "Pronto", "Entregue"])
+        self.status_pedido.addItems(["Pedido em andamento", "Entregar", "Pedido cancelado", "Pedido finalizado"])
         self.status_pedido.setFixedWidth(400)
         self.status_pedido.setFixedHeight(30)
 

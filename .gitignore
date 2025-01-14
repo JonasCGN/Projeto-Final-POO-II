@@ -5,3 +5,4 @@ __pycache__
 bibs
 dist
 .env
+credenciais.json

@@ -4,10 +4,50 @@ import numpy as np
 from datetime import datetime 
 from email_functions.email_sand import EmailSender
 
+from funcao_postgree.bd_postgree_base import Bd_Base
+from funcao_postgree.bd_postgree_pedido_produto import BdPedidoProduto
+from funcao_postgree.bd_postgree_pedido import BdPedido
+from funcao_postgree.bd_postgree_produto import BdProduto
+from dotenv import load_dotenv
+import os
+
+load_dotenv(".env")
+Bd_Base(os.getenv('HOST_BD'), os.getenv('DATABASE'), os.getenv('USER_BD'), os.getenv('PASSWORD_BD'))
+
+bd_produto = BdProduto()
+bd_pedido = BdPedido()
+bd_pedido_produto = BdPedidoProduto()
+
+def criar_csv():
+    text_pedidos_csv = bd_pedido.get_pedidos_csv()
+    text_produtos_csv = bd_produto.get_produto_csv()
+    text_produtos_pedidos_csv = bd_pedido_produto.get_pedidos_produto_csv()
+    
+    with open("pedidos.csv", "w") as file:
+        file.write(text_pedidos_csv)
+    with open("produtos.csv", "w") as file:
+        file.write(text_produtos_csv)
+    with open("produtos_pedidos.csv", "w") as file:
+        file.write(text_produtos_pedidos_csv)
+        
+def remover_csv():
+    os.remove("pedidos.csv")
+    os.remove("produtos.csv")
+    os.remove("produtos_pedidos.csv")
+
+
 def carregar_dados():
-    df_pedidos = pd.read_csv("pedido.csv")
-    df_produtos = pd.read_csv("produto.csv")
-    df_produtos_pedidos = pd.read_csv("produto_pedido.csv")
+    criar_csv()
+    df_pedidos = pd.read_csv("pedidos.csv")
+    df_produtos = pd.read_csv("produtos.csv")
+    df_produtos_pedidos = pd.read_csv("produtos_pedidos.csv")
+    remover_csv()
+    
+    print("Dados carregados com sucesso.")
+    print("Pedidos:", df_pedidos.shape)
+    print("Produtos:", df_produtos.shape)
+    print("Produtos_Pedidos:", df_produtos_pedidos.shape)
+    
     return df_pedidos, df_produtos, df_produtos_pedidos
 
 def mesclar_e_limpar(df1, df2, chave_esquerda, chave_direita, sufixos=("", "_y")):
@@ -143,21 +183,27 @@ def gerar_html(totais):
     """
     return html
 
-from email_functions.email_sand import EmailSender
-from dotenv import load_dotenv
-from os import getenv
-
-load_dotenv(".env")
-email_sender = EmailSender(getenv('EMAIL'), getenv('PASSWORD'))
-
-
-def principal():
+def gerar_relatorio() -> str:
     df_pedidos, df_produtos, df_produtos_pedidos = carregar_dados()
     df_pedidos, df_produtos, df_produtos_pedidos = preprocessar_dados(df_pedidos, df_produtos, df_produtos_pedidos)
     totais = calcular_totais(df_pedidos, df_produtos, df_produtos_pedidos)
     html = gerar_html(totais)
-    email_sender.send_email("Relatório de Vendas", html, "jonasbo66@gmail.com")
-  
+    return html
 
-if __name__ == "__main__":
-    principal()
+# from email_functions.email_sand import EmailSender
+# from dotenv import load_dotenv
+# from os import getenv
+
+# load_dotenv(".env")
+# email_sender = EmailSender(getenv('EMAIL'), getenv('PASSWORD'))
+
+
+# def principal():
+#     df_pedidos, df_produtos, df_produtos_pedidos = carregar_dados()
+#     df_pedidos, df_produtos, df_produtos_pedidos = preprocessar_dados(df_pedidos, df_produtos, df_produtos_pedidos)
+#     totais = calcular_totais(df_pedidos, df_produtos, df_produtos_pedidos)
+#     html = gerar_html(totais)
+#     email_sender.send_email("Relatório de Vendas", html, "kaua.sbc@gmail.com")
+  
+# if __name__ == "__main__":
+#     principal()

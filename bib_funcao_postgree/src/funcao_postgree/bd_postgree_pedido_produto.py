@@ -126,3 +126,31 @@ class BdPedidoProduto(Bd_Base):
             return None
         finally:
             cursor.close()
+    
+    def get_pedidos_produto_csv(self) -> str:
+        """
+        Busca os pedidos e produtos do banco de dados e converte para um texto CSV.
+        
+        Returns:
+            str: Texto CSV com os pedidos e produtos, ou uma string vazia em caso de erro.
+        """
+        try:
+            cursor = self.get_cursor()
+            cursor.execute("""
+                SELECT Produto_Pedido.id, Produto_Pedido.pedido_id, Produto_Pedido.produto_id, Produto_Pedido.quantidade, Produto_Pedido.preco_pago
+                FROM Produto_Pedido;
+            """)
+
+            rows = cursor.fetchall()
+            headers = [desc[0] for desc in cursor.description]
+            
+            csv_text = ",".join(headers) + "\n"
+            for row in rows:
+                csv_text += ",".join(str(cell) for cell in row) + "\n"
+            return csv_text
+            
+        except Exception as e:
+            print(f"[LOG ERRO] Erro ao buscar pedidos e produtos: {e}")
+            return ""
+        finally:
+            cursor.close()

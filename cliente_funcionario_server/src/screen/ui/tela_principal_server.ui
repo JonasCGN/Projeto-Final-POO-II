@@ -142,7 +142,7 @@ QListView::item[separator=&quot;true&quot;] {
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_controle_cardapio">
        <attribute name="title">
@@ -391,7 +391,15 @@ QListView::item[separator=&quot;true&quot;] {
     <addaction name="actionAtualizar_dados_do_Cardapio"/>
     <addaction name="actionAtualizar_dados_dos_pedidos"/>
    </widget>
+   <widget class="QMenu" name="menuRelatorio">
+    <property name="title">
+     <string>Relatorio</string>
+    </property>
+    <addaction name="actionEnviar_Relatorio_Email"/>
+    <addaction name="actionEnviar_banco_de_dados_Email"/>
+   </widget>
    <addaction name="menuAtualizar"/>
+   <addaction name="menuRelatorio"/>
   </widget>
   <action name="actionAtualizar_dados_do_Cardapio">
    <property name="text">
@@ -401,6 +409,16 @@ QListView::item[separator=&quot;true&quot;] {
   <action name="actionAtualizar_dados_dos_pedidos">
    <property name="text">
     <string>Atualizar dados dos pedidos</string>
+   </property>
+  </action>
+  <action name="actionEnviar_Relatorio_Email">
+   <property name="text">
+    <string>Enviar Relatorio Email</string>
+   </property>
+  </action>
+  <action name="actionEnviar_banco_de_dados_Email">
+   <property name="text">
+    <string>Enviar banco de dados Email</string>
    </property>
   </action>
  </widget>

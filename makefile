@@ -1,6 +1,6 @@
-all: databese_up creat_paste_bibs build_bib_funcao_postgree build_bib_sincronizacao_servidor_cliente build_bib_bib_email_functions
-server: all install_requeriments run_server
-funcionario: all install_requeriments run_funcionario
+all: databese_up creat_paste_bibs build_bib_funcao_postgree build_bib_sincronizacao_servidor_cliente build_bib_bib_email_functions install_requeriments
+server: all run_server
+funcionario: all run_funcionario
 
 install_depedencia:
 	@sudo apt-get install python3-venv python3-pip docker.io docker-compose python3-poetry -y

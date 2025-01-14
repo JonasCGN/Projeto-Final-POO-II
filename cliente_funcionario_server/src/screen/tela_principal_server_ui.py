@@ -15,7 +15,7 @@ from .dialogo_exibir_pedido import DialogoExibirProduto
 from src.func.func_pedido import get_utimos_1000_pedidos, editar_status_pedido, inserir_pedido, transformar_lista_str_em_lista_tuple
 from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_cliente
 from src.func.func_produtos import pegar_todos_itens_str, remover_produto, trocar_disponibilidade
-
+from src.func.func_autenticacao import get_email_autenticado
 
 class SignalHandler(QObject):
     """
@@ -53,12 +53,21 @@ class TelaPrincipalServer(QMainWindow):
         self.pushButton_remover_pedido_temporario.clicked.connect(self.remover_pedido_desenvolvimento)
         self.pushButton_efetivar_pedido.clicked.connect(self.efetivar_pedido)
         self.actionAtualizar_dados_do_Cardapio.triggered.connect(self.atualizar_lista_produto)
+        self.actionAtualizar_dados_dos_pedidos.triggered.connect(self.atualizar_lista_pedido)
+        self.actionEnviar_Relatorio_Email.triggered.connect(self.enviar_relatorio_email)
+        self.actionEnviar_banco_de_dados_Email.triggered.connect(self.enviar_banco_de_dados_email)
         
         self.comboBox_status_do_pedido.setEnabled(False)
         self.lst_todos_pedidos.clicked.connect(self.status_pedido_selecionado)
         self.current_pedido_id = None 
         
         self.pushButton_exibir_pedido.clicked.connect(self.exibir_pedido)
+    
+    def enviar_relatorio_email(self) -> None:
+        enviar_mensagem_de_sincronizacao_cliente(f"enviar_relatorio: {get_email_autenticado()}")
+    
+    def enviar_banco_de_dados_email(self) -> None:
+        enviar_mensagem_de_sincronizacao_cliente(f"enviar_arquivos: {get_email_autenticado()}")
     
     def efetivar_pedido(self) -> None:
         """

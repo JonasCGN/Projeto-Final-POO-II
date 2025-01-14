@@ -85,6 +85,36 @@ class BdFuncionario(Bd_Base):
             cursor.close()
 
         return retorno
+    
+    def get_email(self, usuario: str) -> str:
+        """
+        Retorna o email de um funcionario.
+        
+        Args:
+            usuario (str): Nome de usuario do funcionario.
+        
+        Returns:
+            str: Email do funcionario.
+        """
+        retorno = ""
+        try:
+            query = """
+                SELECT email FROM funcionario 
+                WHERE usuario = %s
+            """
+            cursor = self.get_cursor()
+            cursor.execute(query, (usuario,))
+            resultado = cursor.fetchone()
+            
+            if resultado:
+                retorno = resultado[0]
+            
+        except Exception as e:
+            print("[LOG ERRO] Erro ao recuperar email: ", e)
+        finally:
+            cursor.close()
+
+        return retorno
 
     def validar_acesso(self, usuario: str, senha: str) -> bool:
         """

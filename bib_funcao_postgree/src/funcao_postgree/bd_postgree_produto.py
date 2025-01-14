@@ -208,3 +208,36 @@ class BdProduto(Bd_Base):
             return []
         finally:
             cursor.close()
+
+    def get_produto_csv(self) -> str:
+        """
+        Busca os produtos do banco de dados e converte para um texto CSV.
+        
+        Returns:
+            str: Texto CSV com os produtos, ou uma string vazia em caso de erro.
+        """
+        
+        try:
+            cursor = self.get_cursor()
+            cursor.execute("SELECT * FROM Produto;")
+            produtos = cursor.fetchall()
+            produtos = [
+                {
+                    'id': produto[0],
+                    'nome': produto[1],
+                    'preco': produto[2],
+                    'disponivel': produto[3]
+                }
+                for produto in produtos
+            ]
+            
+            csv = "id,nome,preco,disponivel\n"
+            for produto in produtos:
+                csv += f"{produto['id']},{produto['nome']},{produto['preco']},{produto['disponivel']}\n"
+            
+            return csv
+        except Exception as e:
+            print(f"[LOG ERRO] Erro ao buscar produtos: {e}")
+            return ""
+        finally:
+            cursor.close()

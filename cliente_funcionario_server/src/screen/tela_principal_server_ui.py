@@ -74,6 +74,7 @@ class TelaPrincipalServer(QMainWindow):
         Função para efetivar um pedido.
         """
         produtos_disponiveis = self.get_produtos_disponiveis()
+      
         pedidos_em_desenvolvimento = pegar_pedidos_em_desenvolvimento_str()
         
         if not pedidos_em_desenvolvimento:
@@ -87,8 +88,8 @@ class TelaPrincipalServer(QMainWindow):
             
         dialogo_confirmacao = DialogoEfetivarPedido()
         if dialogo_confirmacao.exec_() == QDialog.Accepted:
-            numero_de_mesa = dialogo_confirmacao.lineEdit_numero_da_mesa.text()
-            status = dialogo_confirmacao.comboBox_status.currentText()
+            numero_de_mesa = dialogo_confirmacao.numero_da_mesa.text()  # Corrigido
+            status = dialogo_confirmacao.status_pedido.currentText()
             if(inserir_pedido(transformar_lista_str_em_lista_tuple(pedidos_em_desenvolvimento), numero_de_mesa, status)):
                 enviar_mensagem_de_sincronizacao_cliente("sync_pedido")
                 finalizar_pedido_em_desenvolvimento()

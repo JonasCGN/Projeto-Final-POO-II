@@ -1,9 +1,8 @@
-"""
-Modulo responsável por adicionar um produto na base de dados.
-"""
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QLineEdit, QComboBox, QPushButton, QVBoxLayout, QWidget, QMessageBox
+    QMainWindow, QLabel, QLineEdit, QComboBox, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QMessageBox
 )
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 from typing import Callable
 from src.func.func_produtos import inserir_produto
 from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_cliente
@@ -20,37 +19,90 @@ class AdicionarProduto(QMainWindow):
         """
         super().__init__()
         self.setWindowTitle("Adicionar Produto")
-        self.setGeometry(100, 100, 300, 200)
+        self.setGeometry(700, 600, 700, 600)  
 
-        # Criando os widgets
+        
+        self.bg_label = QLabel(self)
+        self.bg_label.setPixmap(QPixmap("../Tela base.jpg"))
+        self.bg_label.setAlignment(Qt.AlignCenter)
+        self.bg_label.setScaledContents(True)
+
+      
         self.label_nome = QLabel("Nome do Produto:")
+        self.label_nome.setStyleSheet("color: white; font-size: 16px; font-weight: bold;")
         self.lineEdit_nome = QLineEdit()
-
+        self.lineEdit_nome.setPlaceholderText("Digite o nome do produto")
+        self.lineEdit_nome.setStyleSheet("background-color: white; color: black; border-radius: 5px; padding: 5px;")
+        self.lineEdit_nome.setFixedSize(400, 30)
+        self.lineEdit_nome.setAlignment(Qt.AlignCenter)
+        
         self.label_preco = QLabel("Preço do Produto:")
+        self.label_preco.setStyleSheet("color: white; font-size: 16px; font-weight: bold;")
         self.lineEdit_preco = QLineEdit()
+        self.lineEdit_preco.setPlaceholderText("Digite o preço")
+        self.lineEdit_preco.setStyleSheet("background-color: white; color: black; border-radius: 5px; padding: 5px;")
+        self.lineEdit_preco.setFixedSize(400, 30)
+        self.lineEdit_preco.setAlignment(Qt.AlignCenter)
 
         self.label_disponibilidade = QLabel("Disponibilidade:")
+        self.label_disponibilidade.setStyleSheet("color: white; font-size: 16px; font-weight: bold;")
         self.comboBox_disponibilidade = QComboBox()
+        self.comboBox_disponibilidade.setStyleSheet("""
+            QComboBox {
+                background-color: white;
+                color: black;
+                border-radius: 5px;
+                padding: 5px;
+            }
+            QComboBox::item:hover {
+                background-color: lightblue;
+                color: black;
+            }
+        """)
         self.comboBox_disponibilidade.addItems(["Disponível", "Indisponível"])
+        self.comboBox_disponibilidade.setFixedSize(400, 30)
 
         self.pushButton_confirm = QPushButton("Confirmar")
+        self.pushButton_confirm.setStyleSheet(
+            "background-color: black; color: white; border: 2px solid; border-radius: 10px; font-size: 18px;"
+        )
+        self.pushButton_confirm.setFixedSize(400, 30)
         self.pushButton_confirm.clicked.connect(self.inserir_valor)
         self.pushButton_confirm.clicked.connect(atualizar_produto)
 
-        # Layout
-        layout = QVBoxLayout()
-        layout.addWidget(self.label_nome)
-        layout.addWidget(self.lineEdit_nome)
-        layout.addWidget(self.label_preco)
-        layout.addWidget(self.lineEdit_preco)
-        layout.addWidget(self.label_disponibilidade)
-        layout.addWidget(self.comboBox_disponibilidade)
-        layout.addWidget(self.pushButton_confirm)
+        layout_central = QVBoxLayout()  
+        layout_central.setContentsMargins(0, 0, 0, 0)  
+       
 
-        # Definindo o widget central
-        container = QWidget()
-        container.setLayout(layout)
+        layout = QVBoxLayout() 
+        layout.setContentsMargins(10, 20, 10, 20) 
+        layout.setSpacing(15)  
+
+       
+        layout.addWidget(self.label_nome, alignment=Qt.AlignCenter)
+        layout.addWidget(self.lineEdit_nome, alignment=Qt.AlignCenter)
+        layout.addWidget(self.label_preco, alignment=Qt.AlignCenter)
+        layout.addWidget(self.lineEdit_preco, alignment=Qt.AlignCenter)
+        layout.addWidget(self.label_disponibilidade, alignment=Qt.AlignCenter)
+        layout.addWidget(self.comboBox_disponibilidade, alignment=Qt.AlignCenter)
+        layout.addWidget(self.pushButton_confirm, alignment=Qt.AlignCenter)
+
+       
+        layout_central.addStretch()  
+        layout_central.addLayout(layout)  
+        layout_central.addStretch()  
+
+        
+        container = QWidget(self)
+        container.setLayout(layout_central)
         self.setCentralWidget(container)
+
+    def resizeEvent(self, event):
+        """
+        Garante que a imagem de fundo seja redimensionada conforme a janela muda de tamanho.
+        """
+        self.bg_label.setGeometry(0, 0, self.width(), self.height())  
+        super().resizeEvent(event)
 
     def clear_values(self):
         """
@@ -75,9 +127,10 @@ class AdicionarProduto(QMainWindow):
                 raise ValueError("O preço deve ser um número válido.")
 
             preco = float(preco)
+            if preco <= 0:
+                raise ValueError("O preço deve ser maior que zero.")
             produto = {"nome": nome, "preco": preco, "disponivel": status == "Disponível"}
 
-           
             if inserir_produto(produto):  
                 QMessageBox.information(self, "Sucesso", "Produto inserido com sucesso!")
                 enviar_mensagem_de_sincronizacao_cliente("sync_produto")
@@ -92,6 +145,3 @@ class AdicionarProduto(QMainWindow):
 
         except Exception as e:
             QMessageBox.critical(self, "Erro", f"Erro ao inserir produto: {str(e)}")
-
-
-

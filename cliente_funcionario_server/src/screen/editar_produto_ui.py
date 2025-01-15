@@ -19,22 +19,22 @@ class EditarProduto(QMainWindow):
         self.setWindowTitle("Editar Produto")
         self.setGeometry(500, 300, 500, 400)
         
-        # Widget principal
+
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
 
-        # Layout principal
+      
         layout = QVBoxLayout(central_widget)
         layout.setContentsMargins(40, 60, 20, 10)
 
-        # Imagem de fundo
+      
         self.fundo_label = QLabel(self)
-        self.fundo_label.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))
+        self.fundo_label.setPixmap(QPixmap("../Tela base.jpg"))
         self.fundo_label.setScaledContents(True)
         self.fundo_label.setGeometry(0, 0, self.width(), self.height())
         self.fundo_label.lower()
 
-        # Título
+  
         self.lbl_titulo = QLabel("Editar Produto", self)
         self.lbl_titulo.setStyleSheet(
             """
@@ -46,7 +46,7 @@ class EditarProduto(QMainWindow):
         self.lbl_titulo.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.lbl_titulo)
 
-        # ID do produto
+      
         self.label_id = QLabel("Id do produto: ", self)
         self.label_id.setStyleSheet(
             """
@@ -56,7 +56,6 @@ class EditarProduto(QMainWindow):
         )
         layout.addWidget(self.label_id)
 
-        # Campo de entrada para o Nome
         self.lineEdit_nome = QLineEdit(self)
         self.lineEdit_nome.setStyleSheet("padding: 5px; border: 2px solid white; border-radius: 5px;")
         self.lineEdit_nome.setPlaceholderText("Nome do Produto")
@@ -64,7 +63,6 @@ class EditarProduto(QMainWindow):
         self.lineEdit_nome.setFixedHeight(30)  # altura
         layout.addWidget(self.lineEdit_nome)
 
-        # Campo para o preço do produto
         self.lineEdit_preco = QLineEdit(self)
         self.lineEdit_preco.setPlaceholderText("Preço do Produto")
         self.lineEdit_preco.setStyleSheet(
@@ -76,7 +74,7 @@ class EditarProduto(QMainWindow):
         self.lineEdit_preco.setFixedHeight(30)  # altura
         layout.addWidget(self.lineEdit_preco)
 
-        # ComboBox para disponibilidade
+    
         self.comboBox_disponibilidade = QComboBox(self)
         self.comboBox_disponibilidade.addItems(["Disponível", "Indisponível"])
         self.comboBox_disponibilidade.setStyleSheet(
@@ -88,7 +86,6 @@ class EditarProduto(QMainWindow):
         self.comboBox_disponibilidade.setFixedHeight(30)  # altura
         layout.addWidget(self.comboBox_disponibilidade)
 
-        # Botão para confirmar
         self.pushButton_confirmar = QPushButton("Confirmar", self)
         self.pushButton_confirmar.setStyleSheet(
             """
@@ -104,11 +101,11 @@ class EditarProduto(QMainWindow):
         self.pushButton_confirmar.setFixedHeight(30)
         layout.addWidget(self.pushButton_confirmar, alignment=Qt.AlignCenter)
 
-        # Conectar o botão ao método
+       
         self.pushButton_confirmar.clicked.connect(self.editar_valor)
         self.pushButton_confirmar.clicked.connect(atualizar_product)
 
-        # Ajusta o layout
+       
         layout.addStretch(1)
 
     def start_values(self, values_start: Tuple[str, str, str, str]):

@@ -23,7 +23,7 @@ class DialogoExibirProduto(QDialog):
 
         
         self.fundo_label = QLabel(self)
-        self.fundo_label.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))
+        self.fundo_label.setPixmap(QPixmap("../Tela base.jpg"))
         self.fundo_label.setScaledContents(True)
         self.fundo_label.setGeometry(0, 0, self.width(), self.height())
         self.fundo_label.lower()

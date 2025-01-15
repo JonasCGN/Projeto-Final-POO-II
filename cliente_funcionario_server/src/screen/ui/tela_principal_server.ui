@@ -15,20 +15,19 @@
   </property>
   <property name="styleSheet">
    <string notr="true">
-
 QMainWindow {
     background-color: #021720;
     border: 1px solid #ccc;
     background-repeat: no-repeat;
     background-position: center;
-    color: white; /* Fonte branca */
-    font-size: 14px; /* Fonte maior */
+    color: white;
+    font-size: 14px;
 }
 
 QTabWidget::pane {
     border: 1px solid #aaa; 
     background-color: #021720;
-    color: white; /* Fonte branca */
+    color: white;
 }
 
 QTabBar::tab {
@@ -36,169 +35,164 @@ QTabBar::tab {
     padding: 5px 10px;
     border: 1px solid #aaa;
     border-bottom: none;
-    color: white; /* Fonte branca */
-    
+    color: white;
 }
 
 QTabBar::tab:selected {
     background: #ffffff;
     border-bottom: 1px solid #fff;
-    color: #021720; /* Texto azul escuro no selecionado */
+    color: #021720;
 }
 
 QListView {
     background: #021720;
     border: 1px solid #ccc;
-    color: white; /* Fonte branca */
+    color: white;
     padding: 5px;
-    font-size: 14px; /* Fonte maior */
+    font-size: 14px;
 }
 
 QPushButton {
-    background-color: #000000; /* Fundo preto */
-    color: white; /* Fonte branca */
-    border: 1px solid white; /* Borda branca */
+    background-color: #000000;
+    color: white;
+    border: 1px solid white;
     border-radius: 5px;
     padding: 5px 10px;
-    font-size: 14px; /* Fonte maior */
+    font-size: 14px;
 }
 
 QPushButton:hover {
-    background-color: white; /* Fundo branco ao passar o mouse */
-    color: #000000; /* Texto preto ao passar o mouse */
+    background-color: white;
+    color: #000000;
 }
 
 QPushButton:pressed {
-    background-color: #333333; /* Fundo cinza escuro ao pressionar */
-    color: white; /* Texto branco */
+    background-color: #333333;
+    color: white;
 }
 
 QComboBox {
     background-color: #021720;
-    border: 1px solid white; /* Borda branca */
+    border: 1px solid white;
     border-radius: 5px;
     padding: 5px;
-    color: white; /* Fonte branca */
-    font-size: 14px; /* Fonte maior */
+    color: white;
+    font-size: 14px;
 }
 
 QComboBox QAbstractItemView {
-    background-color: #021720; /* Fundo do menu suspenso */
-    color: white; /* Fonte branca */
+    background-color: #021720;
+    color: white;
 }
 
 QComboBox:disabled {
-    background-color: #021720; /* Fundo azul escuro */
-    border: 1px solid #555555; /* Borda cinza escuro para desativado */
-    color: #888888; /* Texto cinza claro para desativado */
+    background-color: #021720;
+    border: 1px solid #555555;
+    color: #888888;
 }
 
 QComboBox::drop-down {
     border-left: 1px solid #aaa;
     width: 20px;
     background: #021720;
-    color: white; /* Fonte branca */
+    color: white;
 }
 
 QMenuBar {
     background-color: #021720;
     border-bottom: 1px solid #ccc;
-    color: white; /* Fonte branca */
-    font-size: 14px; /* Fonte maior */
+    color: white;
+    font-size: 14px;
 }
 
 QMenuBar::item {
     padding: 5px 10px;
     background: transparent;
-    color: white; /* Fonte branca */
-    font-size: 14px; /* Fonte maior */
+    color: white;
+    font-size: 14px;
 }
 
 QMenuBar::item:selected {
-    background: #333333; /* Fundo cinza escuro ao selecionar */
-    color: white; /* Texto branco */
+    background: #333333;
+    color: white;
 }
 
 QMenu {
     background: #021720;
     border: 1px solid #ccc;
-    color: white; /* Fonte branca */
-    font-size: 14px; /* Fonte maior */
+    color: white;
+    font-size: 14px;
 }
 
 QMenu::item {
-    color: white; /* Fonte branca */
+    color: white;
 }
 
 QMenu::item:selected {
-    background: #000000; /* Fundo preto ao selecionar */
-    color: white; /* Texto branco */
+    background: #000000;
+    color: white;
 }
 
-/* Separadores visuais */
 QListView::item {
-    border-bottom: 1px solid #ddd; /* Linha entre os itens */
+    border-bottom: 1px solid #ddd;
     padding: 2px;
-    padding-left: 12px; /* Espaço reservado para o indicador */
-    position: relative; /* Necessário para posicionar o indicador */
-    color: white; /* Fonte branca */
-    font-size: 14px; /* Fonte maior */
+    padding-left: 12px;
+    position: relative;
+    color: white;
+    font-size: 14px;
 }
 
-/* Indicador de status */
 QListView::item {
     content: "";
     position: absolute;
-    left: 0; /* Posicionado no início do item */
+    left: 0;
     top: 0;
     bottom: 0;
-    width: 16px; /* Largura do indicador */
+    width: 16px;
 }
 
-/* Itens selecionados */
 QListView::item:selected {
-    background-color: #000000; /* Fundo preto ao selecionar */
-    color: white; /* Texto branco */
+    background-color: #000000;
+    color: white;
 }
 
-/* Separadores especiais */
 QListView::item[separator="true"] {
-    background-color: #021720; /* Fundo azul escuro */
+    background-color: #021720;
     font-weight: bold;
-    border-bottom: 2px solid white; /* Linha branca */
-    color: white; /* Texto branco */
-    font-size: 14px; /* Fonte maior */
+    border-bottom: 2px solid white;
+    color: white;
+    font-size: 14px;
 }
 
 QLabel {
-    color: black; /* Fonte branca */
-    font-size: 14px; /* Fonte maior */
+    color: black;
+    font-size: 14px;
 }
 
 QLineEdit {
     background-color: #021720;
-    color: white; /* Fonte branca */
-    border: 1px solid white; /* Borda branca */
-    font-size: 14px; /* Fonte maior */
+    color: white;
+    border: 1px solid white;
+    font-size: 14px;
 }
 
 QTextEdit {
     background-color: #021720;
-    color: white; /* Fonte branca */
-    border: 1px solid white; /* Borda branca */
-    font-size: 14px; /* Fonte maior */
+    color: white;
+    border: 1px solid white;
+    font-size: 14px;
 }
 
 QSpinBox, QDoubleSpinBox {
     background-color: #021720;
-    color: white; /* Fonte branca */
-    border: 1px solid white; /* Borda branca */
-    font-size: 14px; /* Fonte maior */
+    color: white;
+    border: 1px solid white;
+    font-size: 14px;
 }
 
 QCheckBox, QRadioButton {
-    color: white; /* Fonte branca */
-    font-size: 14px; /* Fonte maior */
+    color: white;
+    font-size: 14px;
 }
 
 </string>

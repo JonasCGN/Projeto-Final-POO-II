@@ -21,28 +21,28 @@ class Autenticacao(QMainWindow):
         self.setWindowTitle("HOME")
         self.setGeometry(700, 600, 700, 600)  
 
-        # Widget central
+     
         self.widget_central = QWidget(self)
         self.setCentralWidget(self.widget_central)
 
-        # Layout principal
+       
         self.layout_principal = QVBoxLayout(self.widget_central)
         self.layout_principal.setAlignment(Qt.AlignCenter)
         
-        # Espaço reservado para o fundo
+       
         self.fundo_label = QLabel(self)
         self.fundo_label.setGeometry(0, 0, 900, 900)  
         self.fundo_label.setScaledContents(True)
-        self.fundo_label.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))  
+        self.fundo_label.setPixmap(QPixmap("../Tela base.jpg"))  
 
-        # Título principal
+       
         self.label_titulo = QLabel("Bem-vindo(a) de volta!", self)
         self.label_titulo.setGeometry(50,50, 200, 50)
         self.label_titulo.setFont(QFont("Arial", 20, QFont.Bold))
         self.label_titulo.setAlignment(Qt.AlignCenter)
         self.label_titulo.setStyleSheet("color: white;")
            
-        #  campo usuario
+        
         self.label_usuario = QLabel("USUÁRIO", self)
         self.label_usuario.setGeometry(50, 400, 400, 50)
         self.label_usuario.setStyleSheet("color: white;")
@@ -55,7 +55,7 @@ class Autenticacao(QMainWindow):
         self.lineEdit_usuario_login.setFixedWidth(400)  # largura 
         self.lineEdit_usuario_login.setFixedHeight(30)  # altura
 
-        # Campo de senha
+      
         self.label_senha = QLabel("SENHA", self)
         
         self.label_senha.setGeometry(50, 400, 400, 50)
@@ -72,7 +72,7 @@ class Autenticacao(QMainWindow):
         self.lineEdit_senha_login.setFixedHeight(30) 
         
 
-        # Botão Entrar
+        
         self.pushButton_login = QPushButton("ENTRAR", self)
         self.pushButton_login.setFixedWidth(400)
         self.pushButton_login.setFixedHeight(30)
@@ -82,18 +82,17 @@ class Autenticacao(QMainWindow):
         self.pushButton_login.clicked.connect(self.validar_acesso_login)
        
         
-        # Link para recuperar senha
+      
         self.pushButton_recuperar_login = QPushButton("Esqueceu sua senha? Clique aqui", self)
         self.pushButton_recuperar_login.setStyleSheet("color: white; border: none; text-align: center;")
         self.pushButton_recuperar_login.clicked.connect(self.recuperar_senha)
 
-        # Botão de cadastro
+     
         self.pushButton_cadastro = QPushButton("Não tem cadastro ? Clique aqui!! ", self)
         self.pushButton_cadastro.setStyleSheet("color: white; border: none; text-align: center;")
         self.pushButton_cadastro.clicked.connect(self.abrir_tela_cadastro)
        
-       
-        # Layout principal
+   
         self.layout_principal = QVBoxLayout()
         self.layout_principal.setSpacing(15)
         self.layout_principal.setAlignment(Qt.AlignCenter)
@@ -108,7 +107,6 @@ class Autenticacao(QMainWindow):
         self.layout_principal.addWidget(self.pushButton_recuperar_login)
        
 
-        # Widget central
         self.widget_central = QWidget()
         self.widget_central.setLayout(self.layout_principal)
         self.setCentralWidget(self.widget_central)
@@ -169,19 +167,18 @@ class CadastroTela(QMainWindow):
         self.setWindowTitle("Cadastro de Usuário")
         self.setGeometry(700, 600, 700, 600)  
 
-        # Fundo da tela
+        
         self.fundo_label = QLabel(self)
         self.fundo_label.setGeometry(0, 0, 900, 900) 
         self.fundo_label.setScaledContents(True)
-        self.fundo_label.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))
+        self.fundo_label.setPixmap(QPixmap("../Tela base.jpg"))
 
-        # Título principal
         self.label_titulo = QLabel("Cadastro de Usuário", self)
         self.label_titulo.setGeometry(50,50, 400, 50)
         self.label_titulo.setFont(QFont("Arial", 20, QFont.Bold))
         self.label_titulo.setStyleSheet("color: white;")
 
-        # Campo de usuário
+       
         self.label_usuario = QLabel("Usuário", self)
         self.label_usuario.setFont(QFont("Arial", 10, QFont.Bold)) 
         self.label_usuario.setStyleSheet("color: white;")
@@ -192,7 +189,7 @@ class CadastroTela(QMainWindow):
         self.lineEdit_usuario.setFixedHeight(30)
         
       
-        # Campo de email
+   
         self.label_email = QLabel("Email", self)
         self.label_email.setStyleSheet("color: white;")
         self.label_email.setFont(QFont("Arial", 10, QFont.Bold)) 
@@ -202,7 +199,6 @@ class CadastroTela(QMainWindow):
         self.lineEdit_email.setFixedWidth(400)  # largura 
         self.lineEdit_email.setFixedHeight(30)
 
-        # Campo de senha
         self.label_senha = QLabel("Senha", self)
         self.label_senha.setStyleSheet("color: white;")
         self.label_senha.setFont(QFont("Arial", 10, QFont.Bold)) 
@@ -213,7 +209,7 @@ class CadastroTela(QMainWindow):
         self.lineEdit_senha.setFixedWidth(400)  # largura 
         self.lineEdit_senha.setFixedHeight(30)
 
-        # Campo de confirmação de senha
+        
         self.label_confirm_senha = QLabel("Confirme a senha", self)
         self.label_confirm_senha.setFont(QFont("Arial", 10, QFont.Bold)) 
         self.label_confirm_senha.setStyleSheet("color: white;")
@@ -224,7 +220,6 @@ class CadastroTela(QMainWindow):
         self.lineEdit_confirm_senha.setFixedWidth(400)  # largura 
         self.lineEdit_confirm_senha.setFixedHeight(30)
 
-        # Botão de cadastro
         self.pushButton_cadastrar = QPushButton("Cadastrar", self)
         self.pushButton_cadastrar.setFixedWidth(400)
         self.pushButton_cadastrar.setFixedHeight(30)
@@ -234,17 +229,16 @@ class CadastroTela(QMainWindow):
 
         self.pushButton_cadastrar.clicked.connect(self.validar_cadastro)
 
-        # Botão de voltar
         self.pushButton_voltar = QPushButton("Voltar", self)
         self.pushButton_voltar.setFixedWidth(400)
         self.pushButton_voltar.setFixedHeight(30)
         self.pushButton_voltar.setStyleSheet(
             "background-color: #7FB4CB; color: white; border: 2px solid white; border-radius: 5px; padding: 5px;"
         )
-        self.pushButton_voltar.setFixedSize(100, 40)  # Tamanho menor para o botão
+        self.pushButton_voltar.setFixedSize(100, 40)  
         self.pushButton_voltar.clicked.connect(self.fechar_tela_cadastro)
 
-        # Layout de cadastro
+       
         self.layout_cadastro = QVBoxLayout()
         self.layout_cadastro.setSpacing(8)
         self.layout_cadastro.setAlignment(Qt.AlignCenter)
@@ -261,17 +255,17 @@ class CadastroTela(QMainWindow):
         self.layout_cadastro.addWidget(self.lineEdit_confirm_senha)
         self.layout_cadastro.addWidget(self.pushButton_cadastrar)
 
-        # Layout do botão "Voltar"
+       
         self.layout_voltar = QHBoxLayout()
-        self.layout_voltar.setAlignment(Qt.AlignLeft)  # Coloca no canto inferior esquerdo
+        self.layout_voltar.setAlignment(Qt.AlignLeft)  
         self.layout_voltar.addWidget(self.pushButton_voltar)
         
-        # Layout principal
+   
         self.layout_principal = QVBoxLayout()
         self.layout_principal.addLayout(self.layout_cadastro)
         self.layout_principal.addLayout(self.layout_voltar)
 
-        # Widget central
+      
         self.widget_central = QWidget()
         self.widget_central.setLayout(self.layout_principal)
         self.setCentralWidget(self.widget_central)

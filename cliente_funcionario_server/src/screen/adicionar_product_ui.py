@@ -19,15 +19,15 @@ class AdicionarProduto(QMainWindow):
         """
         super().__init__()
         self.setWindowTitle("Adicionar Produto")
-        self.setGeometry(700, 600, 700, 600)  # Dimensão da janela
+        self.setGeometry(700, 600, 700, 600)  
 
-        # Adicionando a imagem de fundo
+        
         self.bg_label = QLabel(self)
-        self.bg_label.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))
+        self.bg_label.setPixmap(QPixmap("../Tela base.jpg"))
         self.bg_label.setAlignment(Qt.AlignCenter)
         self.bg_label.setScaledContents(True)
 
-        # Criando os widgets
+      
         self.label_nome = QLabel("Nome do Produto:")
         self.label_nome.setStyleSheet("color: white; font-size: 16px; font-weight: bold;")
         self.lineEdit_nome = QLineEdit()
@@ -70,15 +70,15 @@ class AdicionarProduto(QMainWindow):
         self.pushButton_confirm.clicked.connect(self.inserir_valor)
         self.pushButton_confirm.clicked.connect(atualizar_produto)
 
-        layout_central = QVBoxLayout()  # Layout central para alinhar widgets ao centro
-        layout_central.setContentsMargins(0, 0, 0, 0)  # Sem margens
+        layout_central = QVBoxLayout()  
+        layout_central.setContentsMargins(0, 0, 0, 0)  
        
 
-        layout = QVBoxLayout()  # Layout para os widgets
-        layout.setContentsMargins(10, 20, 10, 20)  # Margens internas para os widgets
-        layout.setSpacing(15)  # Espaçamento reduzido entre os widgets
+        layout = QVBoxLayout() 
+        layout.setContentsMargins(10, 20, 10, 20) 
+        layout.setSpacing(15)  
 
-        # Adicionando widgets ao layout
+       
         layout.addWidget(self.label_nome, alignment=Qt.AlignCenter)
         layout.addWidget(self.lineEdit_nome, alignment=Qt.AlignCenter)
         layout.addWidget(self.label_preco, alignment=Qt.AlignCenter)
@@ -87,12 +87,12 @@ class AdicionarProduto(QMainWindow):
         layout.addWidget(self.comboBox_disponibilidade, alignment=Qt.AlignCenter)
         layout.addWidget(self.pushButton_confirm, alignment=Qt.AlignCenter)
 
-        # Adicionando o layout ao layout central
-        layout_central.addStretch()  # Adiciona espaço antes para centralizar
-        layout_central.addLayout(layout)  # Adiciona o layout principal
-        layout_central.addStretch()  # Adiciona espaço depois para centralizar
+       
+        layout_central.addStretch()  
+        layout_central.addLayout(layout)  
+        layout_central.addStretch()  
 
-        # Definindo o widget central
+        
         container = QWidget(self)
         container.setLayout(layout_central)
         self.setCentralWidget(container)
@@ -101,7 +101,7 @@ class AdicionarProduto(QMainWindow):
         """
         Garante que a imagem de fundo seja redimensionada conforme a janela muda de tamanho.
         """
-        self.bg_label.setGeometry(0, 0, self.width(), self.height())  # Ajusta para o tamanho da janela
+        self.bg_label.setGeometry(0, 0, self.width(), self.height())  
         super().resizeEvent(event)
 
     def clear_values(self):

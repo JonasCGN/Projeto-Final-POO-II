@@ -12,23 +12,23 @@ class DialogoEfetivarPedido(QDialog):
         """
         super().__init__()
 
-        # Configuração do título e fundo
+       
         self.setWindowTitle("Efetivar Pedido")
         self.setGeometry(700, 600, 700, 600)
         
-        # Adicionar a imagem de fundo
+        
         self.fundo_imagem = QLabel(self)
-        self.fundo_imagem.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))
+        self.fundo_imagem.setPixmap(QPixmap("../Tela base.jpg"))
         self.fundo_imagem.setScaledContents(True)  
         self.fundo_imagem.setGeometry(0, 0, self.width(), self.height())  
         
-        # Título principal
+        
         self.label_titulo = QLabel("Efetivar Pedido", self)
         self.label_titulo.setFont(QFont("Arial", 20, QFont.Bold))
         self.label_titulo.setStyleSheet("color: white;")
         self.label_titulo.setAlignment(Qt.AlignCenter)
 
-        # Campo número da mesa
+       
         self.label_numero_da_mesa = QLabel("Número da Mesa", self)
         self.label_numero_da_mesa.setFont(QFont("Arial", 10, QFont.Bold))
         self.label_numero_da_mesa.setStyleSheet("color: white;")
@@ -38,7 +38,7 @@ class DialogoEfetivarPedido(QDialog):
         self.numero_da_mesa.setFixedWidth(400)
         self.numero_da_mesa.setFixedHeight(30)
 
-        # Campo status do pedido
+      
         self.label_status_pedido = QLabel("Status do Pedido", self)
         self.label_status_pedido.setFont(QFont("Arial", 10, QFont.Bold))
         self.label_status_pedido.setStyleSheet("color: white;")
@@ -48,12 +48,12 @@ class DialogoEfetivarPedido(QDialog):
         self.status_pedido.setFixedWidth(400)
         self.status_pedido.setFixedHeight(30)
 
-        # Mensagem de erro
+        
         self.label_erro = QLabel("", self)
         self.label_erro.setFont(QFont("Arial", 10, QFont.Bold))
         self.label_erro.setStyleSheet("color: red;")
 
-        # Botão de confirmar
+        
         self.pushButton_confirmar = QPushButton("Efetivar Pedido", self)
         self.pushButton_confirmar.setFixedWidth(400)
         self.pushButton_confirmar.setFixedHeight(30)
@@ -62,7 +62,7 @@ class DialogoEfetivarPedido(QDialog):
         )
         self.pushButton_confirmar.clicked.connect(self.verificar_preenchimento)
 
-        # Botão de cancelar
+    
         self.pushButton_cancelar = QPushButton("Cancelar", self)
         self.pushButton_cancelar.setFixedWidth(400)
         self.pushButton_cancelar.setFixedHeight(30)
@@ -71,7 +71,7 @@ class DialogoEfetivarPedido(QDialog):
         )
         self.pushButton_cancelar.clicked.connect(self.reject)
 
-        # Layout
+        
         self.layout = QVBoxLayout(self)
         self.layout.setSpacing(8)
         self.layout.setAlignment(Qt.AlignCenter)
@@ -84,7 +84,7 @@ class DialogoEfetivarPedido(QDialog):
         self.layout.addWidget(self.pushButton_confirmar)
         self.layout.addWidget(self.pushButton_cancelar)
 
-        # Configura o layout da janela
+        
         self.setLayout(self.layout)
 
     def verificar_preenchimento(self):

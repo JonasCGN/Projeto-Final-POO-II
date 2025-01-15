@@ -14,30 +14,30 @@ class DialogoRecuperarSenha(QDialog):
         self.setWindowTitle("Recuperar Senha")
         self.setGeometry(550, 300, 550, 300)
 
-        # Layout principal
+      
         layout = QVBoxLayout(self)
 
-        # Ajusta as margens do layout (esquerda, topo, direita, baixo)
+       
         layout.setContentsMargins(20, 70, 20, 10)
 
-        # Ajuste do espaçamento entre os elementos
-        layout.setSpacing(30)  # Define o espaçamento entre os widgets (20 pixels)
+       
+        layout.setSpacing(30)  
 
-        # Imagem de fundo
+       
         self.fundo_label = QLabel(self)
-        self.fundo_label.setPixmap(QPixmap("/root/Projeto-Final-POO-II/Tela base.jpg"))
+        self.fundo_label.setPixmap(QPixmap("../Tela base.jpg"))
         self.fundo_label.setScaledContents(True)
         self.fundo_label.setGeometry(0, 0, self.width(), self.height())
         self.fundo_label.lower()
 
-        # Título
+        
         self.lbl_titulo = QLabel("Recuperar Senha", self)
         self.lbl_titulo.setFont(QFont("Arial", 14, QFont.Bold))
         self.lbl_titulo.setStyleSheet("color: white;")
         self.lbl_titulo.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.lbl_titulo)
 
-        # Campo de entrada para o E-mail
+        
         self.lineEdit_usuario_login = QLineEdit(self)
         self.lineEdit_usuario_login.setStyleSheet("padding: 5px; border: 2px solid white; border-radius: 5px;")
         self.lineEdit_usuario_login.setPlaceholderText("Digite seu E-mail")
@@ -45,7 +45,7 @@ class DialogoRecuperarSenha(QDialog):
         self.lineEdit_usuario_login.setFixedHeight(30)  # altura
         layout.addWidget(self.lineEdit_usuario_login, alignment=Qt.AlignCenter)
 
-        # Botão para enviar o email
+        
         self.pushButton_enviar_email = QPushButton("Enviar Email", self)
         self.pushButton_enviar_email.setStyleSheet(
             """
@@ -61,10 +61,10 @@ class DialogoRecuperarSenha(QDialog):
         self.pushButton_enviar_email.setFixedHeight(30)
         layout.addWidget(self.pushButton_enviar_email, alignment=Qt.AlignCenter)
 
-        # Conectar o botão ao método
+        
         self.pushButton_enviar_email.clicked.connect(self.enviar_email)
 
-        # Ajusta o layout
+        
         layout.addStretch(1)
         self.setLayout(layout)
 
@@ -72,7 +72,7 @@ class DialogoRecuperarSenha(QDialog):
         """
         Método para enviar o email de recuperação de senha.
         """
-        email = self.lineEdit_usuario_login.text()  # Aqui você pode ajustar para pegar o valor do campo de usuário
+        email = self.lineEdit_usuario_login.text()  
         if not email or "@" not in email:
             self.exibir_mensagem("Email Inválido", "Esse email não é válido.")
             return

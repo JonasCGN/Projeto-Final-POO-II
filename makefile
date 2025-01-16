@@ -47,5 +47,5 @@ run_server:
 
 run_funcionario:
 	@clear
-	@cd cliente_funcionario_server && python3 main_funcionario.py
+	@cd cliente_funcionario_server && export DISPLAY=:0 && export QT_QPA_PLATFORM=xcb && python3 main_funcionario.py
     

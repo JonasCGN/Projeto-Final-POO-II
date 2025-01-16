@@ -295,7 +295,6 @@ class CadastroTela(QMainWindow):
 
         if inserir_funcionario({"usuario": usuario, "email": email, "senha": senha}):
             QMessageBox.information(self, "Sucesso", "Cadastro realizado com sucesso!")
-            self.close()
         else:
             self.show_error("Erro ao cadastrar usuário. Tente novamente.")
 
@@ -303,6 +302,7 @@ class CadastroTela(QMainWindow):
         """
         Fecha a tela de cadastro e retorna à tela anterior (autenticação).
         """
+        self.autenticado = True
         self.close()
 
     def show_error(self, message: str):

@@ -14,9 +14,10 @@ from src.func.func_relatorio import gerar_relatorio, criar_csv, remover_csv
 def sync_tratament(msg: str) -> str | None:
   if msg == "server_down":
     raise KeyboardInterrupt
+  
   elif msg.startswith("Email_recuperacao: "):
-    print(f"[LOG INFO] Solicitação de recuperação de conta para o email '{email}'.")
     email = msg.split("Email_recuperacao: ")[1]
+    print(f"[LOG INFO] Solicitação de recuperação de conta para o email '{email}'.")
     valor = recuperar_senha(email)
     if valor is not False:
       enviar_email_recuperacao_de_conta(email, *valor)

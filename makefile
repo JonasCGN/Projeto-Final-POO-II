@@ -1,6 +1,7 @@
 all: databese_up creat_paste_bibs build_bib_funcao_postgree build_bib_sincronizacao_servidor_cliente build_bib_bib_email_functions install_requeriments
 server: all run_server
 funcionario: all run_funcionario
+work: all run_work
 
 install_depedencia:
 	@sudo apt-get install python3-venv python3-pip docker.io docker-compose python3-poetry -y
@@ -40,6 +41,7 @@ install_requeriments:
 	@cd cliente_funcionario_server && pip install bibs/sincronizacao_servidor_cliente-0.1.0-py3-none-any.whl --force-reinstall
 	@cd cliente_funcionario_server && pip install bibs/email_functions-0.1.0-py3-none-any.whl --force-reinstall
 	@cd cliente_funcionario_server && pip install -r requirements.txt
+	@cd work && pip install -r requirements.txt
 
 run_server:
 	@clear
@@ -48,4 +50,7 @@ run_server:
 run_funcionario:
 	@clear
 	@cd cliente_funcionario_server && export DISPLAY=:0 && export QT_QPA_PLATFORM=xcb && python3 main_funcionario.py
-    
+
+run_work:
+	@clear
+	@cd work && python3 work.py

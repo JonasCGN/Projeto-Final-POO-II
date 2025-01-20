@@ -191,3 +191,33 @@ class BdFuncionario(Bd_Base):
 
         return retorno
 
+
+    def trocar_senha(self, usuario: str, senha: str) -> bool:
+        """
+        Troca a senha de um funcionário.
+        
+        Args:
+            usuario (str): Nome de usuario do funcionario.
+            senha (str): Nova senha do funcionario.
+        
+        Returns:
+            bool: True se a senha foi alterada, False caso contrário.
+        """
+        retorno = False
+        try:
+            query = """
+                UPDATE funcionario
+                SET senha = %s
+                WHERE usuario = %s
+            """
+            cursor = self.get_cursor()
+            cursor.execute(query, (pbkdf2_sha256.hash(senha), usuario))
+            self.commit()
+            retorno = True
+            
+        except Exception as e:
+            print("[LOG ERRO] Erro ao trocar senha: ", e)
+        finally:
+            cursor.close()
+
+        return retorno

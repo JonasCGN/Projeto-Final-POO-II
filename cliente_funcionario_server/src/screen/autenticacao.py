@@ -48,7 +48,7 @@ class Autenticacao(QMainWindow):
         self.stacked_widget.addWidget(self.tela_cadastro)
 
         # Definir a tela inicial como a tela de login
-        self.stacked_widget.setCurrentWidget(self.tela_cadastro)
+        self.stacked_widget.setCurrentWidget(self.tela_login)
 
     def criar_tela_login(self):
         """

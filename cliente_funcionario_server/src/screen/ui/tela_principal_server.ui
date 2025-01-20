@@ -143,7 +143,7 @@ QListView::item {
 }
 
 QListView::item {
-    content: "";
+    content: &quot;&quot;;
     position: absolute;
     left: 0;
     top: 0;
@@ -156,7 +156,7 @@ QListView::item:selected {
     color: white;
 }
 
-QListView::item[separator="true"] {
+QListView::item[separator=&quot;true&quot;] {
     background-color: #021720;
     font-weight: bold;
     border-bottom: 2px solid white;
@@ -202,7 +202,7 @@ QCheckBox, QRadioButton {
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_controle_cardapio">
        <attribute name="title">
@@ -295,7 +295,7 @@ QCheckBox, QRadioButton {
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
               <item>
-               <widget class="QLabel" name="label" styleSheet="color: white;">
+               <widget class="QLabel" name="label">
                 <property name="text">
                  <string>Cardapio</string>
                 </property>
@@ -346,7 +346,7 @@ QCheckBox, QRadioButton {
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
               <item>
-               <widget class="QLabel" name="label_2" styleSheet="color: white;">
+               <widget class="QLabel" name="label_2">
                 <property name="text">
                  <string>Pedido do cliente</string>
                 </property>
@@ -441,7 +441,7 @@ QCheckBox, QRadioButton {
      <x>0</x>
      <y>0</y>
      <width>742</width>
-     <height>29</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAtualizar">
@@ -458,8 +458,15 @@ QCheckBox, QRadioButton {
     <addaction name="actionEnviar_Relatorio_Email"/>
     <addaction name="actionEnviar_banco_de_dados_Email"/>
    </widget>
+   <widget class="QMenu" name="menuUsuario">
+    <property name="title">
+     <string>Usuario</string>
+    </property>
+    <addaction name="actionTrocar_senha"/>
+   </widget>
    <addaction name="menuAtualizar"/>
    <addaction name="menuRelatorio"/>
+   <addaction name="menuUsuario"/>
   </widget>
   <action name="actionAtualizar_dados_do_Cardapio">
    <property name="text">
@@ -479,6 +486,11 @@ QCheckBox, QRadioButton {
   <action name="actionEnviar_banco_de_dados_Email">
    <property name="text">
     <string>Enviar banco de dados Email</string>
+   </property>
+  </action>
+  <action name="actionTrocar_senha">
+   <property name="text">
+    <string>Trocar Senha</string>
    </property>
   </action>
  </widget>

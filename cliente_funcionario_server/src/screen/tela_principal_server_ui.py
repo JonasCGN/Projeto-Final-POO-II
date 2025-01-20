@@ -7,6 +7,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor, QImag
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5 import uic
 
+from src.screen.dialogo_trocar_senha import DialogoTrocarSenha
 from src.screen.dialogo_efetivar_pedido import DialogoEfetivarPedido
 from src.func.func_pedidos_desenvolvimento import adicionar_pedido_em_desenvolvimento, finalizar_pedido_em_desenvolvimento, pegar_pedidos_em_desenvolvimento_str, remover_pedido_em_desenvolvimento
 from .editar_produto_ui import EditarProduto
@@ -15,7 +16,7 @@ from .dialogo_exibir_pedido import DialogoExibirProduto
 from src.func.func_pedido import get_utimos_1000_pedidos, editar_status_pedido, inserir_pedido, transformar_lista_str_em_lista_tuple
 from src.func.func_sincronizacao import enviar_mensagem_de_sincronizacao_cliente
 from src.func.func_produtos import pegar_todos_itens_str, remover_produto, trocar_disponibilidade
-from src.func.func_autenticacao import get_email_autenticado
+from src.func.func_autenticacao import carregar_credenciais
 
 class SignalHandler(QObject):
     """
@@ -56,6 +57,7 @@ class TelaPrincipalServer(QMainWindow):
         self.actionAtualizar_dados_dos_pedidos.triggered.connect(self.atualizar_lista_pedido)
         self.actionEnviar_Relatorio_Email.triggered.connect(self.enviar_relatorio_email)
         self.actionEnviar_banco_de_dados_Email.triggered.connect(self.enviar_banco_de_dados_email)
+        self.actionTrocar_senha.triggered.connect(self.trocar_senha)
         
         self.comboBox_status_do_pedido.setEnabled(False)
         self.lst_todos_pedidos.clicked.connect(self.status_pedido_selecionado)
@@ -64,11 +66,19 @@ class TelaPrincipalServer(QMainWindow):
         self.pushButton_exibir_pedido.clicked.connect(self.exibir_pedido)
     
     def enviar_relatorio_email(self) -> None:
-        enviar_mensagem_de_sincronizacao_cliente(f"enviar_relatorio: {get_email_autenticado()}")
+        email,_  = carregar_credenciais()
+        if not email:
+            QMessageBox.warning(self, "Aviso", "Email não encontrado")
+            return
+        enviar_mensagem_de_sincronizacao_cliente(f"enviar_relatorio: {email}")
     
     def enviar_banco_de_dados_email(self) -> None:
-        enviar_mensagem_de_sincronizacao_cliente(f"enviar_arquivos: {get_email_autenticado()}")
-    
+        email, _ = carregar_credenciais()
+        if not email:
+            QMessageBox.warning(self, "Aviso", "Email não encontrado")
+            return
+        enviar_mensagem_de_sincronizacao_cliente(f"enviar_arquivos: {email}")
+
     def efetivar_pedido(self) -> None:
         """
         Função para efetivar um pedido.
@@ -98,6 +108,13 @@ class TelaPrincipalServer(QMainWindow):
                 QMessageBox.warning(self, "Aviso", "Aconteceu um problema ao efetivar, verifique sua conecção")
         else:
             QMessageBox.warning(self, "Aviso", "Pedido cancelado")
+            
+    def trocar_senha(self) -> None:
+        """
+        Função para trocar a senha do usuário.
+        """
+        dialogo = DialogoTrocarSenha()
+        dialogo.exec()
     
     def remover_pedido_desenvolvimento(self) -> None:
         """

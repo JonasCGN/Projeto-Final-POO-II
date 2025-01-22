@@ -1,4 +1,4 @@
-# Pack Work
+# email_funcion
 
 A biblioteca Pack Work é uma ferramenta projetada para gerenciar o envio e a sincronização de dados entre o Redis e o Postgres. Através de funcionalidades como recuperação de senhas, envio de relatórios e arquivos, e sincronização eficiente, o Pack Work oferece uma solução prática e escalável para a integração de dados.
 
@@ -9,7 +9,7 @@ A biblioteca Pack Work é uma ferramenta projetada para gerenciar o envio e a si
    O build está localizado no diretório `dist/`. Para instalá-lo, utilize:
 
    ```bash
-   pip install dist/pack_work-0.1.0-py3-none-any.whl
+   pip install dist/email_function.whl
    ```
 
 # Instalação para Desenvolvimento

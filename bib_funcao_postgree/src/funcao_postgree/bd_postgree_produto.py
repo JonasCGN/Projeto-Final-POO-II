@@ -10,7 +10,6 @@ class BdProduto(Bd_Base):
     """
     Classe para manipulação de dados da tabela Produto no banco de dados PostgreSQL.
     """
-    
 
     def __init__(self, host: str = 'localhost', database: str = 'database-postgres', user: str = 'root', password: str = 'root') -> None:
         """
@@ -50,7 +49,7 @@ class BdProduto(Bd_Base):
         Returns:
             dict: Dicionário com os dados formatados.
         """
-        valor =  json.loads(produto)
+        valor = json.loads(produto)
         return (valor['nome'], valor["preco"], valor["disponivel"])
 
     def insert_produto(self, produto: str) -> bool:
@@ -132,7 +131,7 @@ class BdProduto(Bd_Base):
         retorno = True
         try:
             cursor = self.get_cursor()
-            cursor.execute("DELETE FROM Produto WHERE id = %s;", (id_produto))
+            cursor.execute("DELETE FROM Produto WHERE id = %s;", (id_produto,))
             self.commit()
         except Exception as e:
             print("[LOG ERRO] Erro ao remover produto: ", e)

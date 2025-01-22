@@ -9,21 +9,29 @@ import json
 
 class BdPedido(Bd_Base):
     """
-    Classe para manipulação de dados da tabela Pedido no banco de dados PostgreSQL
+    Classe para manipulação de dados da tabela Pedido no banco de dados PostgreSQL.
+
+    Essa classe gerencia a estrutura da tabela Pedido e permite realizar operações
+    como inserção, atualização e consulta de pedidos.
     """
 
     def __init__(self, host: str = 'localhost', database: str = 'database-postgres', user: str = 'root', password: str = 'root') -> None:
         """
-        Inicializa a conexão com o banco de dados, e cria a tabela Pedido caso não exista.
+        Inicializa a conexão com o banco de dados e cria a tabela Pedido caso ela não exista.
+
+        Args:
+            host (str): Endereço do host do banco de dados.
+            database (str): Nome do banco de dados.
+            user (str): Nome de usuário para autenticação.
+            password (str): Senha para autenticação.
         """
         super().__init__(host, database, user, password)
         self.database_init()
 
     def database_init(self) -> None:
         """
-        Inicia a estrutura do banco de dados, criando a tabela Pedido caso não exista.
+        Cria a tabela Pedido no banco de dados caso ela não exista.
         """
-
         try:
             cursor = self.get_cursor()
             cursor.execute("""
@@ -40,17 +48,17 @@ class BdPedido(Bd_Base):
             print(f"[LOG ERRO] Não foi possível criar a tabela: {e}")
         finally:
             cursor.close()
-    
+
     def editar_status(self, status: str, id_pedido: int) -> bool:
         """
         Edita o status de um pedido no banco de dados.
-        
+
         Args:
             status (str): Novo status do pedido.
             id_pedido (int): ID do pedido a ser editado.
-            
+
         Returns:
-            bool: True se a edição foi bem sucedida, False caso contrário.
+            bool: True se a edição foi bem-sucedida, False caso contrário.
         """
         retorno = True
         try:
@@ -70,31 +78,30 @@ class BdPedido(Bd_Base):
             cursor.close()
 
         return retorno
-    
+
     def _format_from_inserct(self, pedido: str) -> dict:
         """
-        Formata os dados para inserção no banco de dados.
-        
+        Formata os dados do pedido para inserção no banco de dados.
+
         Args:
             pedido (str): Dados do pedido em formato JSON.
-        
+
         Returns:
-            dict: Dicionário com os dados formatados.
+            dict: Dicionário contendo os dados formatados para inserção.
         """
-        valor =  json.loads(pedido)
+        valor = json.loads(pedido)
         return (valor['mesa'], valor["status"], valor["data_hora"])
 
     def insert_pedido(self, pedido: str) -> bool:
         """
         Insere um pedido no banco de dados.
-        
+
         Args:
             pedido (str): Dados do pedido em formato JSON.
-            
-        returns:
-            bool: True se a inserção foi bem sucedida, False caso contrário.
+
+        Returns:
+            bool: True se a inserção foi bem-sucedida, False caso contrário.
         """
-        
         retorno = True
         try:
             valor = self._format_from_inserct(pedido)
@@ -105,7 +112,6 @@ class BdPedido(Bd_Base):
             cursor = self.get_cursor()
             cursor.execute(query, valor)
             self.commit()
-            
         except Exception as e:
             print("[LOG ERRO] Erro ao inserir pedido: ", e)
             self.post_client.rollback()
@@ -114,13 +120,13 @@ class BdPedido(Bd_Base):
             cursor.close()
 
         return retorno
-    
+
     def get_last_1000(self) -> Union[list, None]:
         """
         Retorna os 1000 últimos pedidos do banco de dados.
-        
+
         Returns:
-            Union[list, None]: Lista com os pedidos, ou None em caso de erro.
+            Union[list, None]: Lista com os pedidos ou None em caso de erro.
         """
         try:
             cursor = self.get_cursor()
@@ -132,13 +138,12 @@ class BdPedido(Bd_Base):
         finally:
             cursor.close()
 
-
     def get_all(self) -> Union[list, None]:
         """
         Retorna todos os pedidos do banco de dados.
-        
+
         Returns:
-            Union[list, None]: Lista com os pedidos, ou None em caso de erro.
+            Union[list, None]: Lista com os pedidos ou None em caso de erro.
         """
         try:
             cursor = self.get_cursor()
@@ -150,40 +155,12 @@ class BdPedido(Bd_Base):
         finally:
             cursor.close()
 
-    # def get_pedidos_produto_csv(self) -> str:
-    #     """
-    #     Busca os pedidos e produtos do banco de dados e converte para um texto CSV.
-        
-    #     Returns:
-    #         str: Texto CSV com os pedidos e produtos, ou uma string vazia em caso de erro.
-    #     """
-    #     try:
-    #         cursor = self.get_cursor()
-    #         cursor.execute("""
-    #             SELECT Produto_Pedido.id, Produto_Pedido.pedido_id, Produto_Pedido.produto_id, Produto_Pedido.quantidade, Produto_Pedido.preco_pago
-    #             FROM Produto_Pedido;
-    #         """)
-
-    #         rows = cursor.fetchall()
-    #         headers = [desc[0] for desc in cursor.description]
-            
-    #         csv_text = ",".join(headers) + "\n"
-    #         for row in rows:
-    #             csv_text += ",".join(str(cell) for cell in row) + "\n"
-    #         return csv_text
-            
-    #     except Exception as e:
-    #         print(f"[LOG ERRO] Erro ao buscar pedidos e produtos: {e}")
-    #         return ""
-    #     finally:
-    #         cursor.close()
-    
     def get_pedidos_csv(self) -> str:
         """
         Busca os pedidos do banco de dados e converte para um texto CSV.
-        
+
         Returns:
-            str: Texto CSV com os pedidos, ou uma string vazia em caso de erro.
+            str: Texto CSV com os pedidos ou uma string vazia em caso de erro.
         """
         try:
             cursor = self.get_cursor()
@@ -193,12 +170,11 @@ class BdPedido(Bd_Base):
 
             rows = cursor.fetchall()
             headers = [desc[0] for desc in cursor.description]
-            
+
             csv_text = ",".join(headers) + "\n"
             for row in rows:
                 csv_text += ",".join(str(cell) for cell in row) + "\n"
             return csv_text
-            
         except Exception as e:
             print(f"[LOG ERRO] Erro ao buscar pedidos: {e}")
             return ""

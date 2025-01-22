@@ -9,7 +9,7 @@ from typing import Callable
 
 class ErroCliente(Exception):
     """
-    Exceção para erros relacionados ao cliente de sincron
+    Exceção para erros relacionados ao cliente de sincronização.
     """
     pass
 

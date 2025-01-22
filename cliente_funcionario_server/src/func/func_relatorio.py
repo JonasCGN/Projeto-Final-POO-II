@@ -19,6 +19,12 @@ bd_pedido = BdPedido()
 bd_pedido_produto = BdPedidoProduto()
 
 def criar_csv():
+    """
+    Cria arquivos CSV com os dados de pedidos, produtos e produtos relacionados aos pedidos.
+
+    Esta função obtém os dados necessários de três tabelas (pedidos, produtos e produtos pedidos) e 
+    grava esses dados em arquivos CSV (pedidos.csv, produtos.csv, produtos_pedidos.csv).
+    """
     text_pedidos_csv = bd_pedido.get_pedidos_csv()
     text_produtos_csv = bd_produto.get_produto_csv()
     text_produtos_pedidos_csv = bd_pedido_produto.get_pedidos_produto_csv()
@@ -31,12 +37,29 @@ def criar_csv():
         file.write(text_produtos_pedidos_csv)
         
 def remover_csv():
+    """
+    Remove os arquivos CSV criados anteriormente.
+
+    Após a criação e leitura dos arquivos CSV, essa função exclui os arquivos 
+    pedidos.csv, produtos.csv e produtos_pedidos.csv do sistema.
+    """
     os.remove("pedidos.csv")
     os.remove("produtos.csv")
     os.remove("produtos_pedidos.csv")
 
 
 def carregar_dados():
+    """
+    Carrega os dados de pedidos, produtos e produtos pedidos a partir de arquivos CSV.
+
+    A função cria os arquivos CSV, carrega os dados em DataFrames pandas, 
+    e remove os arquivos após o uso.
+
+    Retorna:
+        df_pedidos (DataFrame): Dados sobre os pedidos.
+        df_produtos (DataFrame): Dados sobre os produtos.
+        df_produtos_pedidos (DataFrame): Relacionamento entre pedidos e produtos.
+    """
     criar_csv()
     df_pedidos = pd.read_csv("pedidos.csv")
     df_produtos = pd.read_csv("produtos.csv")
@@ -51,10 +74,40 @@ def carregar_dados():
     return df_pedidos, df_produtos, df_produtos_pedidos
 
 def mesclar_e_limpar(df1, df2, chave_esquerda, chave_direita, sufixos=("", "_y")):
+    """
+    Realiza a mesclagem de dois DataFrames com base nas chaves fornecidas e remove colunas duplicadas.
+
+    A função mescla dois DataFrames com base nas chaves de junção e remove as colunas
+    duplicadas adicionadas pela operação de mesclagem.
+
+    Args:
+        df1 (DataFrame): Primeiro DataFrame para mesclagem.
+        df2 (DataFrame): Segundo DataFrame para mesclagem.
+        chave_esquerda (str): Coluna de junção do primeiro DataFrame.
+        chave_direita (str): Coluna de junção do segundo DataFrame.
+        sufixos (tuple): Sufixos a serem adicionados às colunas duplicadas (padrão: "", "_y").
+
+    Retorna:
+        DataFrame: DataFrame mesclado e limpo.
+    """
     mesclado = df1.merge(df2, left_on=chave_esquerda, right_on=chave_direita, suffixes=sufixos)
     return mesclado.loc[:, ~mesclado.columns.str.endswith("_y")]
 
 def preprocessar_dados(df_pedidos, df_produtos, df_produtos_pedidos):
+    """
+    Realiza o pré-processamento dos dados de pedidos, produtos e produtos pedidos.
+
+    Essa função adiciona novas colunas aos dados de pedidos (como mês, hora, dia da semana, etc.) 
+    e realiza a mesclagem entre os DataFrames de pedidos, produtos e produtos pedidos.
+
+    Args:
+        df_pedidos (DataFrame): Dados de pedidos.
+        df_produtos (DataFrame): Dados de produtos.
+        df_produtos_pedidos (DataFrame): Relacionamento entre pedidos e produtos.
+
+    Retorna:
+        tuple: DataFrames atualizados de pedidos, produtos e produtos pedidos.
+    """
     df_pedidos["data_hora"] = pd.to_datetime(df_pedidos["data_hora"])
     df_pedidos["mes"] = df_pedidos["data_hora"].dt.month
     df_pedidos["dia_semana"] = df_pedidos["data_hora"].dt.dayofweek
@@ -68,6 +121,20 @@ def preprocessar_dados(df_pedidos, df_produtos, df_produtos_pedidos):
     return df_pedidos, df_produtos, df_produtos_pedidos
 
 def calcular_totais(df_pedidos, df_produtos, df_produtos_pedidos):
+    """
+    Calcula os totais de vendas com base nos dados de pedidos, produtos e produtos pedidos.
+
+    A função calcula o total geral de vendas e também o total de vendas agrupado por 
+    diferentes critérios como produto, mês, dia da semana, hora, etc.
+
+    Args:
+        df_pedidos (DataFrame): Dados de pedidos.
+        df_produtos (DataFrame): Dados de produtos.
+        df_produtos_pedidos (DataFrame): Relacionamento entre pedidos e produtos.
+
+    Retorna:
+        dict: Dicionário com os totais de vendas por diferentes critérios.
+    """
     total_vendas = df_produtos_pedidos["preco_pago"].sum()
     totais = {
         "total_vendas": total_vendas,
@@ -84,6 +151,19 @@ def calcular_totais(df_pedidos, df_produtos, df_produtos_pedidos):
     return totais
 
 def dataframe_para_html(df, cabeçalhos_personalizados=None):
+    """
+    Converte um DataFrame para uma tabela HTML formatada.
+
+    Essa função converte um DataFrame pandas para um código HTML que representa 
+    uma tabela com as devidas formatações CSS aplicadas.
+
+    Args:
+        df (DataFrame): DataFrame a ser convertido.
+        cabeçalhos_personalizados (dict, opcional): Dicionário de cabeçalhos personalizados.
+
+    Retorna:
+        str: Código HTML representando a tabela.
+    """
     if cabeçalhos_personalizados:
         df = df.rename(columns=cabeçalhos_personalizados)
     
@@ -99,6 +179,18 @@ def dataframe_para_html(df, cabeçalhos_personalizados=None):
     )
 
 def gerar_html(totais):
+    """
+    Gera o HTML do relatório de vendas, incluindo totais e tabelas formatadas.
+
+    A função monta um relatório em HTML com base nos totais de vendas calculados 
+    e converte os dados em tabelas formatadas.
+
+    Args:
+        totais (dict): Dicionário contendo os totais de vendas por diversos critérios.
+
+    Retorna:
+        str: Código HTML completo do relatório de vendas.
+    """
     cabeçalhos_personalizados_pedidos = {
         "data_hora": "Data e Hora",
         "mes": "Mês",
@@ -184,6 +276,15 @@ def gerar_html(totais):
     return html
 
 def gerar_relatorio() -> str:
+    """
+    Gera o relatório completo de vendas.
+
+    A função carrega os dados, realiza o pré-processamento, calcula os totais 
+    de vendas e gera o relatório em formato HTML.
+
+    Retorna:
+        str: Código HTML do relatório de vendas.
+    """
     df_pedidos, df_produtos, df_produtos_pedidos = carregar_dados()
     df_pedidos, df_produtos, df_produtos_pedidos = preprocessar_dados(df_pedidos, df_produtos, df_produtos_pedidos)
     totais = calcular_totais(df_pedidos, df_produtos, df_produtos_pedidos)

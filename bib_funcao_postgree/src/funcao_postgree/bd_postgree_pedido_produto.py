@@ -10,18 +10,27 @@ from datetime import datetime
 class BdPedidoProduto(Bd_Base):
     """
     Classe para manipulação de dados da tabela Produto_Pedido no banco de dados PostgreSQL.
+
+    Esta classe gerencia a estrutura da tabela Produto_Pedido, além de realizar operações
+    como inserção, busca e exportação de dados relacionados aos pedidos e produtos.
     """
 
     def __init__(self, host: str = 'localhost', database: str = 'database-postgres', user: str = 'root', password: str = 'root') -> None:
         """
-        Inicializa a conexão com o banco de dados, e cria a tabela Produto_Pedido caso não exista.
+        Inicializa a conexão com o banco de dados e cria a tabela Produto_Pedido caso ela não exista.
+
+        Args:
+            host (str): Endereço do host do banco de dados.
+            database (str): Nome do banco de dados.
+            user (str): Nome de usuário para autenticação.
+            password (str): Senha para autenticação.
         """
         super().__init__(host, database, user, password)
         self.database_init()
 
     def database_init(self) -> None:
         """
-        Inicia a estrutura do banco de dados, criando a tabela Produto_Pedido caso não exista.
+        Cria a tabela Produto_Pedido no banco de dados caso ela não exista.
         """
         try:
             cursor = self.get_cursor()
@@ -49,15 +58,15 @@ class BdPedidoProduto(Bd_Base):
     def inserir_pedido_com_produtos(self, produtos: List[Dict[int, float]], mesa: int, status: str) -> bool:
         """
         Insere um pedido e seus produtos no banco de dados.
-        
+
         Args:
-            produtos (List[Dict[int, float]]): Lista de produtos a serem inseridos no pedido,
-            Cada produto é um dicionário com as chaves 'produto_id', 'quantidade' e 'preco_pago'.
+            produtos (List[Dict[int, float]]): Lista de produtos a serem inseridos no pedido.
+                Cada produto é um dicionário com as chaves 'produto_id', 'quantidade' e 'preco_pago'.
             mesa (int): Número da mesa do pedido.
             status (str): Status do pedido.
-            
+
         Returns:
-            bool: True se a inserção foi bem sucedida, False caso contrário.
+            bool: True se a inserção foi bem-sucedida, False caso contrário.
         """
         try:
             cursor = self.get_cursor()
@@ -67,9 +76,8 @@ class BdPedidoProduto(Bd_Base):
             cursor.execute("""
                 INSERT INTO Pedido (mesa, status, data_hora)
                 VALUES (%s, %s, %s) RETURNING id;
-                """, (mesa, status, data_hora)
-            )
-            
+            """, (mesa, status, data_hora))
+
             pedido_id = cursor.fetchone()[0]
             print(f"[LOG INFO] Pedido inserido com ID: {pedido_id}")
 
@@ -92,13 +100,13 @@ class BdPedidoProduto(Bd_Base):
     def get_produtos_do_pedido(self, id_pedido: int) -> List[Dict[str, int | float]] | None:
         """
         Busca os produtos de um pedido no banco de dados.
-        
+
         Args:
             id_pedido (int): ID do pedido.
-        
+
         Returns:
-            List[Dict[str, int | float]] | None: Lista de produtos do pedido, ou None em caso de erro.
-            A lista contém dicionários com as chaves 'produto_id', 'nome', 'quantidade' e 'preco_pago'.
+            List[Dict[str, int | float]] | None: Lista de produtos do pedido ou None em caso de erro.
+                A lista contém dicionários com as chaves 'produto_id', 'nome', 'quantidade' e 'preco_pago'.
         """
         try:
             cursor = self.get_cursor()
@@ -126,13 +134,13 @@ class BdPedidoProduto(Bd_Base):
             return None
         finally:
             cursor.close()
-    
+
     def get_pedidos_produto_csv(self) -> str:
         """
         Busca os pedidos e produtos do banco de dados e converte para um texto CSV.
-        
+
         Returns:
-            str: Texto CSV com os pedidos e produtos, ou uma string vazia em caso de erro.
+            str: Texto CSV com os pedidos e produtos ou uma string vazia em caso de erro.
         """
         try:
             cursor = self.get_cursor()
@@ -143,12 +151,11 @@ class BdPedidoProduto(Bd_Base):
 
             rows = cursor.fetchall()
             headers = [desc[0] for desc in cursor.description]
-            
+
             csv_text = ",".join(headers) + "\n"
             for row in rows:
                 csv_text += ",".join(str(cell) for cell in row) + "\n"
             return csv_text
-            
         except Exception as e:
             print(f"[LOG ERRO] Erro ao buscar pedidos e produtos: {e}")
             return ""

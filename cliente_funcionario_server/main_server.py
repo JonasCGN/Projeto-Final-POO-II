@@ -12,45 +12,63 @@ from src.func.func_relatorio import gerar_relatorio, criar_csv, remover_csv
 
 
 def sync_tratament(msg: str) -> str | None:
-  if msg == "server_down":
-    raise KeyboardInterrupt
-  
-  elif msg.startswith("Email_recuperacao: "):
-    email = msg.split("Email_recuperacao: ")[1]
-    print(f"[LOG INFO] Solicitação de recuperação de conta para o email '{email}'.")
-    valor = recuperar_senha(email)
-    if valor is not False:
-      enviar_email_recuperacao_de_conta(email, *valor)
-      print(f"[LOG INFO] Email de recuperação de conta enviado para '{email}'.")
-      
-  elif msg.startswith("enviar_relatorio: "):
-    print(f"[LOG INFO] Solicitação de envio de relatório de vendas.")
-    email = msg.split("enviar_relatorio: ")[1]
-    html = gerar_relatorio()
-    enviar_relatorio_vendas(email, html)
-    print(f"[LOG INFO] Relatório de vendas enviado para '{email}'.")
-    
-  elif msg.startswith("enviar_arquivos: "):
-    print(f"[LOG INFO] Solicitação de envio de arquivos.")
-    email = msg.split("enviar_arquivos: ")[1]
-    criar_csv()
-    csvs_list = ["pedidos.csv", "produtos.csv", "produtos_pedidos.csv"]
-    enviar_arquivos(email, csvs_list, csvs_list)
-    remover_csv()
-    print(f"[LOG INFO] Arquivos enviados para '{email}'.")
+    """
+    Trata mensagens recebidas pelo servidor sincronizado e executa ações com base no tipo de mensagem.
 
-  else:
-    print(f"[LOG INFO] Mensagem '{msg}' está sendo repassada para os clientes.")
-    enviar_mensagem_de_sincronizacao_server(msg)  
-  
+    Parâmetros:
+        - msg (str): A mensagem recebida pelo servidor.
+
+    Retorno:
+        - None: Não há retorno explícito, pois as ações são executadas diretamente.
+
+    Tipos de Mensagens:
+        - "server_down": 
+            Levanta uma exceção `KeyboardInterrupt` para encerrar o servidor.
+        - "Email_recuperacao: <email>":
+            Gera e envia um email de recuperação de conta para o email especificado.
+        - "enviar_relatorio: <email>":
+            Gera e envia um relatório de vendas em formato HTML para o email especificado.
+        - "enviar_arquivos: <email>":
+            Gera e envia arquivos CSV para o email especificado.
+        - Outras mensagens:
+            Repassa mensagens desconhecidas para os clientes sincronizados.
+    """
+    if msg == "server_down":
+        raise KeyboardInterrupt
+
+    elif msg.startswith("Email_recuperacao: "):
+        email = msg.split("Email_recuperacao: ")[1]
+        print(f"[LOG INFO] Solicitação de recuperação de conta para o email '{email}'.")
+        valor = recuperar_senha(email)
+        if valor is not False:
+            enviar_email_recuperacao_de_conta(email, *valor)
+            print(f"[LOG INFO] Email de recuperação de conta enviado para '{email}'.")
+
+    elif msg.startswith("enviar_relatorio: "):
+        print(f"[LOG INFO] Solicitação de envio de relatório de vendas.")
+        email = msg.split("enviar_relatorio: ")[1]
+        html = gerar_relatorio()
+        enviar_relatorio_vendas(email, html)
+        print(f"[LOG INFO] Relatório de vendas enviado para '{email}'.")
+
+    elif msg.startswith("enviar_arquivos: "):
+        print(f"[LOG INFO] Solicitação de envio de arquivos.")
+        email = msg.split("enviar_arquivos: ")[1]
+        criar_csv()
+        csvs_list = ["pedidos.csv", "produtos.csv", "produtos_pedidos.csv"]
+        enviar_arquivos(email, csvs_list, csvs_list)
+        remover_csv()
+        print(f"[LOG INFO] Arquivos enviados para '{email}'.")
+
+    else:
+        print(f"[LOG INFO] Mensagem '{msg}' está sendo repassada para os clientes.")
+        enviar_mensagem_de_sincronizacao_server(msg)
 
 if __name__ == "__main__":
-  try:
-    iniciar_servidor_sincronizado(sync_tratament)
-  except KeyboardInterrupt:
-    print("Servidor encerrado.")
-  except Exception as e:
-    print(f"Erro ao iniciar o servidor: {e}") 
-    
-  close_server()
-  
+    try:
+        iniciar_servidor_sincronizado(sync_tratament)
+    except KeyboardInterrupt:
+        print("Servidor encerrado.")
+    except Exception as e:
+        print(f"Erro ao iniciar o servidor: {e}")
+    close_server()

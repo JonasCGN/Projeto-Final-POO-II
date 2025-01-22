@@ -1,6 +1,7 @@
-# email_funcion
+# email_funcions
 
-A biblioteca Pack Work é uma ferramenta projetada para gerenciar o envio e a sincronização de dados entre o Redis e o Postgres. Através de funcionalidades como recuperação de senhas, envio de relatórios e arquivos, e sincronização eficiente, o Pack Work oferece uma solução prática e escalável para a integração de dados.
+A biblioteca **email_functions** é uma coleção de funções e classes projetadas para facilitar o envio de e-mails com conteúdos dinâmicos e anexos. Inclui funcionalidades como a criação de corpos de e-mail para recuperação de senha, envio de arquivos em formato HTML e gerenciamento do envio de e-mails usando o servidor SMTP do Gmail.
+
 
 # Instalação
 
@@ -9,7 +10,7 @@ A biblioteca Pack Work é uma ferramenta projetada para gerenciar o envio e a si
    O build está localizado no diretório `dist/`. Para instalá-lo, utilize:
 
    ```bash
-   pip install dist/email_function.whl
+  pip install dist/email_functions-0.1.0-py3-none-any.whl
    ```
 
 # Instalação para Desenvolvimento
@@ -39,7 +40,7 @@ A biblioteca Pack Work é uma ferramenta projetada para gerenciar o envio e a si
 # Como Usar
 
 
-O Pack Work inclui várias funcionalidades para enviar e-mails de recuperação de conta, gerar e enviar relatórios, além de sincronizar dados entre Redis e Postgres. 
+O email_functions  inclui várias funcionalidades para enviar e-mails de recuperação de conta, gerar e enviar relatórios, além de sincronizar dados entre Redis e Postgres. 
 
 # Exemplo: Enviar um e-mail de recuperação de conta
 
@@ -47,12 +48,12 @@ O Pack Work inclui várias funcionalidades para enviar e-mails de recuperação 
 from src.email_functions.email_def_body import criar_corpo_email_recupercao_de_conta_html
 from src.email_functions.email_sand import EmailSender
 
-Criando corpo do e-mail com usuário e senha
+#Criando corpo do e-mail com usuário e senha
 usuario = "usuario_teste"
 senha = "nova_senha"
 corpo_email = criar_corpo_email_recupercao_de_conta_html(usuario, senha)
 
-
+#enviando email
 email_sender = EmailSender(email="seu_email@gmail.com", password="sua_senha")
 email_sender.send_email(subject="Recuperação de Conta", body=corpo_email, to="destinatario@example.com")
 
@@ -60,7 +61,7 @@ email_sender.send_email(subject="Recuperação de Conta", body=corpo_email, to="
 
 # Parâmetros do Método `run`
 
-**`num_threads`** *(int)*: Número de threads para processamento paralelo.
+num_threads (int): Especifica o número de threads para o processamento paralelo. Esse parâmetro permite controlar o nível de paralelismo durante a execução, acelerando o processamento quando for adequado
 
 
 

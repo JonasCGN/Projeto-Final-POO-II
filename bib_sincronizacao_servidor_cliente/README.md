@@ -1,6 +1,6 @@
-# **Pack Work**
+# **sincronizacao_servidor_cliente**
 
-A biblioteca Pack Work é uma ferramenta que sicroniza dados do redis para o banco de dados Postgres.
+A biblioteca sincronizacao_servidor_cliente é uma ferramenta que sincroniza dados do redis para o banco de dados Postgres
 
 ## **Instalação**
 
@@ -8,10 +8,11 @@ A biblioteca Pack Work é uma ferramenta que sicroniza dados do redis para o ban
 
 O build está localizado no diretório `dist/`. Para instalá-lo, utilize:
 
-```bash
-pip install dist/pack_work-0.1.0-py3-none-any.whl
-```
+bash
+´´´
+pip Install dist/sincronizacao_servidor_cliente-0.1.0-py3-none-any.whl
 
+´´´
 ### **Instalação para Desenvolvimento**
 
 Se deseja modificar o código ou contribuir para o projeto, siga os passos abaixo:
@@ -42,9 +43,7 @@ sincronizacao = Sincronizacao()
 sincronizacao.run(10)
 ```
 
-### **Parâmetros do Método `run`**
 
-- **`num_threads`** *(int)*: Número de threads para processamento paralelo.
 
 ## **Build**
 

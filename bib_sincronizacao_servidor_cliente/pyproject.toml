@@ -2,7 +2,7 @@
 name = "sincronizacao_servidor_cliente"
 version = "0.1.0"
 description = ""
-authors = ["Kauã <Kaua.da@ufpi.edu.br>/ Clara <clara.satiro@ufpi.edu.br>/ Walison <weudesw0@gmail.com>/ Flavio <flaviolimamartins10@gmail.com>/ Jonas <>"]
+authors = ["Kauã <Kaua.da@ufpi.edu.br>/ Clara <clara.satiro@ufpi.edu.br>/ Walison <weudesw0@gmail.com>/ Flavio <flaviolimamartins10@gmail.com>/ Jonas <jonasbo66@gmail.com>"]
 readme = "README.md"
 packages = [
     { include = "sincronizacao_servidor_cliente", from = "src" }

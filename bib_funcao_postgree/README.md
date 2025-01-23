@@ -66,3 +66,5 @@ poetry build
 ```
 
 Isso criará o pacote no formato `.whl` e `.tar.gz` no diretório `dist/`.
+
+

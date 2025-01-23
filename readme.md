@@ -80,10 +80,7 @@ docker-compose up --build
 make server
 ```
 
-> Execução do cliente
+> Execução do funcionario
 ```bash
-make client
+make funcionario
 ```
-Comandos para Sátiro 
-
-@cd cliente_funcionario_server && export DISPLAY=:0 && export QT_QPA_PLATFORM=xcb && python3 main_funcionario.py

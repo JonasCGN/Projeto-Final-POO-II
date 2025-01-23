@@ -2,7 +2,7 @@
 name = "funcao_postgree"
 version = "0.1.0"
 description = ""
-authors = ["KauaHenSilva"] 
+authors = ["Kauã <Kaua.da@ufpi.edu.br>/ Clara <clara.satiro@ufpi.edu.br>/ Walison <weudesw0@gmail.com>/ Flavio <flaviolimamartins10@gmail.com>/ Jonas <>"]
 readme = "README.md"
 packages = [
     { include = "funcao_postgree", from = "src" }

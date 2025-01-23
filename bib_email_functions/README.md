@@ -59,12 +59,6 @@ email_sender.send_email(subject="Recuperação de Conta", body=corpo_email, to="
 
 ```
 
-# Parâmetros do Método `run`
-
-num_threads (int): Especifica o número de threads para o processamento paralelo. Esse parâmetro permite controlar o nível de paralelismo durante a execução, acelerando o processamento quando for adequado
-
-
-
 # Testes
 
 Para garantir que o sistema esteja funcionando corretamente, a biblioteca inclui testes automatizados. Eles estão localizados no diretório `/tests`.
